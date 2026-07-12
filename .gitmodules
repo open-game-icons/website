@@ -1,0 +1,6 @@
+[submodule "assets/icons"]
+	path = assets/icons
+	url = https://github.com/game-icons/icons.git
+[submodule "assets/icons-metadata"]
+	path = assets/icons-metadata
+	url = https://github.com/ArnoldSmith86/gameicons-metadata.git
