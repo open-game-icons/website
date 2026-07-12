@@ -21,10 +21,12 @@ layout: default
 			<h2 id="{{ category.name | slugify }}">{{ category.name }}</h2>
 			<div class="icon-grid">
 				{% for icon in category.icons %}
-				<figure class="icon-cell">
-					<img src="/assets/icons/{{ icon.author }}/{{ icon.name }}.svg" alt="{{ icon.name }}" loading="lazy" />
-					<figcaption>{{ icon.name }}</figcaption>
-				</figure>
+				<a href="/1x1/{{ icon.author }}/{{ icon.name }}/">
+					<figure class="icon-cell">
+						<img src="/assets/icons/{{ icon.author }}/{{ icon.name }}.svg" alt="{{ icon.name }}" loading="lazy" />
+						<figcaption>{{ icon.name }}</figcaption>
+					</figure>
+				</a>
 				{% endfor %}
 			</div>
 		</section>

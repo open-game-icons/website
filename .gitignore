@@ -4,6 +4,3 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
-
-# Project-specific ignores
-_data/icons.json
