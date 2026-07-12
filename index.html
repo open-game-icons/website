@@ -14,8 +14,20 @@ layout: default
 	</div>
 </header>
 
-<main class="index">
+<main>
 	<div>
-		<p>Placeholder</p>
+		{% for category in site.data.icons.categories %}
+		<section class="icon-section">
+			<h2 id="{{ category.name | slugify }}">{{ category.name }}</h2>
+			<div class="icon-grid">
+				{% for icon in category.icons %}
+				<figure class="icon-cell">
+					<img src="/assets/icons/{{ icon.author }}/{{ icon.name }}.svg" alt="{{ icon.name }}" loading="lazy" />
+					<figcaption>{{ icon.name }}</figcaption>
+				</figure>
+				{% endfor %}
+			</div>
+		</section>
+		{% endfor %}
 	</div>
 </main>

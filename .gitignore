@@ -1,5 +1,9 @@
+# Jekyll default ignores
 _site
 .sass-cache
 .jekyll-cache
 .jekyll-metadata
 vendor
+
+# Project-specific ignores
+_data/icons.json
