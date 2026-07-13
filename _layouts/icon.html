@@ -4,11 +4,20 @@ layout: page
 <h1>{{ page.icon_name }}</h1>
 <img src="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" alt="{{ page.icon_name }}">
 
+{% assign author = site.data.icons[page.author] %}
+<p>By{% if author.link %} <a href="{{ author.link }}">{{ author.name }}</a>{% else %} {{ author.name }}{% endif %}</p>
+
 {% assign key = page.author | append: '/' | append: page.icon_name %}
 {% assign cat = site.data.icons.icon_to_category[key] %}
 {% if cat %}
   <p>Category: <a href="/categories/{{ cat | slugify }}/">{{ cat }}</a></p>
 {% endif %}
+{% assign lic_id = site.data.icons[page.author].icons[page.icon_name].license %}
+{% assign lic = site.data.licenses[lic_id] %}
+{% if lic %}
+  <p>License: <a href="{{ lic.link }}">{{ lic.name }}</a></p>
+{% endif %}
+
 {% assign tags = site.data.icons.icon_to_tags[key] %}
 {% if tags %}
   <p>Tags:
