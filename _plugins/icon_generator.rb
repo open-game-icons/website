@@ -83,6 +83,9 @@ module IconGenerator
       end
       tag_slugs.each_value { |v| v['icons'].sort_by! { |i| i['name'] } }
 
+      # Don't generate pages for tags that only have 1 icon
+      tag_slugs.keep_if { |_slug, entry| entry['icons'].length > 1 }
+
       # Expose data for pages to use (via site.data)
       raw_data['categories'] = categories_data
       raw_data['tag_to_icons'] = tag_to_icons
