@@ -3,3 +3,17 @@ layout: page
 ---
 <h1>{{ page.icon_name }}</h1>
 <img src="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" alt="{{ page.icon_name }}">
+
+{% assign key = page.author | append: '/' | append: page.icon_name %}
+{% assign cat = site.data.icons.icon_to_category[key] %}
+{% if cat %}
+  <p>Category: <a href="/categories/{{ cat | slugify }}/">{{ cat }}</a></p>
+{% endif %}
+{% assign tags = site.data.icons.icon_to_tags[key] %}
+{% if tags %}
+  <p>Tags:
+    {% for tag in tags %}
+      <a href="/tags/{{ tag | slugify }}/">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+    {% endfor %}
+  </p>
+{% endif %}

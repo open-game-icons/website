@@ -3,7 +3,3 @@ timezone: America/Chicago
 url: https://game-icons.frie.dev
 
 markdown: kramdown
-
-# https://github.com/pattex/jekyll-tagging
-tag_page_layout: tag_page
-tag_page_dir: tags
