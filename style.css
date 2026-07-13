@@ -285,6 +285,27 @@ footer {
 	gap: 0.5rem;
 }
 
+.category-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+	gap: 0.5rem;
+}
+
+.category-grid a {
+	display: block;
+	padding: 1rem 0.5rem;
+	border-radius: 0.25rem;
+	background-color: #181818;
+	text-align: center;
+	text-decoration: none;
+	color: #ccc;
+	font-weight: 500;
+}
+
+.category-grid a:hover {
+	background-color: #333;
+}
+
 .icon-cell {
 	display: flex;
 	flex-direction: column;
@@ -364,5 +385,14 @@ footer {
 
 	.icon-cell figcaption {
 		color: #222;
+	}
+
+	.category-grid a {
+		background-color: #e8e8e8;
+		color: #222;
+	}
+
+	.category-grid a:hover {
+		background-color: #d0d0d0;
 	}
 }

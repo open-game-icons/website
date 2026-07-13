@@ -17,10 +17,10 @@ layout: default
 <main>
 	<div>
 		<h1>Categories</h1>
-		<ul>
+		<div class="category-grid">
 			{% for category in site.data.icons.categories %}
-			<li id="{{ category.name | slugify }}"><a href="/categories/{{ category.name | slugify }}/">{{ category.name }}</a></li>
+			<a href="/categories/{{ category.name | slugify }}/">{{ category.name }}</a>
 			{% endfor %}
-		</ul>
+		</div>
 	</div>
 </main>
