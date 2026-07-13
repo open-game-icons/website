@@ -16,7 +16,11 @@ bundle exec jekyll build
 ## Architecture
 
 - Jekyll static site for browsing icons.
-- Data sourced from 2 submodules: `assets/icons` (SVGs) and `assets/icons-metadata` (categories and tags).
-- Icon pages (of the form `/1x1/author-name/icon-name/`) generated at build time by `_plugins/icon_generator.rb`, which reads `assets/icons-metadata/list-categories.txt` and creates one `Jekyll::PageWithoutAFile` per unique icon.
-- The index page iterates over `site.data.icons.categories`, populated by the plugin.
-- Layout hierarchy: `default` > `page` > `icon`
+- Icon SVGs sourced from `assets/icons` submodule.
+- Metadata sourced from `_data/icons.json`.
+- `_plugins/icon_generator.rb` (core site logic) generates icon/category/tag pages at build time, each as a `Jekyll::PageWithoutAFile`.
+
+## Conventions
+
+- Preserve explanatory comments in Ruby code to keep the code approachable for non-Ruby developers.
+  Add or update comments when changing logic, and do not remove existing comments unless they are obsolete.
