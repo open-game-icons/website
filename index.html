@@ -16,20 +16,11 @@ layout: default
 
 <main>
 	<div>
-		{% for category in site.data.icons.categories %}
-		<section class="icon-section">
-			<h2 id="{{ category.name | slugify }}"><a href="/categories/{{ category.name | slugify }}/">{{ category.name }}</a></h2>
-			<div class="icon-grid">
-				{% for icon in category.icons %}
-				<a href="/1x1/{{ icon.author }}/{{ icon.name }}/">
-					<figure class="icon-cell">
-						<img src="/assets/icons/{{ icon.author }}/{{ icon.name }}.svg" alt="{{ icon.name }}" loading="lazy" />
-						<figcaption>{{ icon.name }}</figcaption>
-					</figure>
-				</a>
-				{% endfor %}
-			</div>
-		</section>
-		{% endfor %}
+		<h1>Categories</h1>
+		<ul>
+			{% for category in site.data.icons.categories %}
+			<li id="{{ category.name | slugify }}"><a href="/categories/{{ category.name | slugify }}/">{{ category.name }}</a></li>
+			{% endfor %}
+		</ul>
 	</div>
 </main>
