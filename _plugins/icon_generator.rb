@@ -1,34 +1,45 @@
 module IconGenerator
-  # Jekyll generator that reads icon metadata at build time to:
+  # Jekyll generator that reads icon metadata from _data/icons.json at build
+  # time to:
   #   1. Populate site.data.icons for the index and category/tag pages
   #   2. Create pages at /categories/<slug>/, /tags/<slug>/, and
   #      /1x1/{author}/{icon_name}/
   class Generator < Jekyll::Generator
     def generate(site)
-      categories_path = File.join(site.source, 'assets', 'icons-metadata', 'list-categories.txt')
-      tags_path = File.join(site.source, 'assets', 'icons-metadata', 'list-tags.txt')
+      raw_data = site.data['icons']
+      if raw_data.nil? || raw_data.empty?
+        Jekyll.logger.warn 'IconGenerator:', 'No icon data found in _data/icons.json'
+        return
+      end
 
+      # Build indices (and their inverses):
+      #   - category_name -> [{author, name}, ...]
+      #   - tag_name -> [{author, name}, ...]
       category_to_icons = {}
       icon_to_category = {}
+      tag_to_icons = {}
+      icon_to_tags = {}
 
-      # Parse categories file (format: "CategoryName: author/icon-name")
-      # Builds category_to_icons (category name -> array of icon entries)
-      # and icon_to_category (reverse lookup)
-      if File.exist?(categories_path)
-        File.foreach(categories_path) do |line|
-          line = line.strip
-          next if line.empty?
-          next unless line.include?(':')
+      raw_data.each do |author_id, author_data|
+        icons = author_data['icons']
+        next unless icons
 
-          category, path = line.split(':', 2)
-          category = category.strip
-          path = path.strip
-          next unless path.include?('/')
+        icons.each do |icon_id, icon_info|
+          path = "#{author_id}/#{icon_id}"
+          entry = { 'author' => author_id, 'name' => icon_id }
 
-          author, icon_name = path.split('/', 2)
-          entry = { 'author' => author, 'name' => icon_name }
-          (category_to_icons[category] ||= []) << entry
-          icon_to_category["#{author}/#{icon_name}"] = category
+          if icon_info['category']
+            category = icon_info['category']
+            (category_to_icons[category] ||= []) << entry
+            icon_to_category[path] = category
+          end
+
+          if icon_info['tags'] && icon_info['tags'].any?
+            icon_to_tags[path] = icon_info['tags']
+            icon_info['tags'].each do |tag|
+              (tag_to_icons[tag] ||= []) << entry
+            end
+          end
         end
       end
 
@@ -39,31 +50,19 @@ module IconGenerator
         { 'name' => category_name, 'icons' => icons }
       end
 
-      # Expose so index page can use site.data.icons.categories
-      site.data['icons'] = { 'categories' => categories_data }
+      # Generate a page per unique icon at /1x1/{author}/{icon_name}/
+      raw_data.each do |author_id, author_data|
+        next unless author_data.is_a?(Hash)
+        icons = author_data['icons']
+        next unless icons
 
-      tag_to_icons = {}
-      icon_to_tags = {}
-
-      # Parse tags file (format: "author/icon-name: tag1, tag2, tag3")
-      if File.exist?(tags_path)
-        File.foreach(tags_path) do |line|
-          line = line.strip
-          next if line.empty?
-          next unless line.include?(':')
-
-          path, tags_str = line.split(':', 2)
-          path = path.strip
-          tags_str = tags_str.strip
-          next unless path.include?('/')
-
-          author, icon_name = path.split('/', 2)
-
-          tags = tags_str.split(',').map(&:strip).reject(&:empty?)
-          tags.each do |tag|
-            (tag_to_icons[tag] ||= []) << { 'author' => author, 'name' => icon_name }
-          end
-          icon_to_tags[path] = tags
+        icons.each_key do |icon_id|
+          dir = File.join('1x1', author_id, icon_id)
+          page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
+          page.data['layout'] = 'icon'
+          page.data['author'] = author_id
+          page.data['icon_name'] = icon_id
+          site.pages << page
         end
       end
 
@@ -79,46 +78,35 @@ module IconGenerator
           tag_slugs[slug]['icons'].concat(icons)
           tag_slugs[slug]['icons'].uniq! { |i| [i['author'], i['name']] }
         else
-          tag_slugs[slug] = { 'tag_name' => tag_name, 'icons' => icons.dup }
+          tag_slugs[slug] = { 'name' => tag_name, 'icons' => icons.dup }
         end
       end
       tag_slugs.each_value { |v| v['icons'].sort_by! { |i| i['name'] } }
 
-      site.data['icons']['tag_to_icons'] = tag_to_icons
-      site.data['icons']['icon_to_tags'] = icon_to_tags
-      site.data['icons']['icon_to_category'] = icon_to_category
-      site.data['icons']['tag_slugs'] = tag_slugs
+      # Expose data for pages to use (via site.data)
+      raw_data['categories'] = categories_data
+      raw_data['tag_to_icons'] = tag_to_icons
+      raw_data['icon_to_tags'] = icon_to_tags
+      raw_data['icon_to_category'] = icon_to_category
+      raw_data['tag_slugs'] = tag_slugs
 
-      # Generate a page per category at /categories/<slug>/
-      categories_data.each do |cat|
-        slug = Jekyll::Utils.slugify(cat['name'])
-        dir = File.join('categories', slug)
-        page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
-        page.data['layout'] = 'category_page'
-        page.data['category_name'] = cat['name']
-        page.data['icons'] = cat['icons']
-        site.pages << page
-      end
+      # Generate category and tag pages
+      add_list_pages(site, 'categories', 'category_page', categories_data)
+      add_list_pages(site, 'tags', 'tag_page', tag_slugs.values)
+    end
 
-      # Generate a page per tag at /tags/<slug>/
-      tag_slugs.each_value do |entry|
-        slug = Jekyll::Utils.slugify(entry['tag_name'])
-        dir = File.join('tags', slug)
+    private
+
+    # Create listing pages at /<dir_prefix>/<slug>/ for each entry.
+    # Each entry must have 'name' and 'icons' keys.
+    def add_list_pages(site, dir_prefix, layout, entries)
+      entries.each do |entry|
+        slug = Jekyll::Utils.slugify(entry['name'])
+        dir = File.join(dir_prefix, slug)
         page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
-        page.data['layout'] = 'tag_page'
-        page.data['tag_name'] = entry['tag_name']
+        page.data['layout'] = layout
+        page.data['list_name'] = entry['name']
         page.data['icons'] = entry['icons']
-        site.pages << page
-      end
-
-      # Generate a page per unique icon at /1x1/{author}/{icon_name}/
-      all_icons = categories_data.flat_map { |cat| cat['icons'] }
-      all_icons.each do |entry|
-        dir = File.join('1x1', entry['author'], entry['name'])
-        page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
-        page.data['layout'] = 'icon'
-        page.data['author'] = entry['author']
-        page.data['icon_name'] = entry['name']
         site.pages << page
       end
     end
