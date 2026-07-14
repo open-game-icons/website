@@ -419,6 +419,16 @@ footer {
 		background-color: #333;
 	}
 
+	.icon-search {
+		background-color: #181818;
+		color: #fff;
+		border-color: #333;
+	}
+
+	.icon-search:focus {
+		border-color: #5af;
+	}
+
 	.icon-list-item .icon-name {
 		color: #ccc;
 	}
@@ -431,4 +441,24 @@ footer {
 	.icon-list-item .icon-tags a {
 		color: #888;
 	}
+}
+
+.icon-search {
+	display: block;
+	width: 100%;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	border: 2px solid #ccc;
+	border-radius: 0.25rem;
+	font-size: 1rem;
+	box-sizing: border-box;
+}
+
+.icon-search:focus {
+	outline: none;
+	border-color: #38f;
+}
+
+.icon-list-item--hidden {
+	display: none;
 }

@@ -20,6 +20,10 @@ module IconGenerator
       tag_to_icons = {}
       icon_to_tags = {}
 
+      # Flat search index for client-side filtering on the homepage.
+      # Uses short keys to keep the inlined JSON compact.
+      search_index = []
+
       raw_data.each do |author_id, author_data|
         icons = author_data['icons']
         next unless icons
@@ -40,6 +44,20 @@ module IconGenerator
               (tag_to_icons[tag] ||= []) << entry
             end
           end
+
+          # Build search index entry: i=id, a=author, k=unique keywords from
+          # all fields (icon id, category, tags) split on hyphens
+          words = icon_id.split('-')
+          if icon_info['category']
+            words.concat(Jekyll::Utils.slugify(icon_info['category']).split('-'))
+          end
+          if icon_info['tags']
+            icon_info['tags'].each do |tag|
+              words.concat(Jekyll::Utils.slugify(tag).split('-'))
+            end
+          end
+          search_entry = { 'i' => icon_id, 'a' => author_id, 'k' => words.uniq.sort }
+          search_index << search_entry
         end
       end
 
@@ -92,6 +110,7 @@ module IconGenerator
       raw_data['icon_to_tags'] = icon_to_tags
       raw_data['icon_to_category'] = icon_to_category
       raw_data['tag_slugs'] = tag_slugs
+      raw_data['search_index'] = search_index
 
       # Generate category and tag pages
       add_list_pages(site, 'categories', 'category_page', categories_data)
