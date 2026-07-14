@@ -1,9 +1,8 @@
 module IconGenerator
   # Jekyll generator that reads icon metadata from _data/icons.json at build
   # time to:
-  #   1. Populate site.data.icons for the index and category/tag pages
-  #   2. Create pages at /categories/<slug>/, /tags/<slug>/, and
-  #      /1x1/{author}/{icon_name}/
+  #   1. Populate site.data.icons for the index and tag pages
+  #   2. Create pages at /tags/<slug>/ and /1x1/{author}/{icon_name}/
   class Generator < Jekyll::Generator
     def generate(site)
       raw_data = site.data['icons']
@@ -12,11 +11,8 @@ module IconGenerator
         return
       end
 
-      # Build indices (and their inverses):
-      #   - category_name -> [{author, name}, ...]
+      # Build indices:
       #   - tag_name -> [{author, name}, ...]
-      category_to_icons = {}
-      icon_to_category = {}
       tag_to_icons = {}
       icon_to_tags = {}
 
@@ -32,12 +28,6 @@ module IconGenerator
           path = "#{author_id}/#{icon_id}"
           entry = { 'author' => author_id, 'name' => icon_id }
 
-          if icon_info['category']
-            category = icon_info['category']
-            (category_to_icons[category] ||= []) << entry
-            icon_to_category[path] = category
-          end
-
           if icon_info['tags'] && icon_info['tags'].any?
             icon_to_tags[path] = icon_info['tags']
             icon_info['tags'].each do |tag|
@@ -46,11 +36,8 @@ module IconGenerator
           end
 
           # Build search index entry: i=id, a=author, k=unique keywords from
-          # all fields (icon id, category, tags) split on hyphens
+          # all fields (icon id, tags) split on hyphens
           words = icon_id.split('-')
-          if icon_info['category']
-            words.concat(Jekyll::Utils.slugify(icon_info['category']).split('-'))
-          end
           if icon_info['tags']
             icon_info['tags'].each do |tag|
               words.concat(Jekyll::Utils.slugify(tag).split('-'))
@@ -59,13 +46,6 @@ module IconGenerator
           search_entry = { 'i' => icon_id, 'a' => author_id, 'k' => words.uniq.sort }
           search_index << search_entry
         end
-      end
-
-      # Sort categories alphabetically and icons alphabetically within each
-      category_to_icons = category_to_icons.sort_by { |k, _| k }
-      categories_data = category_to_icons.map do |category_name, icons|
-        icons.sort_by! { |i| i['name'] }
-        { 'name' => category_name, 'icons' => icons }
       end
 
       # Generate a page per unique icon at /1x1/{author}/{icon_name}/
@@ -105,28 +85,17 @@ module IconGenerator
       tag_slugs.keep_if { |_slug, entry| entry['icons'].length > 1 }
 
       # Expose data for pages to use (via site.data)
-      raw_data['categories'] = categories_data
       raw_data['tag_to_icons'] = tag_to_icons
       raw_data['icon_to_tags'] = icon_to_tags
-      raw_data['icon_to_category'] = icon_to_category
       raw_data['tag_slugs'] = tag_slugs
       raw_data['search_index'] = search_index
 
-      # Generate category and tag pages
-      add_list_pages(site, 'categories', 'category_page', categories_data)
-      add_list_pages(site, 'tags', 'tag_page', tag_slugs.values)
-    end
-
-    private
-
-    # Create listing pages at /<dir_prefix>/<slug>/ for each entry.
-    # Each entry must have 'name' and 'icons' keys.
-    def add_list_pages(site, dir_prefix, layout, entries)
-      entries.each do |entry|
+      # Generate tag pages
+      tag_slugs.each do |_slug, entry|
         slug = Jekyll::Utils.slugify(entry['name'])
-        dir = File.join(dir_prefix, slug)
+        dir = File.join('tags', slug)
         page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
-        page.data['layout'] = layout
+        page.data['layout'] = 'tag_page'
         page.data['list_name'] = entry['name']
         page.data['icons'] = entry['icons']
         site.pages << page

@@ -15,8 +15,8 @@
 			var el = document.getElementById("icon--" + icon.a + "--" + icon.i);
 			if (!el) return;
 
-			var show = raw && words.every(function (w) { return icon.k.indexOf(w) !== -1; });
-			el.classList.toggle("icon-grid__item--visible", show);
+			var show = !raw || words.every(function (w) { return icon.k.indexOf(w) !== -1; });
+			el.classList.toggle("icon-grid__item--hidden", !show);
 		});
 	});
 })();

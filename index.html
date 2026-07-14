@@ -16,15 +16,8 @@ layout: default
 
 <main>
 	<div>
-		<h1>Categories</h1>
-		<div class="category-grid">
-			{% for category in site.data.icons.categories %}
-			<a href="/categories/{{ category.name | slugify }}/">{{ category.name }}</a>
-			{% endfor %}
-		</div>
-
 		<h1>All Icons</h1>
-		<input type="search" id="icon-search" class="icon-search" placeholder="Filter icons by name, category, or tag..." aria-label="Search icons" />
+		<input type="search" id="icon-search" class="icon-search" placeholder="Filter icons by name or tag..." aria-label="Search icons" />
 		{% include icon_grid.html icons=site.data.icons.search_index %}
 	</div>
 </main>

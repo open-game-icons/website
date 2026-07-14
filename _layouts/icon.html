@@ -8,10 +8,6 @@ layout: page
 <p>By{% if author.link %} <a href="{{ author.link }}">{{ author.name }}</a>{% else %} {{ author.name }}{% endif %}</p>
 
 {% assign key = page.author | append: '/' | append: page.icon_name %}
-{% assign cat = site.data.icons.icon_to_category[key] %}
-{% if cat %}
-  <p>Category: <a href="/categories/{{ cat | slugify }}/">{{ cat }}</a></p>
-{% endif %}
 {% assign lic_id = site.data.icons[page.author].icons[page.icon_name].license %}
 {% assign lic = site.data.licenses[lic_id] %}
 {% if lic %}

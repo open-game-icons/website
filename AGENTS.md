@@ -18,7 +18,7 @@ bundle exec jekyll build
 - Jekyll static site for browsing icons.
 - Icon SVGs sourced from `assets/icons` submodule.
 - Metadata sourced from `_data/icons.json`.
-- `_plugins/icon_generator.rb` (core site logic) generates icon/category/tag pages at build time, each as a `Jekyll::PageWithoutAFile`.
+- `_plugins/icon_generator.rb` (core site logic) generates icon and tag pages at build time, each as a `Jekyll::PageWithoutAFile`.
 
 ## Conventions
 
