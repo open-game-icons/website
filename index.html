@@ -22,5 +22,26 @@ layout: default
 			<a href="/categories/{{ category.name | slugify }}/">{{ category.name }}</a>
 			{% endfor %}
 		</div>
+
+		<h1>All Icons</h1>
+		<div class="icon-list-grid">
+			{% for entry in site.data.icons %}
+			{% assign author_data = entry[1] %}
+			{% if author_data.icons %}
+			{% for icon_entry in author_data.icons %}
+			{% assign icon_id = icon_entry[0] %}
+			{% assign icon_info = icon_entry[1] %}
+			{% assign path = entry[0] | append: "/" | append: icon_id %}
+			<div class="icon-list-item">
+				<div class="icon-name"><a href="/1x1/{{ entry[0] }}/{{ icon_id }}/">{{ icon_id | replace: "-", " " }}</a></div>
+				{% assign tags = site.data.icons.icon_to_tags[path] %}
+				{% if tags %}
+				<div class="icon-tags">{% include tag_links.html tags=tags %}</div>
+				{% endif %}
+			</div>
+			{% endfor %}
+			{% endif %}
+			{% endfor %}
+		</div>
 	</div>
 </main>
