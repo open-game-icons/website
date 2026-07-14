@@ -845,8 +845,8 @@
 				"license": "cc-by-30",
 				"category": "Food",
 				"tags": [
-					"steamed-bun",
-					"Chinese-food",
+					"steamed bun",
+					"Chinese food",
 					"snack"
 				]
 			},
@@ -855,7 +855,7 @@
 				"category": "Food",
 				"tags": [
 					"potsticker",
-					"Asian-food",
+					"Asian food",
 					"gyoza"
 				]
 			},
@@ -872,9 +872,9 @@
 				"license": "cc-by-30",
 				"category": "Tool",
 				"tags": [
-					"painting-stand",
+					"painting stand",
 					"art",
-					"canvas-holder"
+					"canvas holder"
 				]
 			},
 			"fox": {
@@ -890,7 +890,7 @@
 				"license": "cc-by-30",
 				"category": "Music",
 				"tags": [
-					"brass-instrument",
+					"brass instrument",
 					"horn",
 					"orchestra"
 				]
@@ -935,7 +935,7 @@
 				"license": "cc-by-30",
 				"category": "Music",
 				"tags": [
-					"musical-instrument",
+					"musical instrument",
 					"piano",
 					"keys"
 				]
@@ -989,7 +989,7 @@
 				"license": "cc-by-30",
 				"category": "Object",
 				"tags": [
-					"glass-jar",
+					"glass jar",
 					"canning",
 					"container"
 				]
@@ -1029,7 +1029,7 @@
 				"license": "cc-by-30",
 				"category": "Tool",
 				"tags": [
-					"planetary-model",
+					"planetary model",
 					"astronomy",
 					"science"
 				]
@@ -1047,7 +1047,7 @@
 				"license": "cc-by-30",
 				"category": "Object",
 				"tags": [
-					"paper-sack",
+					"paper sack",
 					"waste",
 					"disposable"
 				]
@@ -1056,8 +1056,8 @@
 				"license": "cc-by-30",
 				"category": "Object",
 				"tags": [
-					"grocery-bag",
-					"paper-sack",
+					"grocery bag",
+					"paper sack",
 					"packaging"
 				]
 			},
@@ -1065,8 +1065,8 @@
 				"license": "cc-by-30",
 				"category": "Object",
 				"tags": [
-					"shopping-bag",
-					"paper-sack",
+					"shopping bag",
+					"paper sack",
 					"container"
 				]
 			},
@@ -1076,7 +1076,7 @@
 				"tags": [
 					"origami",
 					"bird",
-					"paper-art"
+					"paper art"
 				]
 			},
 			"paper-frog": {
@@ -1085,7 +1085,7 @@
 				"tags": [
 					"origami",
 					"amphibian",
-					"paper-art"
+					"paper art"
 				]
 			},
 			"philosopher-bust": {
@@ -1112,7 +1112,7 @@
 				"tags": [
 					"instrument",
 					"music",
-					"cathedral-organ"
+					"cathedral organ"
 				]
 			},
 			"porcupine": {
@@ -1130,14 +1130,14 @@
 				"tags": [
 					"joke",
 					"disguise",
-					"funny-eyes"
+					"funny eyes"
 				]
 			},
 			"pressure-cooker": {
 				"license": "cc-by-30",
 				"category": "Tech",
 				"tags": [
-					"kitchen-appliance",
+					"kitchen appliance",
 					"cooking",
 					"steam"
 				]
@@ -1146,7 +1146,7 @@
 				"license": "cc-by-30",
 				"category": "Tech",
 				"tags": [
-					"kitchen-appliance",
+					"kitchen appliance",
 					"rice",
 					"cooking"
 				]
@@ -1173,7 +1173,7 @@
 				"license": "cc-by-30",
 				"category": "Tech",
 				"tags": [
-					"old-phone",
+					"old phone",
 					"vintage",
 					"dial"
 				]
@@ -1191,7 +1191,7 @@
 				"license": "cc-by-30",
 				"category": "Tech",
 				"tags": [
-					"cooking-pot",
+					"cooking pot",
 					"kitchen",
 					"utensil"
 				]
@@ -1240,8 +1240,8 @@
 				"category": "Sports",
 				"tags": [
 					"skating",
-					"board-sports",
-					"urban-sport"
+					"board sports",
+					"urban sport"
 				]
 			},
 			"slot-machine": {
@@ -1293,7 +1293,7 @@
 				"license": "cc-by-30",
 				"category": "Tool",
 				"tags": [
-					"office-tool",
+					"office tool",
 					"paper",
 					"binding"
 				]
@@ -1311,7 +1311,7 @@
 				"license": "cc-by-30",
 				"category": "Tool",
 				"tags": [
-					"office-supply",
+					"office supply",
 					"paper",
 					"binder"
 				]
@@ -1331,7 +1331,7 @@
 				"tags": [
 					"ticket",
 					"metro",
-					"train-pass"
+					"train pass"
 				]
 			},
 			"subway-train": {
@@ -1473,14 +1473,14 @@
 				"tags": [
 					"fort",
 					"kids",
-					"wooden-structure"
+					"wooden structure"
 				]
 			},
 			"trombone": {
 				"license": "cc-by-30",
 				"category": "Music",
 				"tags": [
-					"brass-instrument",
+					"brass instrument",
 					"music",
 					"band"
 				]
@@ -1552,8 +1552,8 @@
 				"license": "cc-by-30",
 				"category": "Food",
 				"tags": [
-					"frying-pan",
-					"Asian-cooking",
+					"frying pan",
+					"Asian cooking",
 					"kitchen"
 				]
 			}
@@ -1575,8 +1575,8 @@
 				"license": "cc-by-30",
 				"category": "Character",
 				"tags": [
-					"evil-gnome",
-					"garden-creature",
+					"evil gnome",
+					"garden creature",
 					"mischievous"
 				]
 			},
@@ -1585,7 +1585,7 @@
 				"category": "Vehicle",
 				"tags": [
 					"warship",
-					"naval-ship",
+					"naval ship",
 					"military"
 				]
 			},
@@ -1595,24 +1595,24 @@
 				"tags": [
 					"flag",
 					"heraldry",
-					"wild-pig"
+					"wild pig"
 				]
 			},
 			"carnyx": {
 				"license": "cc-by-30",
 				"category": "Music",
 				"tags": [
-					"war-horn",
+					"war horn",
 					"Celtic",
-					"ancient-instrument"
+					"ancient instrument"
 				]
 			},
 			"carrier": {
 				"license": "cc-by-30",
 				"category": "Vehicle",
 				"tags": [
-					"aircraft-carrier",
-					"naval-vessel",
+					"aircraft carrier",
+					"naval vessel",
 					"military"
 				]
 			},
@@ -1620,8 +1620,8 @@
 				"license": "cc-by-30",
 				"category": "Vehicle",
 				"tags": [
-					"ancient-vehicle",
-					"war-cart",
+					"ancient vehicle",
+					"war cart",
 					"horses"
 				]
 			},
@@ -1630,7 +1630,7 @@
 				"category": "Vehicle",
 				"tags": [
 					"warship",
-					"naval-vessel",
+					"naval vessel",
 					"military"
 				]
 			},
@@ -1649,7 +1649,7 @@
 				"tags": [
 					"battleship",
 					"warship",
-					"naval-ship"
+					"naval ship"
 				]
 			},
 			"earth-worm": {
@@ -1658,7 +1658,7 @@
 				"tags": [
 					"worm",
 					"invertebrate",
-					"soil-creature"
+					"soil creature"
 				]
 			},
 			"flying-trout": {
@@ -1666,7 +1666,7 @@
 				"category": "Animal",
 				"tags": [
 					"fish",
-					"flying-creature",
+					"flying creature",
 					"fantasy"
 				]
 			},
@@ -1675,7 +1675,7 @@
 				"category": "Character",
 				"tags": [
 					"monster",
-					"Celtic-mythology",
+					"Celtic mythology",
 					"giant"
 				]
 			},
@@ -1683,8 +1683,8 @@
 				"license": "cc-by-30",
 				"category": "Vehicle",
 				"tags": [
-					"military-tank",
-					"armored-vehicle",
+					"military tank",
+					"armored vehicle",
 					"war"
 				]
 			},
@@ -1701,7 +1701,7 @@
 				"license": "cc-by-30",
 				"category": "Vehicle",
 				"tags": [
-					"naval-vessel",
+					"naval vessel",
 					"battleship",
 					"steel"
 				]
@@ -1710,7 +1710,7 @@
 				"license": "cc-by-30",
 				"category": "Symbol",
 				"tags": [
-					"mythological-creature",
+					"mythological creature",
 					"Gorgon",
 					"snakes"
 				]
@@ -1747,7 +1747,7 @@
 				"category": "Structure",
 				"tags": [
 					"fortress",
-					"ancient-city",
+					"ancient city",
 					"stronghold"
 				]
 			},
@@ -1773,7 +1773,7 @@
 				"license": "cc-by-30",
 				"category": "Character",
 				"tags": [
-					"female-warrior",
+					"female warrior",
 					"swordswoman",
 					"fighter"
 				]
@@ -1800,7 +1800,7 @@
 				"license": "cc-by-30",
 				"category": "Nature",
 				"tags": [
-					"talking-tree",
+					"talking tree",
 					"nature",
 					"mystical"
 				]
@@ -1809,7 +1809,7 @@
 				"license": "cc-by-30",
 				"category": "Structure",
 				"tags": [
-					"burial-mound",
+					"burial mound",
 					"ancient",
 					"tomb"
 				]
@@ -1833,7 +1833,7 @@
 				"category": "Weapon",
 				"tags": [
 					"symbol",
-					"broken-weapon",
+					"broken weapon",
 					"peace"
 				]
 			}
@@ -1856,7 +1856,7 @@
 				"license": "cc-by-30",
 				"category": "Tech",
 				"tags": [
-					"potion-maker",
+					"potion maker",
 					"pharmacist",
 					"alchemy"
 				]
@@ -1928,8 +1928,8 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
-					"ninja-weapon",
+					"throwing star",
+					"ninja weapon",
 					"projectile"
 				]
 			},
@@ -1964,7 +1964,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"chain-weapon",
+					"chain weapon",
 					"sickle",
 					"ninja"
 				]
@@ -1991,7 +1991,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
+					"throwing star",
 					"weapon",
 					"ninja"
 				]
@@ -2063,7 +2063,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
+					"throwing star",
 					"weapon",
 					"ninja"
 				]
@@ -2072,7 +2072,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
+					"throwing star",
 					"weapon",
 					"ninja"
 				]
@@ -2099,7 +2099,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
+					"throwing star",
 					"weapon",
 					"ninja"
 				]
@@ -2108,8 +2108,8 @@
 				"license": "cc-by-30",
 				"category": "Clothing",
 				"tags": [
-					"ninja-footwear",
-					"split-toe",
+					"ninja footwear",
+					"split toe",
 					"shoe"
 				]
 			},
@@ -2117,7 +2117,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
+					"throwing star",
 					"weapon",
 					"ninja"
 				]
@@ -2126,8 +2126,8 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"throwing-star",
-					"ninja-weapon",
+					"throwing star",
+					"ninja weapon",
 					"spinning"
 				]
 			}
@@ -2159,7 +2159,7 @@
 				"license": "cc-by-30",
 				"category": "Game",
 				"tags": [
-					"board-game",
+					"board game",
 					"figure",
 					"pawn"
 				]
@@ -2178,7 +2178,7 @@
 				"category": "Tech",
 				"tags": [
 					"calculator",
-					"counting-tool",
+					"counting tool",
 					"beads"
 				]
 			},
@@ -2188,15 +2188,15 @@
 				"tags": [
 					"monk",
 					"figure",
-					"game-piece"
+					"game piece"
 				]
 			},
 			"abdominal-armor": {
 				"license": "cc-by-30",
 				"category": "Defense",
 				"tags": [
-					"protective-gear",
-					"body-armor",
+					"protective gear",
+					"body armor",
 					"torso"
 				]
 			},
@@ -2205,7 +2205,7 @@
 				"category": "Mythology",
 				"tags": [
 					"weakness",
-					"vulnerable-spot",
+					"vulnerable spot",
 					"mythology"
 				]
 			},
@@ -2253,7 +2253,7 @@
 				"license": "cc-by-30",
 				"category": "Vehicle",
 				"tags": [
-					"hot-air-balloon",
+					"hot air balloon",
 					"travel",
 					"sky"
 				]
@@ -2298,7 +2298,7 @@
 				"license": "cc-by-30",
 				"category": "Mythology",
 				"tags": [
-					"Egyptian-symbol",
+					"Egyptian symbol",
 					"sun",
 					"horizon"
 				]
@@ -2307,7 +2307,7 @@
 				"license": "cc-by-30",
 				"category": "Object",
 				"tags": [
-					"wake-up",
+					"wake up",
 					"time",
 					"ringing"
 				]
@@ -2398,7 +2398,7 @@
 				"category": "Sports",
 				"tags": [
 					"sport",
-					"protective-gear",
+					"protective gear",
 					"helmet"
 				]
 			},
@@ -2460,7 +2460,7 @@
 				"license": "cc-by-30",
 				"category": "Structure",
 				"tags": [
-					"old-structure",
+					"old structure",
 					"archeology",
 					"temple"
 				]
@@ -2596,7 +2596,7 @@
 				"category": "Mythology",
 				"tags": [
 					"zodiac",
-					"water-bearer",
+					"water bearer",
 					"astrology"
 				]
 			},
@@ -2614,7 +2614,7 @@
 				"category": "Structure",
 				"tags": [
 					"entrance",
-					"middle-east",
+					"middle east",
 					"architecture"
 				]
 			},
@@ -2678,7 +2678,7 @@
 				"tags": [
 					"injury",
 					"wound",
-					"first-aid"
+					"first aid"
 				]
 			},
 			"arm-sling": {
@@ -2963,7 +2963,7 @@
 				"license": "cc-by-30",
 				"category": "Game",
 				"tags": [
-					"board-game",
+					"board game",
 					"dice",
 					"strategy"
 				]
@@ -3586,7 +3586,7 @@
 				"tags": [
 					"nest",
 					"aviary",
-					"bird-shelter"
+					"bird shelter"
 				]
 			},
 			"bird-scepter": {
@@ -3599,14 +3599,14 @@
 				"tags": [
 					"buffalo",
 					"wildlife",
-					"large-mammal"
+					"large mammal"
 				]
 			},
 			"black-belt": {
 				"license": "cc-by-30",
 				"category": "Clothing",
 				"tags": [
-					"martial-arts",
+					"martial arts",
 					"karate",
 					"judo"
 				]
@@ -3661,7 +3661,7 @@
 				"category": "Clothing",
 				"tags": [
 					"mask",
-					"cover-eyes",
+					"cover eyes",
 					"blinders"
 				]
 			},
@@ -3680,7 +3680,7 @@
 				"tags": [
 					"staff",
 					"weapon",
-					"martial-arts"
+					"martial arts"
 				]
 			},
 			"boat-engine": {
@@ -3689,25 +3689,25 @@
 				"tags": [
 					"motor",
 					"propeller",
-					"boat-motor"
+					"boat motor"
 				]
 			},
 			"boat-fishing": {
 				"license": "cc-by-30",
 				"category": "Travel",
 				"tags": [
-					"fishing-vessel",
+					"fishing vessel",
 					"trawler",
-					"fishing-boat"
+					"fishing boat"
 				]
 			},
 			"boat-horizon": {
 				"license": "cc-by-30",
 				"category": "Travel",
 				"tags": [
-					"sea-vessel",
+					"sea vessel",
 					"ship",
-					"distant-boat"
+					"distant boat"
 				]
 			},
 			"boat-propeller": {
@@ -3715,8 +3715,8 @@
 				"category": "Tech",
 				"tags": [
 					"prop",
-					"motor-blade",
-					"propeller-blade"
+					"motor blade",
+					"propeller blade"
 				]
 			},
 			"body-balance": {
@@ -3743,7 +3743,7 @@
 				"tags": [
 					"country",
 					"map",
-					"South-America"
+					"South America"
 				]
 			},
 			"bolt-bomb": {
@@ -3768,7 +3768,7 @@
 				"license": "cc-by-30",
 				"category": "Military",
 				"tags": [
-					"falling-bolt",
+					"falling bolt",
 					"screw",
 					"fastener"
 				]
@@ -5092,7 +5092,7 @@
 				"category": "Clothing",
 				"tags": [
 					"cooking hat",
-					"chef’s hat",
+					"chef hat",
 					"kitchen headgear"
 				]
 			},
@@ -6577,7 +6577,7 @@
 				"category": "Animal",
 				"tags": [
 					"prehistoric creature",
-					"sail-back dinosaur",
+					"sail back dinosaur",
 					"ancient reptile"
 				]
 			},
@@ -6585,7 +6585,7 @@
 				"license": "cc-by-30",
 				"category": "Animal",
 				"tags": [
-					"long-neck dinosaur",
+					"long neck dinosaur",
 					"herbivorous dinosaur",
 					"prehistoric animal"
 				]
@@ -6839,7 +6839,7 @@
 				"tags": [
 					"baking",
 					"kitchen",
-					"rolling-pin"
+					"rolling pin"
 				]
 			},
 			"dragon-orb": {
@@ -6938,7 +6938,7 @@
 				"tags": [
 					"swimming",
 					"animal",
-					"webbed-feet"
+					"webbed feet"
 				]
 			},
 			"duck": {
@@ -7153,7 +7153,7 @@
 				"category": "Mythology",
 				"tags": [
 					"pharaoh",
-					"side-view",
+					"side view",
 					"king"
 				]
 			},
@@ -7692,7 +7692,7 @@
 				"category": "Food",
 				"tags": [
 					"ramen",
-					"instant-noodles",
+					"instant noodles",
 					"bowl"
 				]
 			},
@@ -7855,7 +7855,7 @@
 				"tags": [
 					"safety",
 					"emergency",
-					"fire-safety"
+					"fire safety"
 				]
 			},
 			"fire-flower": {
@@ -8330,7 +8330,7 @@
 				"license": "cc-by-30",
 				"category": "Vehicle",
 				"tags": [
-					"street-food",
+					"street food",
 					"van",
 					"catering"
 				]
@@ -8439,7 +8439,7 @@
 				"category": "Symbol",
 				"tags": [
 					"symbol",
-					"secret-society",
+					"secret society",
 					"compass"
 				]
 			},
@@ -8458,7 +8458,7 @@
 				"tags": [
 					"breakfast",
 					"food",
-					"sunny-side"
+					"sunny side"
 				]
 			},
 			"frisbee": {
@@ -8673,7 +8673,7 @@
 				"category": "Game",
 				"tags": [
 					"controller",
-					"video-games",
+					"video games",
 					"device"
 				]
 			},
@@ -8755,7 +8755,7 @@
 				"tags": [
 					"glove",
 					"armor",
-					"hand-protection"
+					"hand protection"
 				]
 			},
 			"gear-stick-pattern": {
@@ -8861,7 +8861,7 @@
 				"license": "cc-by-30",
 				"category": "Clothing",
 				"tags": [
-					"hand-protection",
+					"hand protection",
 					"mittens",
 					"clothing"
 				]
@@ -9096,7 +9096,7 @@
 				"category": "Defense",
 				"tags": [
 					"armor",
-					"leg-protection",
+					"leg protection",
 					"plate"
 				]
 			},
@@ -9133,7 +9133,7 @@
 				"tags": [
 					"plants",
 					"garden",
-					"glass-house"
+					"glass house"
 				]
 			},
 			"griffin-shield": {
@@ -12451,7 +12451,7 @@
 				"category": "Tech",
 				"tags": [
 					"dock",
-					"boat tie-up",
+					"boat tie up",
 					"maritime fixture"
 				]
 			},
@@ -15075,7 +15075,7 @@
 				"tags": [
 					"craft",
 					"shape",
-					"jewelry-making"
+					"jewelry making"
 				]
 			},
 			"ring": {
@@ -17139,7 +17139,7 @@
 				"tags": [
 					"animal",
 					"rodent",
-					"tree-dweller"
+					"tree dweller"
 				]
 			},
 			"sri-lanka": {
@@ -18316,7 +18316,7 @@
 				"license": "cc-by-30",
 				"category": "Mythical",
 				"tags": [
-					"video-game",
+					"video game",
 					"character",
 					"enemy"
 				]
@@ -20135,7 +20135,7 @@
 				"tags": [
 					"footwear",
 					"shoes",
-					"wooden-shoes"
+					"wooden shoes"
 				]
 			},
 			"wooden-crate": {
@@ -20234,7 +20234,7 @@
 				"tags": [
 					"weapon",
 					"blaster",
-					"ray-gun"
+					"ray gun"
 				]
 			},
 			"zigzag-hieroglyph": {
@@ -21164,7 +21164,7 @@
 				"category": "Health",
 				"tags": [
 					"medical",
-					"first-aid",
+					"first aid",
 					"wrap"
 				]
 			},
@@ -21264,7 +21264,7 @@
 				"tags": [
 					"weapon",
 					"sharp",
-					"bat-themed"
+					"bat themed"
 				]
 			},
 			"bat-wing": {
@@ -22550,7 +22550,7 @@
 				"category": "Animal",
 				"tags": [
 					"insect",
-					"creepy-crawly",
+					"creepy crawly",
 					"multi-legged"
 				]
 			},
@@ -23908,7 +23908,7 @@
 				"license": "cc-by-30",
 				"category": "Tech",
 				"tags": [
-					"double-helix",
+					"double helix",
 					"genetics",
 					"science"
 				]
@@ -27698,7 +27698,7 @@
 				"category": "Animal",
 				"tags": [
 					"arachnid",
-					"creepy-crawler",
+					"creepy crawler",
 					"insect"
 				]
 			},
@@ -28320,7 +28320,7 @@
 				"tags": [
 					"stealth",
 					"disguise",
-					"martial-arts"
+					"martial arts"
 				]
 			},
 			"noodle-ball": {
@@ -34133,7 +34133,7 @@
 				"category": "Weapon",
 				"tags": [
 					"sniper",
-					"critical-hit",
+					"critical hit",
 					"target"
 				]
 			},
@@ -34303,7 +34303,7 @@
 				"license": "cc-by-30",
 				"category": "Weapon",
 				"tags": [
-					"heavy-weapon",
+					"heavy weapon",
 					"firepower",
 					"artillery"
 				]
@@ -34313,7 +34313,7 @@
 				"category": "Weapon",
 				"tags": [
 					"railgun",
-					"projectile-launcher",
+					"projectile launcher",
 					"kinetic"
 				]
 			},
@@ -34321,7 +34321,7 @@
 				"license": "cc-by-30",
 				"category": "Health",
 				"tags": [
-					"first-aid",
+					"first aid",
 					"supplies",
 					"kit"
 				]
@@ -34359,7 +34359,7 @@
 				"tags": [
 					"excessive",
 					"extreme",
-					"too-much"
+					"too much"
 				]
 			},
 			"overmind": {
@@ -34757,7 +34757,7 @@
 				"category": "Weapon",
 				"tags": [
 					"firearm",
-					"assault-rifle",
+					"assault rifle",
 					"weapon"
 				]
 			},
@@ -34767,7 +34767,7 @@
 				"tags": [
 					"compact",
 					"firearm",
-					"submachine-gun"
+					"submachine gun"
 				]
 			},
 			"allied-star": {
@@ -34848,7 +34848,7 @@
 				"tags": [
 					"animal",
 					"mammal",
-					"flying-fox"
+					"flying fox"
 				]
 			},
 			"baton": {
@@ -35126,7 +35126,7 @@
 				"category": "Weapon",
 				"tags": [
 					"firearm",
-					"submachine-gun",
+					"submachine gun",
 					"weapon"
 				]
 			},
@@ -35189,7 +35189,7 @@
 				"category": "Animal",
 				"tags": [
 					"animal",
-					"pack-animal",
+					"pack animal",
 					"beast"
 				]
 			},
@@ -35234,7 +35234,7 @@
 				"category": "Weapon",
 				"tags": [
 					"firearm",
-					"assault-rifle",
+					"assault rifle",
 					"weapon"
 				]
 			},
