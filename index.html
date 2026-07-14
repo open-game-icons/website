@@ -35,10 +35,6 @@ layout: default
 			{% assign path = entry[0] | append: "/" | append: icon_id %}
 			<div class="icon-list-item" id="icon--{{ entry[0] }}--{{ icon_id }}">
 				<div class="icon-name"><a href="/1x1/{{ entry[0] }}/{{ icon_id }}/">{{ icon_id | replace: "-", " " }}</a></div>
-				{% assign tags = site.data.icons.icon_to_tags[path] %}
-				{% if tags %}
-				<div class="icon-tags">{% include tag_links.html tags=tags %}</div>
-				{% endif %}
 			</div>
 			{% endfor %}
 			{% endif %}
