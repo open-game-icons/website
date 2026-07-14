@@ -4,8 +4,8 @@
 }
 
 body {
-	color: #fff;
-	background-color: #181818;
+	color: #000;
+	background-color: #e8e8e8;
 	font-family: sans-serif;
 	display: flex;
 	flex-direction: column;
@@ -17,17 +17,17 @@ body {
 header,
 nav,
 footer {
-	background-color: #181818;
+	background-color: #e8e8e8;
 	padding: 0.5rem 1rem;
 }
 
 footer {
 	text-align: center;
-	border-top: 2px solid #333;
+	border-top: 2px solid #ccc;
 }
 
 header {
-	border-bottom: 2px solid #333;
+	border-bottom: 2px solid #ccc;
 }
 
 nav {
@@ -35,7 +35,7 @@ nav {
 	flex-flow: wrap row;
 	align-items: center;
 	justify-content: space-between;
-	border-bottom: 2px solid #333;
+	border-bottom: 2px solid #ccc;
 	gap: 1rem;
 }
 
@@ -47,7 +47,7 @@ nav > div {
 }
 
 main {
-	background-color: #000;
+	background-color: #fff;
 	padding-bottom: 2rem;
 }
 
@@ -73,11 +73,11 @@ main > div {
 
 .date,
 .tags {
-	color: #888;
+	color: #666;
 }
 
 .hint {
-	border-bottom: 1px dashed #888;
+	border-bottom: 1px dashed #666;
 	text-decoration: none;
 }
 
@@ -90,7 +90,7 @@ main > div {
 }
 
 hr {
-	color: #888;
+	color: #000;
 }
 
 a {
@@ -106,7 +106,7 @@ a:hover,
 }
 
 a.button {
-	color: #000;
+	color: #fff;
 	background-color: #38f;
 	padding: 0.2rem 0.4rem;
 	border: none;
@@ -117,7 +117,7 @@ a.button {
 
 a.button:hover {
 	background-color: #5af;
-	color: #000;
+	color: #fff;
 }
 
 img.site-icon {
@@ -132,7 +132,7 @@ nav h2 {
 }
 
 a.no-color {
-	color: #fff;
+	color: #000;
 	text-decoration: none;
 }
 
@@ -198,7 +198,7 @@ li > ol {
 }
 
 blockquote {
-	background-color: #181818;
+	background-color: #e8e8e8;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 	padding: 0.5rem;
@@ -210,7 +210,7 @@ blockquote > p:last-of-type {
 }
 
 blockquote.notice {
-	background-color: #430;
+	background-color: #fe8;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 	padding: 0.5rem;
@@ -246,8 +246,8 @@ code {
 }
 
 pre {
-	background-color: #181818;
-	border: 2px solid #333;
+	background-color: #e8e8e8;
+	border: 2px solid #ccc;
 }
 
 blockquote {
@@ -267,7 +267,7 @@ a.button {
 }
 
 footer {
-	color: #888;
+	color: #666;
 }
 
 .icon-section {
@@ -277,7 +277,7 @@ footer {
 .icon-section h2 {
 	margin-bottom: 1rem;
 	padding-bottom: 0.25rem;
-	border-bottom: 1px solid #333;
+	border-bottom: 1px solid #ccc;
 	text-transform: capitalize;
 }
 
@@ -298,14 +298,14 @@ footer {
 	display: block;
 	padding: 1rem 0.5rem;
 	border-radius: 0.25rem;
-	background-color: #181818;
+	background-color: #e8e8e8;
 	text-align: center;
 	text-decoration: none;
-	color: #ccc;
+	color: #222;
 }
 
 .category-grid a:hover {
-	background-color: #333;
+	background-color: #d0d0d0;
 }
 
 .icon-list-grid {
@@ -315,7 +315,7 @@ footer {
 }
 
 .icon-list-item .icon-name {
-	color: #ccc;
+	color: #222;
 }
 
 .icon-list-item .icon-name a {
@@ -325,7 +325,7 @@ footer {
 
 .icon-list-item .icon-tags,
 .icon-list-item .icon-tags a {
-	color: #888;
+	color: #666;
 	font-size: 0.875rem;
 }
 
@@ -337,7 +337,7 @@ footer {
 	margin: 0;
 	padding: 0.5rem;
 	border-radius: 0.25rem;
-	background-color: #181818;
+	background-color: #e8e8e8;
 	overflow: hidden;
 }
 
@@ -351,76 +351,76 @@ footer {
 	text-align: center;
 	word-break: break-all;
 	line-height: 1.2;
-	color: #ccc;
+	color: #222;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
 	body {
-		color: #000;
-		background-color: #e8e8e8;
+		color: #fff;
+		background-color: #181818;
 	}
 
 	main {
-		background-color: #fff;
+		background-color: #000;
 	}
 
 	.date,
 	.tags {
-		color: #666;
+		color: #888;
 	}
 
 	.hint {
-		border-bottom-color: #666;
+		border-bottom-color: #888;
 	}
 
 	hr {
-		color: #000;
+		color: #888;
 	}
 
 	a.no-color {
-		color: #000;
+		color: #fff;
 	}
 
 	a.button,
 	a.button:hover {
-		color: #fff;
+		color: #000;
 	}
 
 	blockquote {
-		background-color: #e8e8e8;
+		background-color: #181818;
 	}
 
 	blockquote.notice {
-		background-color: #fe8;
+		background-color: #430;
 	}
 
 	header,
 	nav,
 	footer,
 	pre {
-		background-color: #e8e8e8;
-		border-color: #ccc;
+		background-color: #181818;
+		border-color: #333;
 	}
 
 	.icon-cell {
-		background-color: #e8e8e8;
+		background-color: #181818;
 	}
 
 	.icon-cell figcaption {
-		color: #222;
+		color: #ccc;
 	}
 
 	.category-grid a {
-		background-color: #e8e8e8;
-		color: #222;
+		background-color: #181818;
+		color: #ccc;
 	}
 
 	.category-grid a:hover {
-		background-color: #d0d0d0;
+		background-color: #333;
 	}
 
 	.icon-list-item .icon-name {
-		color: #222;
+		color: #ccc;
 	}
 
 	.icon-list-item .icon-name a {
@@ -429,6 +429,6 @@ footer {
 
 	.icon-list-item .icon-tags,
 	.icon-list-item .icon-tags a {
-		color: #666;
+		color: #888;
 	}
 }
