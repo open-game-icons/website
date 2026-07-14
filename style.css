@@ -98,9 +98,7 @@ a {
 	text-decoration: underline;
 }
 
-a:hover,
-.icon-list-item .icon-name a:hover,
-.icon-list-item .icon-tags a:hover {
+a:hover {
 	text-decoration: none;
 	color: #5af;
 }
@@ -308,27 +306,6 @@ footer {
 	background-color: #d0d0d0;
 }
 
-.icon-list-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-	gap: 0.5rem;
-}
-
-.icon-list-item .icon-name {
-	color: #222;
-}
-
-.icon-list-item .icon-name a {
-	color: inherit;
-	text-decoration: none;
-}
-
-.icon-list-item .icon-tags,
-.icon-list-item .icon-tags a {
-	color: #666;
-	font-size: 0.875rem;
-}
-
 .icon-cell {
 	display: flex;
 	flex-direction: column;
@@ -428,19 +405,6 @@ footer {
 	.icon-search:focus {
 		border-color: #5af;
 	}
-
-	.icon-list-item .icon-name {
-		color: #ccc;
-	}
-
-	.icon-list-item .icon-name a {
-		color: inherit;
-	}
-
-	.icon-list-item .icon-tags,
-	.icon-list-item .icon-tags a {
-		color: #888;
-	}
 }
 
 .icon-search {
@@ -459,6 +423,10 @@ footer {
 	border-color: #38f;
 }
 
-.icon-list-item--hidden {
+.icon-grid__item {
 	display: none;
+}
+
+.icon-grid__item--visible {
+	display: block;
 }

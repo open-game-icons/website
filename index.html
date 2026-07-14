@@ -25,21 +25,7 @@ layout: default
 
 		<h1>All Icons</h1>
 		<input type="search" id="icon-search" class="icon-search" placeholder="Filter icons by name, category, or tag..." aria-label="Search icons" />
-		<div class="icon-list-grid">
-			{% for entry in site.data.icons %}
-			{% assign author_data = entry[1] %}
-			{% if author_data.icons %}
-			{% for icon_entry in author_data.icons %}
-			{% assign icon_id = icon_entry[0] %}
-			{% assign icon_info = icon_entry[1] %}
-			{% assign path = entry[0] | append: "/" | append: icon_id %}
-			<div class="icon-list-item" id="icon--{{ entry[0] }}--{{ icon_id }}">
-				<div class="icon-name"><a href="/1x1/{{ entry[0] }}/{{ icon_id }}/">{{ icon_id | replace: "-", " " }}</a></div>
-			</div>
-			{% endfor %}
-			{% endif %}
-			{% endfor %}
-		</div>
+		{% include icon_grid.html icons=site.data.icons.search_index %}
 	</div>
 </main>
 
