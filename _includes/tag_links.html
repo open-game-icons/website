@@ -1,8 +1,8 @@
 {%- for tag in include.tags -%}
 	{%- assign slug = tag | slugify -%}
 	{%- if site.data.icons.tag_slugs[slug] -%}
-		<a href="/tags/{{ slug }}/">{{ tag }}</a>
+		<a class="tag tag-link" href="/tags/{{ slug }}/">{{ tag }}</a>
 	{%- else -%}
-		{{ tag }}
-	{%- endif -%}{%- unless forloop.last -%}, {% endunless -%}
+		<span class="tag tag-plain">{{ tag }}</span>
+	{%- endif -%}
 {%- endfor -%}
