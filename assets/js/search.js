@@ -2,6 +2,19 @@
 	var input = document.getElementById("icon-search");
 	if (!input) return;
 
+	var lookup = null;
+	fetch("/search-index.json")
+		.then(function (r) {
+			return r.json();
+		})
+		.then(function (data) {
+			lookup = {};
+			data.forEach(function (icon) {
+				lookup["icon--" + icon.a + "--" + icon.i] = icon.k;
+			});
+		})
+		.catch(function () {});
+
 	var prevQuery = "";
 
 	input.addEventListener("input", function () {
@@ -9,14 +22,21 @@
 		if (raw === prevQuery) return;
 		prevQuery = raw;
 
+		if (!lookup) return;
+
 		var words = raw ? raw.split(/\s+/) : [];
+		var links = document.querySelectorAll(".icon-grid > a");
 
-		SEARCH_INDEX.forEach(function (icon) {
-			var el = document.getElementById("icon--" + icon.a + "--" + icon.i);
-			if (!el) return;
-
-			var show = !raw || words.every(function (w) { return icon.k.indexOf(w) !== -1; });
+		for (var i = 0; i < links.length; i++) {
+			var el = links[i];
+			var k = lookup[el.id];
+			if (!k) continue;
+			var show =
+				!raw ||
+				words.every(function (w) {
+					return k.indexOf(w) !== -1;
+				});
 			el.hidden = !show;
-		});
+		}
 	});
 })();

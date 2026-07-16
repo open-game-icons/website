@@ -17,12 +17,7 @@ layout: default
 <main>
 	<div>
 		<h1>All Icons</h1>
-		<input type="search" id="icon-search" class="icon-search" placeholder="Filter icons by name or tag..." aria-label="Search icons" />
+		{% include search.html %}
 		{% include icon_grid.html icons=site.data.icons.search_index %}
 	</div>
 </main>
-
-<script>
-	const SEARCH_INDEX = {{ site.data.icons.search_index | jsonify }};
-</script>
-<script src="/assets/js/search.js"></script>
