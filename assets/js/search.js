@@ -16,7 +16,7 @@
 			if (!el) return;
 
 			var show = !raw || words.every(function (w) { return icon.k.indexOf(w) !== -1; });
-			el.classList.toggle("icon-grid__item--hidden", !show);
+			el.hidden = !show;
 		});
 	});
 })();
