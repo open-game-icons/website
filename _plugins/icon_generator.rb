@@ -20,13 +20,18 @@ module IconGenerator
       # Uses short keys to keep the inlined JSON compact.
       search_index = []
 
+      # Flat list of all icons for the homepage grid.
+      all_icons = []
+
       raw_data.each do |author_id, author_data|
         icons = author_data['icons']
         next unless icons
 
         icons.each do |icon_id, icon_info|
           path = "#{author_id}/#{icon_id}"
-          entry = { 'author' => author_id, 'name' => icon_id }
+          entry = { 'author' => author_id, 'name' => icon_id, 'display_name' => icon_info['name'] || icon_id }
+
+          all_icons << entry
 
           if icon_info['tags'] && icon_info['tags'].any?
             icon_to_tags[path] = icon_info['tags']
@@ -36,8 +41,10 @@ module IconGenerator
           end
 
           # Build search index entry: i=id, a=author, k=unique keywords from
-          # all fields (icon id, tags) split on hyphens
+          # all fields (icon id, tags) split on hyphens and spaces
+          icon_name = icon_info['name'] || icon_id
           words = icon_id.split('-')
+          words.concat(icon_name.downcase.split)
           if icon_info['tags']
             icon_info['tags'].each do |tag|
               words.concat(Jekyll::Utils.slugify(tag).split('-'))
@@ -54,17 +61,18 @@ module IconGenerator
         icons = author_data['icons']
         next unless icons
 
-        icons.each_key do |icon_id|
+        icons.each do |icon_id, icon_info|
           dir = File.join('1x1', author_id, icon_id)
           page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
           page.data['layout'] = 'icon'
           page.data['author'] = author_id
           page.data['icon_name'] = icon_id
+          page.data['display_name'] = icon_info['name'] || icon_id
           site.pages << page
         end
       end
 
-      tag_to_icons.each_value { |icons| icons.sort_by! { |i| i['name'] } }
+      tag_to_icons.each_value { |icons| icons.sort_by! { |i| i['display_name'] } }
 
       # Build slug-keyed version to handle tags that slugify to the same
       # value (e.g. "musical instrument" and "musical-instrument"). Merge
@@ -79,12 +87,16 @@ module IconGenerator
           tag_slugs[slug] = { 'name' => tag_name, 'icons' => icons.dup }
         end
       end
-      tag_slugs.each_value { |v| v['icons'].sort_by! { |i| i['name'] } }
+      tag_slugs.each_value { |v| v['icons'].sort_by! { |i| i['display_name'] } }
 
       # Don't generate pages for tags that only have 1 icon
       tag_slugs.keep_if { |_slug, entry| entry['icons'].length > 1 }
 
+      # Sort all icons by display name for the homepage grid
+      all_icons.sort_by! { |i| i['display_name'] }
+
       # Expose data for pages to use (via site.data)
+      raw_data['all_icons'] = all_icons
       raw_data['tag_to_icons'] = tag_to_icons
       raw_data['icon_to_tags'] = icon_to_tags
       raw_data['tag_slugs'] = tag_slugs
