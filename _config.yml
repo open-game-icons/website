@@ -3,3 +3,9 @@ timezone: America/Chicago
 url: https://game-icons.frie.dev
 
 markdown: kramdown
+
+exclude:
+  - AGENTS.md
+  - README.md
+  - .zed
+  - .gitignore
