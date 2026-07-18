@@ -138,6 +138,10 @@ a.no-color:hover {
 	text-decoration: underline;
 }
 
+.icon-grid a {
+	text-decoration: none;
+}
+
 header {
 	display: flex;
 	flex-flow: wrap row;
@@ -334,6 +338,10 @@ footer {
 	overflow: hidden;
 }
 
+.icon-cell:hover {
+	background-color: #ccc;
+}
+
 .icon-cell img {
 	width: 8rem;
 	height: 8rem;
@@ -397,6 +405,10 @@ footer {
 
 	.icon-cell {
 		background-color: #181818;
+	}
+
+	.icon-cell:hover {
+		background-color: #444;
 	}
 
 	.icon-cell figcaption {
