@@ -1,0 +1,14 @@
+// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
+[
+	{
+		"label": "jekyll serve",
+		"command": "bundle exec jekyll serve",
+		"save": "all",
+	},
+	{
+		"label": "jekyll serve (production)",
+		"command": "bundle exec jekyll serve",
+		"env": { "JEKYLL_ENV": "production" },
+		"save": "all",
+	},
+]
