@@ -8,10 +8,7 @@
 			return r.json();
 		})
 		.then(function (data) {
-			lookup = {};
-			data.forEach(function (icon) {
-				lookup["icon--" + icon.a + "--" + icon.i] = icon.k;
-			});
+			lookup = data;
 		})
 		.catch(function () {});
 

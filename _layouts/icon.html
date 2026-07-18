@@ -4,21 +4,17 @@ layout: page
 <div class="icon-page">
 <h1>{{ page.display_name }}</h1>
 
-{% assign author = site.data.authors[page.author] %}
-{% assign key = page.author | append: '/' | append: page.icon_name %}
-{% assign lic_id = site.data.icons[key].license %}
-{% assign lic = site.data.licenses[lic_id] %}
-<p>by{% if author.link %} <a href="{{ author.link }}">{{ author.name }}</a>{% else %} {{ author.name }}{% endif %} under <a href="{{ lic.link }}">{{ lic.name }}</a></p>
+<p>by{% if page.author_link %} <a href="{{ page.author_link }}">{{ page.author_name }}</a>{% else %} {{ page.author_name }}{% endif %} under <a href="{{ page.license_link }}">{{ page.license_name }}</a></p>
 
-{% assign tags = site.data.icons[key].tags %}
-{% if tags %}
+{% assign tags = page.tags | split: ',' %}
+{% if tags.first and tags.first != "" %}
 	<div class="tags">{% include tag_links.html tags=tags %}</div>
 {% endif %}
 
-<img src="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" alt="{{ page.display_name }}">
+<img src="/assets/icons/{{ page.author }}/{{ page.icon_id }}.svg" alt="{{ page.display_name }}">
 
 <div>
-	<a class="button" href="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" download="{{ page.icon_name }}.svg">Download</a>
+	<a class="button" href="/assets/icons/{{ page.author }}/{{ page.icon_id }}.svg" download="{{ page.icon_id }}.svg">Download</a>
 </div>
 
 </div>

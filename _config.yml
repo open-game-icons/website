@@ -4,6 +4,67 @@ url: https://game-icons.frie.dev
 
 markdown: kramdown
 
+plugins:
+  - jekyll_sqlite
+
+collections:
+  icon_pages:
+    output: true
+  tag_pages:
+    output: true
+
+sqlite:
+  - collection: icon_pages
+    file: _db/icons.db
+    query: |
+      SELECT
+        i.author AS path,
+        i.id     AS name,
+        '/1x1/' || i.author || '/' || i.id || '/' AS permalink,
+        i.author,
+        i.id     AS icon_id,
+        i.name   AS title,
+        i.name   AS display_name,
+        a.name  AS author_name,
+        a.link  AS author_link,
+        l.name  AS license_name,
+        l.link  AS license_link,
+        group_concat(DISTINCT it.tag) AS tags,
+        'icon' AS layout
+      FROM icons i
+      JOIN authors  a ON i.author  = a.id
+      JOIN licenses l ON i.license = l.id
+      LEFT JOIN icon_tags it ON i.author = it.author AND i.id = it.id
+      GROUP BY i.author, i.id
+      ORDER BY i.name, i.id
+
+  - collection: tag_pages
+    file: _db/icons.db
+    query: |
+      SELECT
+        t.id   AS name,
+        '/tags/' || t.id || '/' AS permalink,
+        t.id   AS slug,
+        t.name AS title,
+        t.name AS list_name,
+        'tag_page' AS layout
+      FROM tags t
+      JOIN icon_tags it ON t.id = it.tag
+      GROUP BY t.id
+      HAVING count(*) > 1
+
+  - data: tag_icon_counts
+    file: _db/icons.db
+    query: SELECT id, name, count FROM tag_icon_counts
+
+  - data: all_tag_icons
+    file: _db/icons.db
+    query: |
+      SELECT it.tag, i.author, i.id, i.id AS icon_id, i.name, i.name AS title
+      FROM icon_tags it
+      JOIN icons i ON it.author = i.author AND it.id = i.id
+      ORDER BY i.name, i.id
+
 exclude:
   - AGENTS.md
   - README.md

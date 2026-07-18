@@ -7,6 +7,7 @@ Jekyll static site for browsing icons.
 ```sh
 git submodule update --init --recursive
 bundle install
+sqlite3 _db/icons.db < _db/icons.sql # rerun if icons.sql changes
 ```
 
 ## Build
@@ -18,13 +19,16 @@ bundle exec jekyll build
 ## Architecture
 
 - `assets/icons/`: submodule containing icon SVGs
-- `_data/`: metadata
-	- `icons.json`
-	- `tags.json`
-- `_plugins/icon_generator.rb`: core site generator logic
-	- Generates icon and tag pages at build time, each as a `Jekyll::PageWithoutAFile`
-	- Populates data `search-index.json`
-- `assets/js/search.js`: client-side search
+- `_db/icons.db`: SQLite DB of icon metadata, built from `_db/icons.sql`
+	- Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
+	- View: `tag_icon_counts`
+- `_config.yml`: declares `icon_pages` and `tag_pages` collections, wired to DB queries via `jekyll-sqlite`
+	- Per-icon pages at `/1x1/{author}/{icon_id}/`
+	- Tag pages at `/tags/{tag_id}/`
+	- Data arrays `tag_icon_counts` and `all_tag_icons` for Liquid `where` filter lookups
+- `_plugins/search_index_generator.rb`: builds `site.data.search_index` from the database for client-side search
+- `assets/js/search.js`: client-side search (filters icon grid by keyword match)
+- `search-index.json`: outputs `site.data.search_index` as JSON for the client
 
 ## Conventions
 

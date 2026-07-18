@@ -11,4 +11,8 @@
 		"env": { "JEKYLL_ENV": "production" },
 		"save": "all",
 	},
+	{
+		"label": "rebuild db",
+		"command": "rm -f _db/icons.db && sqlite3 _db/icons.db < _db/icons.sql",
+	},
 ]

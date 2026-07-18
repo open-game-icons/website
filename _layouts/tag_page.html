@@ -3,4 +3,5 @@ layout: page
 ---
 <h1>Icons tagged "{{ page.list_name }}"</h1>
 {% include search.html %}
-{% include icon_grid.html icons=page.icons %}
+{% assign tag_icons = site.data.all_tag_icons | where: "tag", page.slug %}
+{% include icon_grid.html icons=tag_icons %}
