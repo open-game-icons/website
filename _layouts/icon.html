@@ -10,10 +10,15 @@ layout: page
 {% assign lic = site.data.licenses[lic_id] %}
 <p>by{% if author.link %} <a href="{{ author.link }}">{{ author.name }}</a>{% else %} {{ author.name }}{% endif %} under <a href="{{ lic.link }}">{{ lic.name }}</a></p>
 
-<img src="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" alt="{{ page.display_name }}">
-
 {% assign tags = site.data.icons.icon_to_tags[key] %}
 {% if tags %}
-  <div class="tags">{% include tag_links.html tags=tags %}</div>
+	<div class="tags">{% include tag_links.html tags=tags %}</div>
 {% endif %}
+
+<img src="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" alt="{{ page.display_name }}">
+
+<div>
+	<a class="button" href="/assets/icons/{{ page.author }}/{{ page.icon_name }}.svg" download="{{ page.icon_name }}.svg">Download</a>
+</div>
+
 </div>
