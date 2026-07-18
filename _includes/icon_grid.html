@@ -1,12 +1,10 @@
 <div class="icon-grid">
-  {% for icon in include.icons %}
-    {% assign icon_author = icon.author %}
-    {% assign icon_name = icon.name %}
-    {% assign icon_display_name = icon.display_name | default: icon_name %}
-    <a href="/1x1/{{ icon_author }}/{{ icon_name }}/" id="icon--{{ icon_author }}--{{ icon_name }}">
+  {% for key in include.icons %}
+    {% assign icon = site.data.icons[key] %}
+    <a href="/1x1/{{ icon.author }}/{{ icon.id }}/" id="icon--{{ icon.author }}--{{ icon.id }}">
       <figure class="icon-cell">
-        <img src="/assets/icons/{{ icon_author }}/{{ icon_name }}.svg" loading="lazy" />
-        <figcaption>{{ icon_display_name }}</figcaption>
+        <img src="/assets/icons/{{ icon.author }}/{{ icon.id }}.svg" loading="lazy" />
+        <figcaption>{{ icon.name | default: icon.id }}</figcaption>
       </figure>
     </a>
   {% endfor %}

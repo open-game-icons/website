@@ -4,13 +4,13 @@ layout: page
 <div class="icon-page">
 <h1>{{ page.display_name }}</h1>
 
-{% assign author = site.data.icons[page.author] %}
+{% assign author = site.data.authors[page.author] %}
 {% assign key = page.author | append: '/' | append: page.icon_name %}
-{% assign lic_id = site.data.icons[page.author].icons[page.icon_name].license %}
+{% assign lic_id = site.data.icons[key].license %}
 {% assign lic = site.data.licenses[lic_id] %}
 <p>by{% if author.link %} <a href="{{ author.link }}">{{ author.name }}</a>{% else %} {{ author.name }}{% endif %} under <a href="{{ lic.link }}">{{ lic.name }}</a></p>
 
-{% assign tags = site.data.icons.icon_to_tags[key] %}
+{% assign tags = site.data.icons[key].tags %}
 {% if tags %}
 	<div class="tags">{% include tag_links.html tags=tags %}</div>
 {% endif %}

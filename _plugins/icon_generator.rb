@@ -5,97 +5,58 @@ module IconGenerator
   #   2. Create pages at /tags/<slug>/ and /1x1/{author}/{icon_name}/
   class Generator < Jekyll::Generator
     def generate(site)
-      raw_data = site.data['icons']
-      if raw_data.nil? || raw_data.empty?
-        Jekyll.logger.warn 'IconGenerator:', 'No icon data found in _data/icons.json'
-        return
-      end
-
-      # Build tag_key -> whole-object lookup from _data/tags.json for
-      # future use by templates and the generator.
-      tag_data = site.data['tags'] || {}
-
-      # Build indices:
-      #   - tag_name -> [{author, name}, ...]
-      tag_to_icons = {}
-      icon_to_tags = {}
-
-      # Flat search index for client-side filtering on the homepage.
-      # Uses short keys to keep the inlined JSON compact.
+      icon_data = site.data['icons']
+      tag_data = site.data['tags']
       search_index = []
 
-      # Flat list of all icons for the homepage grid.
-      all_icons = []
+      icon_data.each do |path, icon_info|
+        author_id = icon_info['author']
+        icon_id = icon_info['id']
 
-      raw_data.each do |author_id, author_data|
-        icons = author_data['icons']
-        next unless icons
-
-        icons.each do |icon_id, icon_info|
-          path = "#{author_id}/#{icon_id}"
-          entry = { 'author' => author_id, 'name' => icon_id, 'display_name' => icon_info['name'] || icon_id }
-
-          all_icons << entry
-
-          if icon_info['tags'] && icon_info['tags'].any?
-            icon_to_tags[path] = icon_info['tags']
-            icon_info['tags'].each do |tag|
-              (tag_to_icons[tag] ||= []) << entry
-            end
+        if icon_info['tags'] && icon_info['tags'].any?
+          icon_info['tags'].each do |tag|
+            (tag_data[tag]['icons'] ||= []) << path if tag_data[tag]
           end
-
-          # Build search index entry: i=id, a=author, k=unique keywords from
-          # all fields (icon id, tags, keywords) split on hyphens and spaces
-          icon_name = icon_info['name'] || icon_id
-          words = icon_id.split('-')
-          words.concat(icon_name.downcase.split)
-          if icon_info['tags']
-            icon_info['tags'].each do |tag|
-              words.concat(Jekyll::Utils.slugify(tag).split('-'))
-            end
-          end
-          if icon_info['keywords']
-            icon_info['keywords'].each do |kw|
-              words.concat(kw.downcase.split)
-            end
-          end
-          search_entry = { 'i' => icon_id, 'a' => author_id, 'k' => words.uniq.sort }
-          search_index << search_entry
         end
+
+        # Build search index entry: i=id, a=author, k=unique keywords from
+        # all fields (icon id, tags, keywords) split on hyphens and spaces
+        icon_name = icon_info['name'] || icon_id
+        words = icon_id.split('-')
+        words.concat(icon_name.downcase.split)
+        if icon_info['tags']
+          icon_info['tags'].each do |tag|
+            words.concat(Jekyll::Utils.slugify(tag).split('-'))
+          end
+        end
+        if icon_info['keywords']
+          icon_info['keywords'].each do |kw|
+            words.concat(kw.downcase.split)
+          end
+        end
+        search_index << { 'i' => icon_id, 'a' => author_id, 'k' => words.uniq.sort }
+
+        # Generate a page per unique icon at /1x1/{author}/{icon_name}/
+        dir = File.join('1x1', author_id, icon_id)
+        page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
+        page.data['layout'] = 'icon'
+        page.data['author'] = author_id
+        page.data['icon_name'] = icon_id
+        page.data['display_name'] = icon_info['name'] || icon_id
+        site.pages << page
       end
 
-      # Generate a page per unique icon at /1x1/{author}/{icon_name}/
-      raw_data.each do |author_id, author_data|
-        next unless author_data.is_a?(Hash)
-        icons = author_data['icons']
-        next unless icons
-
-        icons.each do |icon_id, icon_info|
-          dir = File.join('1x1', author_id, icon_id)
-          page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
-          page.data['layout'] = 'icon'
-          page.data['author'] = author_id
-          page.data['icon_name'] = icon_id
-          page.data['display_name'] = icon_info['name'] || icon_id
-          site.pages << page
-        end
-      end
-
-      tag_to_icons.each_value { |icons| icons.sort_by! { |i| i['display_name'] } }
-
-      # Sort all icons by display name for the homepage grid
-      all_icons.sort_by! { |i| i['display_name'] }
+      # Sort tag icon lists by display name.
+      tag_data.each_value { |t| t['icons']&.sort_by! { |key| icon_data.dig(key, 'name') || icon_data.dig(key, 'id') || key } }
 
       # Expose data for pages to use (via site.data)
-      raw_data['all_icons'] = all_icons
-      raw_data['tag_to_icons'] = tag_to_icons
-      raw_data['icon_to_tags'] = icon_to_tags
-      raw_data['tag_data'] = tag_data
-      raw_data['search_index'] = search_index
+      site.data['search_index'] = search_index
+      site.data['icon_keys'] = icon_data.keys.sort_by { |key| icon_data.dig(key, 'name') || icon_data.dig(key, 'id') || key }
 
       # Generate tag pages (only for tags with more than 1 icon)
-      tag_to_icons.each do |slug, icons|
-        next unless icons.length > 1
+      tag_data.each do |slug, tag_info|
+        icons = tag_info['icons']
+        next unless icons && icons.length > 1
         dir = File.join('tags', slug)
         page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
         page.data['layout'] = 'tag_page'

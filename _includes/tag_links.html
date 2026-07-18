@@ -1,7 +1,7 @@
 {%- for tag in include.tags -%}
-	{%- if site.data.icons.tag_to_icons[tag].size > 1 -%}
-		<a class="tag tag-link" href="/tags/{{ tag }}/">{{ site.data.icons.tag_data[tag].name | default: tag }}</a>
+	{%- if site.data.tags[tag].icons.size > 1 -%}
+		<a class="tag tag-link" href="/tags/{{ tag }}/">{{ site.data.tags[tag].name | default: tag }}</a>
 	{%- else -%}
-		<span class="tag tag-plain">{{ site.data.icons.tag_data[tag].name | default: tag }}</span>
+		<span class="tag tag-plain">{{ site.data.tags[tag].name | default: tag }}</span>
 	{%- endif -%}
 {%- endfor -%}
