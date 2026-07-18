@@ -271,13 +271,11 @@ code {
 	background-color: #ccc;
 	color: #000;
 	text-decoration: none;
-	border: 1px solid #ccc;
 }
 
 .tag-link:hover {
 	background-color: #38f;
 	color: #fff;
-	border-color: #38f;
 }
 
 .tags a {
