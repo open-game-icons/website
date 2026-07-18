@@ -17,8 +17,10 @@ bundle exec jekyll build
 
 ## Architecture
 
-- `assets/icons`: submodule containing icon SVGs
-- `_data/icons.json`: metadata
+- `assets/icons/`: submodule containing icon SVGs
+- `_data/`: metadata
+	- `icons.json`
+	- `tags.json`
 - `_plugins/icon_generator.rb`: core site generator logic
 	- Generates icon and tag pages at build time, each as a `Jekyll::PageWithoutAFile`
 	- Populates data `search-index.json`

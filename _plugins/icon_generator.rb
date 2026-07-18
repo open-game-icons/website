@@ -11,6 +11,10 @@ module IconGenerator
         return
       end
 
+      # Build tag_key -> whole-object lookup from _data/tags.json for
+      # future use by templates and the generator.
+      tag_data = site.data['tags'] || {}
+
       # Build indices:
       #   - tag_name -> [{author, name}, ...]
       tag_to_icons = {}
@@ -41,13 +45,18 @@ module IconGenerator
           end
 
           # Build search index entry: i=id, a=author, k=unique keywords from
-          # all fields (icon id, tags) split on hyphens and spaces
+          # all fields (icon id, tags, keywords) split on hyphens and spaces
           icon_name = icon_info['name'] || icon_id
           words = icon_id.split('-')
           words.concat(icon_name.downcase.split)
           if icon_info['tags']
             icon_info['tags'].each do |tag|
               words.concat(Jekyll::Utils.slugify(tag).split('-'))
+            end
+          end
+          if icon_info['keywords']
+            icon_info['keywords'].each do |kw|
+              words.concat(kw.downcase.split)
             end
           end
           search_entry = { 'i' => icon_id, 'a' => author_id, 'k' => words.uniq.sort }
@@ -74,24 +83,6 @@ module IconGenerator
 
       tag_to_icons.each_value { |icons| icons.sort_by! { |i| i['display_name'] } }
 
-      # Build slug-keyed version to handle tags that slugify to the same
-      # value (e.g. "musical instrument" and "musical-instrument"). Merge
-      # their icon lists and use the first-seen variant for display.
-      tag_slugs = {}
-      tag_to_icons.each do |tag_name, icons|
-        slug = Jekyll::Utils.slugify(tag_name)
-        if tag_slugs.key?(slug)
-          tag_slugs[slug]['icons'].concat(icons)
-          tag_slugs[slug]['icons'].uniq! { |i| [i['author'], i['name']] }
-        else
-          tag_slugs[slug] = { 'name' => tag_name, 'icons' => icons.dup }
-        end
-      end
-      tag_slugs.each_value { |v| v['icons'].sort_by! { |i| i['display_name'] } }
-
-      # Don't generate pages for tags that only have 1 icon
-      tag_slugs.keep_if { |_slug, entry| entry['icons'].length > 1 }
-
       # Sort all icons by display name for the homepage grid
       all_icons.sort_by! { |i| i['display_name'] }
 
@@ -99,17 +90,17 @@ module IconGenerator
       raw_data['all_icons'] = all_icons
       raw_data['tag_to_icons'] = tag_to_icons
       raw_data['icon_to_tags'] = icon_to_tags
-      raw_data['tag_slugs'] = tag_slugs
+      raw_data['tag_data'] = tag_data
       raw_data['search_index'] = search_index
 
-      # Generate tag pages
-      tag_slugs.each do |_slug, entry|
-        slug = Jekyll::Utils.slugify(entry['name'])
+      # Generate tag pages (only for tags with more than 1 icon)
+      tag_to_icons.each do |slug, icons|
+        next unless icons.length > 1
         dir = File.join('tags', slug)
         page = Jekyll::PageWithoutAFile.new(site, site.source, dir, 'index.html')
         page.data['layout'] = 'tag_page'
-        page.data['list_name'] = entry['name']
-        page.data['icons'] = entry['icons']
+        page.data['list_name'] = tag_data.dig(slug, 'name') || slug
+        page.data['icons'] = icons
         site.pages << page
       end
     end
