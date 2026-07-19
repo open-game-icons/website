@@ -71,8 +71,8 @@ main > div {
 	font-weight: bold;
 }
 
-.date,
 .tags {
+	margin-bottom: 1rem;
 	color: #666;
 }
 
@@ -246,12 +246,17 @@ code {
 	text-align: center;
 }
 
+.icon-page h1 {
+	margin-bottom: 0.5rem;
+}
+
 .icon-page img {
 	max-width: 24rem;
 	max-height: 24rem;
 	width: auto;
 	height: auto;
 	margin-bottom: 1rem;
+	border-radius: 0.5rem;
 }
 
 .tag {
@@ -325,6 +330,7 @@ footer {
 	border-radius: 0.25rem;
 	background-color: #e8e8e8;
 	overflow: hidden;
+	height: 90%;
 }
 
 .icon-cell:hover {
@@ -335,13 +341,29 @@ footer {
 	width: 8rem;
 	height: 8rem;
 	margin-bottom: 0.25rem;
+	border-radius: 0.25rem;
 }
 
 .icon-cell figcaption {
 	text-align: center;
-	word-break: break-all;
 	line-height: 1.2;
 	color: #222;
+}
+
+.icon-search {
+	display: block;
+	width: 100%;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	border: 2px solid #ccc;
+	border-radius: 0.25rem;
+	font-size: 1rem;
+	box-sizing: border-box;
+}
+
+.icon-search:focus {
+	outline: none;
+	border-color: #38f;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -354,7 +376,6 @@ footer {
 		background-color: #000;
 	}
 
-	.date,
 	.tags {
 		color: #888;
 	}
@@ -425,20 +446,4 @@ footer {
 	.icon-search:focus {
 		border-color: #5af;
 	}
-}
-
-.icon-search {
-	display: block;
-	width: 100%;
-	padding: 0.5rem;
-	margin-bottom: 1rem;
-	border: 2px solid #ccc;
-	border-radius: 0.25rem;
-	font-size: 1rem;
-	box-sizing: border-box;
-}
-
-.icon-search:focus {
-	outline: none;
-	border-color: #38f;
 }

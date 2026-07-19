@@ -1,7 +1,7 @@
 ---
 layout: page
 ---
-<h1>Icons tagged "{{ page.list_name }}"</h1>
+<h1 class="center">{{ page.list_name }} Icons</h1>
 {% include search.html %}
 {% assign tag_icons = site.data.tag_icons[page.slug] %}
 {% include icon_grid.html icons=tag_icons %}
