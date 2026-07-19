@@ -264,6 +264,10 @@ code {
 	text-decoration: none;
 }
 
+.tag[hidden] {
+	display: none;
+}
+
 .tag:hover {
 	background-color: #38f;
 	color: #fff;

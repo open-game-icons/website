@@ -35,5 +35,12 @@
 				});
 			el.hidden = !show;
 		}
+
+		var tags = document.querySelectorAll(".tags .tag");
+		for (var j = 0; j < tags.length; j++) {
+			var tag = tags[j];
+			var text = (tag.textContent || "").toLowerCase();
+			tag.hidden = raw && text.indexOf(raw) === -1;
+		}
 	});
 })();
