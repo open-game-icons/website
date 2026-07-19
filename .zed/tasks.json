@@ -12,7 +12,16 @@
 		"save": "all",
 	},
 	{
+		"label": "jekyll profile",
+		"command": "bundle exec jekyll build --profile",
+		"save": "all",
+	},
+	{
 		"label": "rebuild db",
 		"command": "rm -f _db/icons.db && sqlite3 _db/icons.db < _db/icons.sql",
+	},
+	{
+		"label": "clean",
+		"command": "rm -rf _site",
 	},
 ]
