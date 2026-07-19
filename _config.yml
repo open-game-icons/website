@@ -25,10 +25,10 @@ sqlite:
         i.id     AS icon_id,
         i.name   AS title,
         i.name   AS display_name,
-        a.name  AS author_name,
-        a.link  AS author_link,
-        l.name  AS license_name,
-        l.link  AS license_link,
+        a.name   AS author_name,
+        a.link   AS author_link,
+        l.name   AS license_name,
+        l.link   AS license_link,
         group_concat(DISTINCT it.tag) AS tags,
         'icon' AS layout
       FROM icons i
@@ -53,17 +53,28 @@ sqlite:
       GROUP BY t.id
       HAVING count(*) > 1
 
-  - data: tag_icon_counts
+  - data: tag_icon_counts_array
     file: _db/icons.db
     query: SELECT id, name, count FROM tag_icon_counts
 
-  - data: all_tag_icons
+  - data: tag_icons_array
     file: _db/icons.db
     query: |
       SELECT it.tag, i.author, i.id, i.id AS icon_id, i.name, i.name AS title
       FROM icon_tags it
       JOIN icons i ON it.author = i.author AND it.id = i.id
       ORDER BY i.name, i.id
+
+  - data: search_index_array
+    file: _db/icons.db
+    query: |
+      SELECT i.author, i.id, i.name,
+             group_concat(DISTINCT it.tag)     AS tag_list,
+             group_concat(DISTINCT ik.keyword) AS keyword_list
+      FROM icons i
+      LEFT JOIN icon_tags     it ON i.author = it.author AND i.id = it.id
+      LEFT JOIN icon_keywords ik ON i.author = ik.author AND i.id = ik.id
+      GROUP BY i.author, i.id
 
 exclude:
   - AGENTS.md

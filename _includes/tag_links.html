@@ -1,8 +1,4 @@
 {%- for tag in include.tags -%}
-	{%- assign t = site.data.tag_icon_counts | where: "id", tag | first -%}
-	{%- if t and t.count > 1 -%}
-		<a class="tag tag-link" href="/tags/{{ tag }}/">{{ t.name | default: tag }}</a>
-	{%- else -%}
-		<span class="tag tag-plain">{{ t.name | default: tag }}</span>
-	{%- endif -%}
+	{%- assign t = site.data.tag_icon_counts[tag] -%}
+	<a class="tag" href="/tags/{{ tag }}/">{{ t.name | default: tag }}</a>
 {%- endfor -%}
