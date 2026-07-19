@@ -31,7 +31,9 @@
 			var show =
 				!raw ||
 				words.every(function (w) {
-					return k.indexOf(w) !== -1;
+					return k.some(function (kw) {
+						return kw.indexOf(w) !== -1;
+					});
 				});
 			el.hidden = !show;
 		}
