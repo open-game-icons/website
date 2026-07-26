@@ -34,6 +34,12 @@ If you normally depend on the studio, I suggest you give the Inkscape workflow a
 
 That being said, since this site is an open source, I would welcome contributions from anyone who wants to add a similar studio-like functionality to this site!
 
+## What license does this site use?
+
+- The code for this site is licensed under the [GNU Affero General Public License Version 3.0](/LICENSE.txt).
+- To the best of my knowledge, the metadata used by this site is not copyrightable, but to what extent it is, it is released into the public domain under the terms of the [CC0 1.0 Universal](/METADATA_LICENSE.txt) license.
+- Each icon has its own license listed on its respective page.
+
 ## How do I request or contribute new icons?
 
 Follow the guidelines for requesting or contributing icons for Game-icons.net - as of writing, the current procedure is go to the [icons repo](https://github.com/game-icons/icons) and open an issue or pull request, respectively.

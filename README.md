@@ -16,3 +16,9 @@ Serve the page:
 ```sh
 bundle exec jekyll serve
 ```
+
+## License
+
+- Code: [AGPLv3](LICENSE.txt)
+- Metadata: [CC0](METADATA_LICENSE.txt)
+- Icons: see [assets/icons/license.txt](assets/icons/license.txt)
