@@ -10,7 +10,7 @@ html {
 
 body {
 	color: #000;
-	background-color: #e8e8e8;
+	background-color: #fff;
 	font-family: sans-serif;
 	display: flex;
 	flex-direction: column;
@@ -52,25 +52,13 @@ nav > div {
 }
 
 main {
-	background-color: #fff;
 	padding-bottom: 2rem;
-	display: flex;
-	flex-direction: column;
-	flex: 1;
 }
 
 main > div {
 	flex: 1;
 	max-width: min(95vw, 64rem);
 	margin: 1rem auto;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-
-	/* Make sure the page content fills the screen so the footer doesn't expand
-	 * on pages with minimal content, e.g. 404.html
-	 * I just found this number with trial and error */
-	min-height: calc(100vh - 14.5rem);
 }
 
 .center {
@@ -398,10 +386,6 @@ footer {
 @media (prefers-color-scheme: dark) {
 	body {
 		color: #fff;
-		background-color: #181818;
-	}
-
-	main {
 		background-color: #000;
 	}
 
