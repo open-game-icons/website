@@ -21,7 +21,7 @@ module Jekyll
       return unless data
 
       hash = {}
-      data.each { |t| hash[t["id"]] = { "name" => t["name"], "count" => t["count"] } }
+      data.each { |t| hash[t["id"]] = { "name" => t["name"], "count" => t["count"], "parent" => t["parent"] } }
       site.data["tag_icon_counts"] = hash
     end
 
