@@ -3,6 +3,11 @@
 	padding: 0;
 }
 
+/* Wait to display the page until CSS has loaded to prevent a flash of unstyled content */
+html {
+	visibility: visible !important;
+}
+
 body {
 	color: #000;
 	background-color: #e8e8e8;
@@ -366,6 +371,7 @@ footer {
 	border-color: #38f;
 }
 
+/* Must come last to override defaults */
 @media (prefers-color-scheme: dark) {
 	body {
 		color: #fff;
