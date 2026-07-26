@@ -28371,11 +28371,6 @@ PRAGMA writable_schema=ON;
 CREATE TABLE IF NOT EXISTS sqlite_sequence(name,seq);
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('licenses',2);
-CREATE VIEW tag_icon_counts AS
-        SELECT t.id, t.name, count(it.author) AS count
-        FROM tags t
-        LEFT JOIN icon_tags it ON t.id = it.tag
-        GROUP BY t.id;
 CREATE INDEX idx_icon_tags_tag ON icon_tags(tag);
 CREATE INDEX idx_icon_tags_icon ON icon_tags(author, id);
 CREATE INDEX idx_icon_keywords_icon ON icon_keywords(author, id);

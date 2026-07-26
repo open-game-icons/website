@@ -1,6 +1,6 @@
 <div class="tags center">
 	{%- for tag in include.tags -%}
-	{%- assign t = site.data.tag_icon_counts[tag] -%}
+	{%- assign t = site.data.tag_info[tag] -%}
 	{%- if t.parent == nil -%}<strong>{%- endif -%}
 	<a class="tag" href="/tags/{{ tag }}/">{{ t.name | default: tag }}</a>
 	{%- if t.parent == nil -%}</strong>{%- endif -%}

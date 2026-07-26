@@ -3,8 +3,8 @@ layout: page
 ---
 <h1 class="center">{{ page.list_name }} Icons</h1>
 {% include search.html %}
-{% assign current_tag = site.data.tag_icon_counts_array | where: "id", page.slug | first %}
-{% assign tag_ids = site.data.tag_icon_counts_array | where: "parent", page.slug | map: "id" %}
+{% assign current_tag = site.data.tag_info_array | where: "id", page.slug | first %}
+{% assign tag_ids = site.data.tag_info_array | where: "parent", page.slug | map: "id" %}
 {% if current_tag.parent %}
 	{% assign tag_ids = tag_ids | push: current_tag.parent %}
 {% endif %}

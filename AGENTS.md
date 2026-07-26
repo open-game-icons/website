@@ -21,12 +21,11 @@ bundle exec jekyll build
 - `assets/icons/`: submodule containing icon SVGs
 - `_db/icons.db`: SQLite DB of icon metadata, built from `_db/icons.sql`
 	- Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
-	- View: `tag_icon_counts`
 - `_config.yml`: declares `icon_pages` and `tag_pages` collections, wired to DB queries via `jekyll-sqlite`
 	- Per-icon pages at `/1x1/{author}/{icon_id}/`
 	- Tag pages at `/tags/{tag_id}/`
-	- Data arrays `tag_icon_counts_array`, `tag_icons_array`, `search_index_array`
-- `_plugins/data_mapper.rb`: converts `jekyll-sqlite` `*_array` data into hashes (`tag_icon_counts`, `tag_icons`, `search_index`) for faster Liquid rendering and client-side search
+	- Data arrays `tag_info_array`, `tag_icons_array`, `search_index_array`
+- `_plugins/data_mapper.rb`: converts `jekyll-sqlite` `*_array` data into hashes (`tag_info`, `tag_icons`, `search_index`) for faster Liquid rendering and client-side search
 - `assets/js/search.js`: client-side search (filters icon grid by keyword match)
 - `search-index.json`: outputs `site.data.search_index` as JSON for the client
 

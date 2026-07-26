@@ -53,7 +53,7 @@ sqlite:
       GROUP BY t.id
       HAVING count(*) > 1
 
-  - data: tag_icon_counts_array
+  - data: tag_info_array
     file: _db/icons.db
     query: |
       SELECT t.id, t.name, t.parent, count(it.tag) AS count

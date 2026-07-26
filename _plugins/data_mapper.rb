@@ -6,23 +6,23 @@ module Jekyll
     priority :low
 
     def generate(site)
-      map_tag_icon_counts(site)
+      map_tag_info(site)
       map_tag_icons(site)
       map_search_index(site)
     end
 
     private
 
-    # tag_icon_counts_array => tag_icon_counts
-    # Hash: tag_id => { "name" => …, "count" => … }
+    # tag_info_array => tag_info
+    # Hash: tag_id => { "name" => …, "count" => …, "parent" => … }
     # Used by: _includes/tag_links.html
-    def map_tag_icon_counts(site)
-      data = site.data["tag_icon_counts_array"]
+    def map_tag_info(site)
+      data = site.data["tag_info_array"]
       return unless data
 
       hash = {}
       data.each { |t| hash[t["id"]] = { "name" => t["name"], "count" => t["count"], "parent" => t["parent"] } }
-      site.data["tag_icon_counts"] = hash
+      site.data["tag_info"] = hash
     end
 
     # tag_icons_array => tag_icons
