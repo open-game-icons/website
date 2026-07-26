@@ -54,12 +54,18 @@ nav > div {
 main {
 	background-color: #fff;
 	padding-bottom: 2rem;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 }
 
 main > div {
 	flex: 1;
 	max-width: min(95vw, 64rem);
 	margin: 1rem auto;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 
 	/* Make sure the page content fills the screen so the footer doesn't expand
 	 * on pages with minimal content, e.g. 404.html
@@ -116,11 +122,22 @@ a.button {
 	font-size: 100%;
 	text-decoration: none;
 	font-weight: bold;
+	border-radius: 0.25rem;
+	margin-bottom: 1rem;
 }
 
 a.button:hover {
 	background-color: #5af;
 	color: #fff;
+}
+
+.external-link {
+	margin-top: auto;
+	text-align: center;
+}
+
+.external-link > a {
+	color: #666;
 }
 
 .favicon-small {
@@ -309,10 +326,6 @@ blockquote {
 	border-radius: 0.5rem 0 0 0.5rem;
 }
 
-a.button {
-	border-radius: 0.25rem;
-}
-
 footer {
 	color: #666;
 }
@@ -332,6 +345,7 @@ footer {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
 	gap: 0.5rem;
+	margin-bottom: 1rem;
 }
 
 .icon-cell {
@@ -410,6 +424,10 @@ footer {
 	a.button,
 	a.button:hover {
 		color: #000;
+	}
+
+	.external-link > a {
+		color: #888;
 	}
 
 	blockquote {
