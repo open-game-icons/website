@@ -9,7 +9,7 @@ layout: page
 {% assign tags = page.tags | split: ',' %}
 <div class="tags">{% include tag_links.html tags=tags %}</div>
 
-<img src="/assets/icons/{{ page.author }}/{{ page.icon_id }}.svg" alt="{{ page.display_name }}">
+<img class="icon" src="/assets/icons/{{ page.author }}/{{ page.icon_id }}.svg" alt="{{ page.display_name }}">
 
 <div>
 	<a class="button" href="/assets/icons/{{ page.author }}/{{ page.icon_id }}.svg" download="{{ page.icon_id }}.svg">Download</a>
