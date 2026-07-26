@@ -30,7 +30,7 @@ sqlite:
         l.name   AS license_name,
         l.link   AS license_link,
         group_concat(DISTINCT it.tag) AS tags,
-        'icon' AS layout
+        'icon'   AS layout
       FROM icons i
       JOIN authors  a ON i.author  = a.id
       JOIN licenses l ON i.license = l.id
@@ -42,11 +42,11 @@ sqlite:
     file: _db/icons.db
     query: |
       SELECT
-        t.id   AS name,
+        t.id       AS name,
         '/tags/' || t.id || '.html' AS permalink,
-        t.id   AS slug,
-        t.name AS title,
-        t.name AS list_name,
+        t.id       AS slug,
+        t.name     AS title,
+        t.name     AS list_name,
         'tag_page' AS layout
       FROM tags t
       JOIN icon_tags it ON t.id = it.tag
@@ -56,7 +56,11 @@ sqlite:
   - data: tag_info_array
     file: _db/icons.db
     query: |
-      SELECT t.id, t.name, t.parent, count(it.tag) AS count
+      SELECT
+      	t.id,
+        t.name,
+        t.parent,
+        count(it.tag) AS count
       FROM tags t
       LEFT JOIN icon_tags it ON t.id = it.tag
       GROUP BY t.id
@@ -64,7 +68,13 @@ sqlite:
   - data: tag_icons_array
     file: _db/icons.db
     query: |
-      SELECT it.tag, i.author, i.id, i.id AS icon_id, i.name, i.name AS title
+      SELECT
+      	it.tag,
+        i.author,
+        i.id,
+        i.id AS icon_id,
+        i.name,
+        i.name AS title
       FROM icon_tags it
       JOIN icons i ON it.author = i.author AND it.id = i.id
       ORDER BY i.name, i.id
@@ -72,9 +82,12 @@ sqlite:
   - data: search_index_array
     file: _db/icons.db
     query: |
-      SELECT i.author, i.id, i.name,
-             group_concat(DISTINCT it.tag)     AS tag_list,
-             group_concat(DISTINCT ik.keyword) AS keyword_list
+      SELECT
+      	i.author,
+        i.id,
+        i.name,
+        group_concat(DISTINCT it.tag)     AS tag_list,
+        group_concat(DISTINCT ik.keyword) AS keyword_list
       FROM icons i
       LEFT JOIN icon_tags     it ON i.author = it.author AND i.id = it.id
       LEFT JOIN icon_keywords ik ON i.author = ik.author AND i.id = ik.id
