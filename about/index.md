@@ -16,7 +16,7 @@ There are absolutely no analytics, tracking, or advertising.
 In fact, you can use the site with JavaScript disabled entirely, and simply search for icons with your browser's search functionality (Ctrl+F) (although you will miss out on some custom keyword-matching logic).
 
 The site is structured to be highly compatible with Game-icons.net.
-You should be able to take any URL from it and replace "game-icons.net" with this site's domain and get the corresponding icon or tag page.
+You should be able to take any URL from it and replace "game-icons.net" with "icons.frie.dev" and get the corresponding icon or tag page.
 If you want to automate this, I recommend checking out the [Redirector](https://einaregilsson.com/redirector/) browser extension.
 
 ## Why make this site? Why use it over Game-icons.net?
