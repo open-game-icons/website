@@ -1,6 +1,6 @@
 <div class="icon-grid">
   {% for icon in include.icons %}
-    <a href="/1x1/{{ icon.author }}/{{ icon.icon_id }}/" id="icon--{{ icon.author }}--{{ icon.icon_id }}">
+    <a href="/1x1/{{ icon.author }}/{{ icon.icon_id }}.html" id="icon--{{ icon.author }}--{{ icon.icon_id }}">
       <figure class="icon-cell">
         <img src="/assets/icons/{{ icon.author }}/{{ icon.icon_id }}.svg" loading="lazy" />
         <figcaption>{{ icon.title | default: icon.name | default: icon.icon_id }}</figcaption>

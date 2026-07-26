@@ -20,7 +20,7 @@ sqlite:
       SELECT
         i.author AS path,
         i.id     AS name,
-        '/1x1/' || i.author || '/' || i.id || '/' AS permalink,
+        '/1x1/' || i.author || '/' || i.id || '.html' AS permalink,
         i.author,
         i.id     AS icon_id,
         i.name   AS title,
@@ -43,7 +43,7 @@ sqlite:
     query: |
       SELECT
         t.id   AS name,
-        '/tags/' || t.id || '/' AS permalink,
+        '/tags/' || t.id || '.html' AS permalink,
         t.id   AS slug,
         t.name AS title,
         t.name AS list_name,
