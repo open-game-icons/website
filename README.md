@@ -1,6 +1,7 @@
 # Open Game Icons
 
 An open source frontend to browse the free game icons from [Game-icons.net](https://www.game-icons.net).
+For more about this project, see the [About](about/index.md) page.
 
 ## Setup
 
