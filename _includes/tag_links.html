@@ -1,4 +1,6 @@
-{%- for tag in include.tags -%}
+<div class="tags center">
+	{%- for tag in include.tags -%}
 	{%- assign t = site.data.tag_icon_counts[tag] -%}
 	<a class="tag" href="/tags/{{ tag }}/">{{ t.name | default: tag }}</a>
 {%- endfor -%}
+</div>

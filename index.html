@@ -18,7 +18,7 @@ layout: default
 	<div>
 		{% include search.html %}
 		{% assign all_tags = site.data.tag_icon_counts_array | map: "id" %}
-		<div class="tags center">{% include tag_links.html tags=all_tags %}</div>
+		{% include tag_links.html tags=all_tags %}
 		{% include icon_grid.html icons=site.icon_pages %}
 	</div>
 </main>

@@ -7,7 +7,7 @@ layout: page
 <p>by{% if page.author_link %} <a href="{{ page.author_link }}">{{ page.author_name }}</a>{% else %} {{ page.author_name }}{% endif %} under <a href="{{ page.license_link }}">{{ page.license_name }}</a></p>
 
 {% assign tags = page.tags | split: ',' %}
-<div class="tags">{% include tag_links.html tags=tags %}</div>
+{% include tag_links.html tags=tags %}
 
 <img class="icon" src="/assets/icons/{{ page.author }}/{{ page.icon_id }}.svg" alt="{{ page.display_name }}">
 
