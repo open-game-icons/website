@@ -1,6 +1,7 @@
 (function () {
 	var input = document.getElementById("icon-search");
 	if (!input) return;
+	input.removeAttribute("hidden");
 
 	var lookup = null;
 	fetch("/search-index.json")

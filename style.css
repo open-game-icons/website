@@ -288,8 +288,8 @@ code {
 	text-decoration: none;
 }
 
-.tag[hidden] {
-	display: none;
+[hidden] {
+	display: none !important;
 }
 
 .tag:hover {
