@@ -7,7 +7,7 @@ layout: page
 
 ## What is this?
 
-**Open Game Icons** is an open source website for browsing and downloading the free icons created for [Game-icons.net](https://game-icons.net).
+**Open Game Icons** is an [open source](https://github.com/open-game-icons/website) website for browsing and downloading the free icons created for [Game-icons.net](https://game-icons.net).
 
 It is a [static site](https://en.wikipedia.org/wiki/Static_web_page) - there's no custom backend code running on a server somewhere.
 
@@ -16,7 +16,7 @@ There are absolutely no analytics, tracking, or advertising.
 In fact, you can use the site with JavaScript disabled entirely, and simply search for icons with your browser's search functionality (Ctrl+F) (although you will miss out on some custom keyword-matching logic).
 
 The site is structured to be highly compatible with Game-icons.net.
-You should be able to take any URL from it and replace "game-icons.net" with "icons.frie.dev" and get the corresponding icon or tag page.
+You should be able to take any URL from it and replace "game-icons.net" with "open-game-icons.net" and get the corresponding icon or tag page.
 If you want to automate this, I recommend checking out the [Redirector](https://einaregilsson.com/redirector/) browser extension.
 
 ## Why make this site? Why use it over Game-icons.net?
@@ -32,22 +32,32 @@ I have not gotten around to implementing the icon editing features from Game-ico
 Personally, I always just grab the SVGs and edit/export them in [Inkscape](https://inkscape.org/) as needed, so I never really touch the studio myself.
 If you normally depend on the studio, I suggest you give the Inkscape workflow a try!
 
-That being said, since this site is an open source, I would welcome contributions from anyone who wants to add a similar studio-like functionality to this site!
+That being said, since this site is a [open source](https://github.com/open-game-icons/website), I would welcome contributions from anyone who wants to add a similar studio-like functionality to this site!
 
 ## What license does this site use?
 
-- The code for this site is licensed under the [GNU Affero General Public License Version 3.0](/LICENSE.txt).
+- The [code for this site](https://github.com/open-game-icons/website) is licensed under the [GNU Affero General Public License Version 3.0](/LICENSE.txt).
 - To the best of my knowledge, the metadata used by this site is not copyrightable, but to what extent it is, it is released into the public domain under the terms of the [CC0 1.0 Universal](/METADATA_LICENSE.txt) license.
 - Each icon has its own license listed on its respective page.
 
-## How do I request or contribute new icons?
+## How do I contribute an icon?
 
-Follow the guidelines for requesting or contributing icons for Game-icons.net - as of writing, the current procedure is go to the [icons repo](https://github.com/game-icons/icons) and open an issue or pull request, respectively.
-Please do not open issues requesting new icons on the repo for this website.
+Go to the [open-game-icons/icons repo](https://github.com/open-game-icons/website) and submit a pull request!
 
-## Is this legal?
+## How do I request an icon?
 
-To the best of my knowledge, **yes**!
+Open Game Icons is not currently accepting requests for new icons.
+If you'd like to see a new icon added to the site, I encourage you to contribute it yourself!
+
+Alternatively, you can follow the procedure to submit an icon request to Game-icons.net and hope someone makes it for you (though, judging by the number of open requests, your chances don't look too good).
+
+## I found an issue with the site!
+
+Please open an issue on the [open-game-icons/website repo](https://github.com/open-game-icons/website).
+
+## Is this site legal?
+
+Yes!
 
 - All the icons are being redistributed in compliance with their respective licenses, and each icon is attributed to its creator on the icon's page.
 - The tags are borrowed from Game-icons.net.
@@ -55,12 +65,12 @@ To the best of my knowledge, **yes**!
 - Game-icons.net includes descriptions for each icon, but these involve more creativity and their licensing is unclear, so they are not used on this site.
   Instead, the tags and categories from [gameicons-metadata](https://github.com/ArnoldSmith86/gameicons-metadata) were used to create a list of keywords for each icon to aid in searchability.
 
-If you have any legal concerns, please reach out to me - see [my website](https://frie.dev) for contact info.
+If you have any legal concerns, please reach out to [legal@open-game-icons.net](legal@open-game-icons.net).
 
-## Is this AI?
+## Was this site made with AI?
 
-I created this website with AI assistance, but I would not describe it as vibe coded.
-I am an experienced developer; I created my personal website from scratch years ago, using the same technologies that power this site, so I understand how everything works.
+Yes, but I would not describe it as "vibe coded".
+I am an experienced developer; I created my [personal website](https://frie.dev) from scratch years ago, using the same technologies that power this site, so I understand how everything works.
 I used OpenCode Go and open-weight models to generate code and assist in debugging, for a total cost of under $3.50.
 
 I understand many people are strongly opposed to AI as a matter of principle, and I respect that viewpoint.
@@ -78,3 +88,9 @@ It's also worth noting that, to the best of my knowledge, none of the icons on t
 Hi!
 My name is Aaron.
 You can find more about me and my other projects on [my website](https://frie.dev). :)
+
+## More questions?
+
+Maybe the [Game-icons.net FAQ](https://game-icons.net/faq.html) will have the answer?
+
+If not, feel free to reach out to [contact@open-game-icons.net](mailto:contact@open-game-icons.net).
