@@ -8,7 +8,7 @@ For more about this project, see the [About](about/index.md) page.
 Build the database:
 
 ```sh
-sqlite3 _db/icons.db < _db/icons.sql
+(cd assets/icons && ./rebuild_db.sh)
 ```
 
 Serve the page:

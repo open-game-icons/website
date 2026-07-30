@@ -14,7 +14,7 @@ collections:
 
 sqlite:
   - collection: icon_pages
-    file: _db/icons.db
+    file: assets/icons/icons.db
     query: |
       SELECT
         i.author AS path,
@@ -38,7 +38,7 @@ sqlite:
       ORDER BY i.name, i.id
 
   - collection: tag_pages
-    file: _db/icons.db
+    file: assets/icons/icons.db
     query: |
       SELECT
         t.id       AS name,
@@ -53,7 +53,7 @@ sqlite:
       HAVING count(*) > 1
 
   - data: tag_info_array
-    file: _db/icons.db
+    file: assets/icons/icons.db
     query: |
       SELECT
       	t.id,
@@ -65,7 +65,7 @@ sqlite:
       GROUP BY t.id
 
   - data: tag_icons_array
-    file: _db/icons.db
+    file: assets/icons/icons.db
     query: |
       SELECT
       	it.tag,
@@ -79,7 +79,7 @@ sqlite:
       ORDER BY i.name, i.id
 
   - data: search_index_array
-    file: _db/icons.db
+    file: assets/icons/icons.db
     query: |
       SELECT
       	i.author,
