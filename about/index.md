@@ -39,7 +39,7 @@ Game-icons.net includes a suite of icon editing features known as the "Studio", 
 Personally, I always just grab the SVGs and edit/export them in [Inkscape](https://inkscape.org/) as needed, so I never really touch the studio myself.
 If you normally depend on the studio, I suggest you give the Inkscape workflow a try!
 
-That being said, since this site is [open source](https://github.com/open-game-icons/website), I would welcome contributions from anyone who wants to add icon editing functionality to this site!
+That being said, since this site is [open source](https://github.com/open-game-icons/website), I would welcome anyone who wants to contribute icon editing functionality to it!
 
 ## What license does this site use?
 
