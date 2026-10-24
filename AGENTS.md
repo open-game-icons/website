@@ -11,9 +11,9 @@ Dependencies:
 - `dprint` and `uv` (optional; `uvx` runs djLint for template formatting)
 
 Build the site with `just build` (includes DB and content stub regeneration; fast).
-There is no post-build pruning step: `zola serve` reads the same generated static
-staging tree as the production build, so run `just generate` first if
-`static/assets/icons/` is missing.
+There is no post-build pruning step: `just serve` runs `zola serve` against the
+same generated static staging tree as the production build. Run `just generate`
+first if `static/assets/icons/` is missing.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ Canonical URLs are Zola's pretty routes:
 The old `.html` paths (`/1x1/{author}/{icon_id}.html`, `/tags/{tag_id}.html`)
 are Zola aliases: small client-side redirect files, not HTTP 301s. Internal
 links use the canonical pretty URLs. The redirect target is built from
-`base_url`; `just serve` builds with a local base URL so aliases work locally.
+`base_url`; `zola serve` uses its local server URL so aliases work locally.
 
 Generated paths (`public/`, `content/generated/`, `data/generated/`,
 `static/search-index.json`, `static/assets/icons/`) are gitignored.

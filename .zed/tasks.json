@@ -6,13 +6,8 @@
     "save": "all",
   },
   {
-    "label": "serve (built output)",
+    "label": "serve (live reload)",
     "command": "just serve",
-    "save": "all",
-  },
-  {
-    "label": "zola serve (live reload)",
-    "command": "just generate && zola serve",
     "save": "all",
   },
   {

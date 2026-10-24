@@ -13,16 +13,15 @@ Rebuild the icon database, generate the icon/tag content, and build the site:
 just build
 ```
 
-Preview the built output with local URLs:
+Serve locally with live reload:
 
 ```sh
 just serve
 ```
 
-`just serve` builds with `http://127.0.0.1:8000` as the base URL and serves `public/` without live reload.
-That keeps the legacy `.html` alias redirects pointing at the local server.
+`just serve` runs `zola serve` on port 8000 after regenerating the content and static assets.
+Zola uses its local server URL as the base URL, so legacy `.html` alias redirects stay local.
 Use `just serve 8080` to choose another port.
-`zola serve` is available for live template iteration; run `just generate` first if the generated files are missing.
 
 Canonical pages use Zola's pretty URLs:
 

@@ -1,7 +1,7 @@
 _default:
     @just --list
 
-# Format code and templates
+# Format everything (code, templates, docs, etc.)
 fmt:
     dprint fmt
 
@@ -17,13 +17,15 @@ generate: db
 build: generate
     zola build
 
-# Build with a local base URL and serve (no live reload)
+# Serve with Zola's live reload
 serve port="8000": generate
-    zola build --base-url "http://127.0.0.1:{{ port }}"
-    python3 -m http.server {{ port }} -d public
+    zola serve --port {{ port }}
 
 # Build and verify pages, aliases, and internal links
 check: build
+    dprint check
+    ty check
+    zola check --skip-external-links
     python3 scripts/check.py
 
 # Remove generated output and generated source files
