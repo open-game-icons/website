@@ -4,7 +4,7 @@
 This replaces the jekyll-sqlite plugin and _plugins/data_mapper.rb. Zola has
 no database plugin and no dynamic routes, so every icon and tag page needs a
 small content stub. The stubs, lookup tables, route manifest, and client-side
-search index are all derived from assets/icons/icons.db.
+search index are all derived from static/assets/icons/icons.db.
 
 Run this before `zola build` whenever icons.sql changes.
 """
@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DB_PATH = ROOT / "assets/icons/icons.db"
+DB_PATH = ROOT / "static/assets/icons/icons.db"
 CONTENT_DIR = ROOT / "content/generated"
 DATA_DIR = ROOT / "data/generated"
 SEARCH_INDEX_PATH = ROOT / "static/search-index.json"

@@ -3,7 +3,7 @@ _default:
 
 # Rebuild icons.db from icons.sql
 db:
-    (cd assets/icons && ./rebuild_db.sh)
+    (cd static/assets/icons && ./rebuild_db.sh)
 
 # Generate Zola content, data, and the search index from icons.db
 generate:

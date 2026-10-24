@@ -7,7 +7,7 @@ For more about this project, see the [About](content/about.md) page.
 
 This site is built with [Zola](https://www.getzola.org/) 0.23.6 and uses [just](https://just.systems/) for convenience commands.
 
-Build the database (rerun this whenever `assets/icons/icons.sql` changes):
+Build the database (rerun this whenever `static/assets/icons/icons.sql` changes):
 
 ```sh
 just db
@@ -40,4 +40,4 @@ just clean     # remove build output and generated source files
 
 - Code: [AGPLv3](static/LICENSE.txt)
 - Metadata: [CC0](static/METADATA_LICENSE.txt)
-- Icons: see [assets/icons/license.txt](assets/icons/license.txt)
+- Icons: see [static/assets/icons/license.txt](static/assets/icons/license.txt)

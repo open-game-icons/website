@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
-DB_PATH = ROOT / "assets/icons/icons.db"
+DB_PATH = ROOT / "static/assets/icons/icons.db"
 
 
 class LinkParser(HTMLParser):

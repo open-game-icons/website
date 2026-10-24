@@ -17,19 +17,19 @@ just build
 
 ## Architecture
 
-- `assets/icons/`: subrepo (`man 1 git-subrepo`) containing icon SVGs
-- `assets/icons/icons.db`: SQLite DB of icon metadata, built from `assets/icons/icons.sql`
-  - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
+- `static/`: published verbatim
+  - `static/assets/icons/`: subrepo (`man 1 git-subrepo`) containing icon SVGs
+  - `static/assets/icons/icons.db`: SQLite DB of icon metadata, built from `static/assets/icons/icons.sql`
+    - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
+  - `static/assets/js/search.js`: client-side search (filters icon grid by keyword match)
 - `scripts/generate.py`
   - Generates content stubs in `content/generated/` and lookup data in `data/generated/`
   - Generates `static/search-index.json` for the client-side search
 - `scripts/flatten_urls.py`: moves generated pages from Zola's pretty routes to the legacy `.html` routes matching Game-icons.net
   - Per-icon pages at `/1x1/{author}/{icon_id}.html`
   - Tag pages at `/tags/{tag_id}.html`
-- `templates/`: Tera templates (`base.html`, `index.html`, `page.html`, `icon.html`, `tag_page.html`, `404.html`, `partials/`)
 - `scripts/check_links.py`: validates built page counts, search entries, and internal links
-- `static/`: published verbatim; `static/assets` is a symlink to `../assets`
-- `assets/js/search.js`: client-side search (filters icon grid by keyword match)
+- `templates/`: Tera templates (`base.html`, `index.html`, `page.html`, `icon.html`, `tag_page.html`, `404.html`, `partials/`)
 
 Generated paths (`public/`, `content/generated/`, `data/generated/`, `static/search-index.json`) are gitignored.
 Do not use `page.url` or `page.permalink` in templates: the public URLs are `.html` paths created by the flattening step.

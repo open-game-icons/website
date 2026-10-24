@@ -36,7 +36,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build Database
-        run: (cd assets/icons && ./rebuild_db.sh)
+        run: (cd static/assets/icons && ./rebuild_db.sh)
 
       - name: Generate Content
         run: python3 scripts/generate.py
