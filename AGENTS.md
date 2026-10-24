@@ -8,7 +8,7 @@ Dependencies:
 
 - Zola 0.23.6 and Python 3 (required to build the site)
 - `just` (recommended for convenience)
-- `dprint` and Deno 2 (optional; for formatting)
+- `dprint` and `uv` (optional; `uvx` runs djLint for template formatting)
 
 ```sh
 just db # rerun if icons.sql changes
@@ -35,8 +35,6 @@ just build
     - Tag pages at `/tags/{tag_id}.html`
   - Removes the icon DB, `icons.sql`, shell scripts, docs, and SVGO config copied from `static/assets/icons`
 - `scripts/check.py`: validates built page counts, search entries, and internal links
-- `scripts/format_templates.mjs`: Prettier adapter used by dprint's `exec` plugin to format `templates/**/*.html`
-  - Zola only accepts `.html` templates, so `markup_fmt` can't detect them as Jinja; this keeps Prettier's Jinja plugin in charge
 
 Generated paths (`public/`, `content/generated/`, `data/generated/`, `static/search-index.json`) are gitignored.
 Do not use `page.url` or `page.permalink` in templates: the public URLs are `.html` paths created by the post-build step.

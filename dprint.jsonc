@@ -7,7 +7,7 @@
   },
   "exec": {
     "cwd": "${configDir}",
-    "timeout": 60,
+    "timeout": 120,
     "associations": ["**/templates/**/*.html"],
     "commands": [
       {
@@ -15,15 +15,15 @@
         "fileNames": ["justfile"],
       },
       {
-        // Zola requires .html extensions, so format templates as Jinja with Prettier.
-        "command": "deno run --allow-env --allow-net scripts/format_templates.mjs {{line_width}} {{indent_width}} {{use_tabs}}",
+        // Zola requires .html extensions, so format templates as Tera with djLint.
+        // Pin 1.47.0: 1.36.4 (AUR) misformats inline block tags.
+        "command": "uvx --from djlint==1.47.0 djlint - --reformat --quiet --profile=tera --indent {{indent_width}} --max-line-length {{line_width}} --preserve-blank-lines --close-void-tags",
         "associations": ["**/templates/**/*.html"],
-        "cacheKeyFiles": ["scripts/format_templates.mjs"],
       },
     ],
   },
   "markup": {
-    // Tera templates are formatted by Prettier; markup_fmt would treat .html as plain HTML.
+    // Tera templates are formatted by djLint; markup_fmt treats .html as plain HTML.
     "associations": ["!**/templates/**/*.html"],
   },
   "excludes": [
