@@ -5,7 +5,6 @@ Jekyll static site for browsing icons.
 ## Setup
 
 ```sh
-git submodule update --init --recursive
 bundle install
 (cd assets/icons && ./rebuild_db.sh) # rerun if icons.sql changes
 ```
@@ -18,7 +17,7 @@ bundle exec jekyll build
 
 ## Architecture
 
-- `assets/icons/`: submodule containing icon SVGs
+- `assets/icons/`: subrepo (`man 1 git-subrepo`) containing icon SVGs
 - `assets/icons/icons.db`: SQLite DB of icon metadata, built from `assets/icons/icons.sql`
   - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
 - `_config.yml`: declares `icon_pages` and `tag_pages` collections, wired to DB queries via `jekyll-sqlite`
