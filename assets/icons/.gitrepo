@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/open-game-icons/icons
+	branch = master
+	commit = a0b2fed285cc471ca2d9e5372e9390c467d478b5
+	parent = 0672f7eed4927fb97283882604ed9b1e36eb2fb8
+	method = rebase
+	cmdver = 0.4.9
