@@ -4,9 +4,9 @@
 ; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
 ;
 [subrepo]
-	remote = https://github.com/open-game-icons/icons
+	remote = git@github.com:open-game-icons/icons.git
 	branch = master
 	commit = a0b2fed285cc471ca2d9e5372e9390c467d478b5
-	parent = 0672f7eed4927fb97283882604ed9b1e36eb2fb8
+	parent = 1af0e34a89243956c66f4248807cc472d1720508
 	method = rebase
 	cmdver = 0.4.9
