@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% block title %}{%- if page is defined and page.title %}{{ page.title }} - {% endif -%} {{ config.title }} {%- endblock %}
+{% block title %}{%- if page is defined and page.title %}{{ page.title }} -{% endif -%} {{ config.title }}{%- endblock %}
 {% block body %}
-<nav>
-  <div>
-    <a href="/">
-      <img class="favicon-small" src="/favicon.svg" />
-    </a>
-    <h2><a class="no-color" href="/">Open Game Icons</a></h2>
-  </div>
-  <div>
-    <a class="no-color" href="/about">About</a>
-  </div>
-</nav>
-<main>
-  <div>{% block content %}{{ page.content | safe }}{% endblock %}</div>
-</main>
+  <nav>
+    <div>
+      <a href="/">
+        <img class="favicon-small" src="/favicon.svg" />
+      </a>
+      <h2><a class="no-color" href="/">Open Game Icons</a></h2>
+    </div>
+    <div>
+      <a class="no-color" href="/about">About</a>
+    </div>
+  </nav>
+  <main>
+    <div>{% block content %}{{ page.content | safe }}{% endblock %}</div>
+  </main>
 {% endblock %}

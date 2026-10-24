@@ -1,0 +1,46 @@
+{
+  "shebangs": {
+    "#!/bin/sh": "sh",
+    "#!/bin/bash": "bash",
+    "#!/usr/bin/env python": "py",
+    "#!/usr/bin/env python3": "py"
+  },
+  "exec": {
+    "cwd": "${configDir}",
+    "timeout": 60,
+    "associations": ["**/templates/**/*.html"],
+    "commands": [
+      {
+        "command": "just --fmt --justfile -",
+        "fileNames": ["justfile"],
+      },
+      {
+        // Zola requires .html extensions, so format templates as Jinja with Prettier.
+        "command": "deno run --allow-env --allow-net scripts/format_templates.mjs {{line_width}} {{indent_width}} {{use_tabs}}",
+        "associations": ["**/templates/**/*.html"],
+        "cacheKeyFiles": ["scripts/format_templates.mjs"],
+      },
+    ],
+  },
+  "markup": {
+    // Tera templates are formatted by Prettier; markup_fmt would treat .html as plain HTML.
+    "associations": ["!**/templates/**/*.html"],
+  },
+  "excludes": [
+    "**/*-lock.json",
+    "*.svg"
+  ],
+  // https://dprint.dev/plugins/
+  "plugins": [
+    "npm:@dprint/json@0.25.2", // includes JSONC
+    "npm:@dprint/typescript@0.96.1", // includes JavaScript
+    "npm:@dprint/markdown@0.26.0",
+    "npm:@dprint/toml@0.9.0",
+    "npm:@dprint/ruff@0.10.0", // Python
+    "npm:dprint-plugin-malva@0.16.0", // CSS/SCSS/Sass
+    "npm:dprint-plugin-markup@0.27.5", // HTML
+    "npm:dprint-plugin-yaml@0.6.0",
+    "npm:@kachick/dprint-plugin-sh@0.1.2",
+    "npm:@dprint/exec@0.7.4/plugin.json@14842df8dbb117b521c6bdfd171fd22d25c19d9588de65785cccf2caf59c4780"
+  ]
+}

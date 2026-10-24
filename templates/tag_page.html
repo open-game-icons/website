@@ -1,16 +1,16 @@
 {% extends "page.html" %}
 {% block content %}
-<h1 class="center">{{ page.extra.list_name }} Icons</h1>
-{% include "partials/search.html" %}
-{% if page.extra.related_tags | length > 0 %}
-  {% set tags = page.extra.related_tags %} {% include "partials/tag_links.html" %}
-{% endif %}
-{% set tag_icons = load_data(path="data/generated/tag_icons.json") %}
-{% set icons = tag_icons[page.extra.slug] %}
-{% include "partials/icon_grid.html" %}
+  <h1 class="center">{{ page.extra.list_name }} Icons</h1>
+  {% include "partials/search.html" %}
+  {% if page.extra.related_tags | length > 0 %}
+    {% set tags = page.extra.related_tags %}
+    {% include "partials/tag_links.html" %}
+  {% endif %}
+  {% set tag_icons = load_data(path="data/generated/tag_icons.json") %}
+  {% set icons = tag_icons[page.extra.slug] %}
+  {% include "partials/icon_grid.html" %}
 
-<p class="center external-link">
-  <a href="https://game-icons.net/tags/{{ page.extra.slug }}.html"
-  >View on Game-icons.net</a>
-</p>
+  <p class="center external-link">
+    <a href="https://game-icons.net/tags/{{ page.extra.slug }}.html">View on Game-icons.net</a>
+  </p>
 {% endblock %}

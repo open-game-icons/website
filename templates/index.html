@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 {% block body %}
-<header>
-  <img class="favicon-large" src="/favicon.svg" />
-  <div>
-    <h1>Open Game Icons</h1>
-    <p>
-      An <a href="https://github.com/open-game-icons/">open source</a>
-      continuation of
-      <a href="https://www.game-icons.net">Game-icons.net</a>.
-    </p>
-    <p>
-      For more about this site, see the
-      <a href="/about/">Frequently Anticipated Questions</a>.
-    </p>
-  </div>
-</header>
+  <header>
+    <img class="favicon-large" src="/favicon.svg" />
+    <div>
+      <h1>Open Game Icons</h1>
+      <p>
+        An <a href="https://github.com/open-game-icons/">open source</a>
+        continuation of
+        <a href="https://www.game-icons.net">Game-icons.net</a>.
+      </p>
+      <p>
+        For more about this site, see the
+        <a href="/about/">Frequently Anticipated Questions</a>.
+      </p>
+    </div>
+  </header>
 
-<main>
-  <div>
-    {% include "partials/search.html" %}
-    {% set tags = load_data(path="data/generated/tag_ids.json") %}
-    {% include "partials/tag_links.html" %}
-    {% set icons = load_data(path="data/generated/icons.json") %}
-    {% include "partials/icon_grid.html" %}
-  </div>
-</main>
+  <main>
+    <div>
+      {% include "partials/search.html" %}
+      {% set tags = load_data(path="data/generated/tag_ids.json") %}
+      {% include "partials/tag_links.html" %}
+      {% set icons = load_data(path="data/generated/icons.json") %}
+      {% include "partials/icon_grid.html" %}
+    </div>
+  </main>
 {% endblock %}

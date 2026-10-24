@@ -2,9 +2,10 @@
 <div class="tags center">
   {%- for tag in tags -%}
     {%- set t = tag_info[tag] -%}
-    {%- if not t.parent-%}<strong>{%- endif -%}
-    <a class="tag" href="/tags/{{ tag }}.html"
-      >{{ t.name | default(value=tag) }}</a>
-    {%- if not t.parent -%}</strong>{%- endif -%}
+    {%- if not t.parent -%}
+      <strong><a class="tag" href="/tags/{{ tag }}.html">{{ t.name | default(value=tag) }}</a></strong>
+    {%- else -%}
+      <a class="tag" href="/tags/{{ tag }}.html">{{ t.name | default(value=tag) }}</a>
+    {%- endif -%}
   {%- endfor -%}
 </div>

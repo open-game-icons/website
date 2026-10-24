@@ -4,8 +4,11 @@ Zola static site for browsing icons.
 
 ## Setup
 
-Install Zola 0.23.6 and `just`.
-Python 3 is used by the build scripts.
+Dependencies:
+
+- Zola 0.23.6 and Python 3 (required to build the site)
+- `just` (recommended for convenience)
+- `dprint` and Deno 2 (optional; for formatting)
 
 ```sh
 just db # rerun if icons.sql changes
@@ -17,6 +20,7 @@ just build
 
 ## Architecture
 
+- `templates/`: Tera templates (`base.html`, `index.html`, `page.html`, `icon.html`, `tag_page.html`, `404.html`, `partials/`)
 - `static/`: copied to `public/`; `scripts/post_build.py` prunes build-only files after the build
   - `static/assets/icons/`: subrepo (`man 1 git-subrepo`) containing icon SVGs; only the SVG directories and `license.txt` are published
   - `static/assets/icons/icons.db`: SQLite DB of icon metadata, built from `static/assets/icons/icons.sql`; source only, not published
@@ -31,11 +35,13 @@ just build
     - Tag pages at `/tags/{tag_id}.html`
   - Removes the icon DB, `icons.sql`, shell scripts, docs, and SVGO config copied from `static/assets/icons`
 - `scripts/check.py`: validates built page counts, search entries, and internal links
-- `templates/`: Tera templates (`base.html`, `index.html`, `page.html`, `icon.html`, `tag_page.html`, `404.html`, `partials/`)
+- `scripts/format_templates.mjs`: Prettier adapter used by dprint's `exec` plugin to format `templates/**/*.html`
+  - Zola only accepts `.html` templates, so `markup_fmt` can't detect them as Jinja; this keeps Prettier's Jinja plugin in charge
 
 Generated paths (`public/`, `content/generated/`, `data/generated/`, `static/search-index.json`) are gitignored.
 Do not use `page.url` or `page.permalink` in templates: the public URLs are `.html` paths created by the post-build step.
 
-## Conventions
+## Cleanup and validation
 
-- Format CSS and JavaScript (not HTML) with `prettier`.
+- `just fmt` to format
+- `just check` to build the site + run static checks

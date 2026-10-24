@@ -6,6 +6,7 @@ For more about this project, see the [About](content/about.md) page.
 ## Setup
 
 This site is built with [Zola](https://www.getzola.org/) 0.23.6 and uses [just](https://just.systems/) for convenience commands.
+Formatting Tera templates with `just fmt` requires [dprint](https://dprint.dev/) and [Deno](https://deno.com/) 2.
 
 Build the database (rerun this whenever `static/assets/icons/icons.sql` changes):
 
@@ -33,6 +34,7 @@ The build publishes only the icon SVGs and `license.txt` from the icon subrepo; 
 Other commands:
 
 ```sh
+just fmt       # format code and Tera templates
 just generate  # regenerate content, data, and the search index
 just check     # build and validate page counts and internal links
 just clean     # remove build output and generated source files

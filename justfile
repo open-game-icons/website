@@ -1,6 +1,10 @@
 _default:
     @just --list
 
+# Format code and templates
+fmt:
+    dprint fmt
+
 # Rebuild icons.db from icons.sql
 db:
     (cd static/assets/icons && ./rebuild_db.sh)
