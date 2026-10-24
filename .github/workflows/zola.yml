@@ -44,11 +44,11 @@ jobs:
       - name: Build with Zola
         run: zola build
 
-      - name: Restore legacy .html URLs
-        run: python3 scripts/flatten_urls.py
+      - name: Post-process Build
+        run: python3 scripts/post_build.py
 
       - name: Check output
-        run: python3 scripts/check_links.py
+        run: python3 scripts/check.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

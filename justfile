@@ -9,18 +9,18 @@ db:
 generate:
     python3 scripts/generate.py
 
-# Build the site and restore the legacy .html routes
+# Build the site and post-process the output
 build: generate
     zola build
-    python3 scripts/flatten_urls.py
+    python3 scripts/post_build.py
 
-# Build, flatten, and serve the actual output (no live reload)
+# Build, post-process, and serve the actual output (no live reload)
 serve: build
     python3 -m http.server -d public
 
 # Build and verify the generated page counts and internal links
 check: build
-    python3 scripts/check_links.py
+    python3 scripts/check.py
 
 # Remove generated output and generated source files
 clean:
