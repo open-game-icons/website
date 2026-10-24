@@ -25,6 +25,8 @@ Preview the actual built output:
 just serve
 ```
 
+The build publishes only the icon SVGs and `license.txt` from the icon subrepo; the SQLite database, SQL dump, scripts, and docs are pruned from `public/`.
+
 `just serve` builds `public/` and serves it without live reload.
 `zola serve` can be used while iterating on templates, but it uses Zola's pretty URL layout; the site's public `.html` URLs only exist after `scripts/flatten_urls.py` runs.
 

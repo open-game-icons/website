@@ -13,6 +13,8 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 DB_PATH = ROOT / "static/assets/icons/icons.db"
+ICON_ASSETS = PUBLIC / "assets/icons"
+PUBLISHED_ICON_FILES = {"license.txt"}
 
 
 class LinkParser(HTMLParser):
@@ -57,7 +59,8 @@ def main() -> int:
         return 1
 
     connection = sqlite3.connect(DB_PATH)
-    icon_count = connection.execute("SELECT count(*) FROM icons").fetchone()[0]
+    icon_rows = connection.execute("SELECT author, id FROM icons").fetchall()
+    icon_count = len(icon_rows)
     tag_count = connection.execute(
         "SELECT count(*) FROM (SELECT t.id FROM tags t JOIN icon_tags it ON t.id = it.tag "
         "GROUP BY t.id HAVING count(*) > 1)"
@@ -65,6 +68,30 @@ def main() -> int:
     connection.close()
 
     failures: list[str] = []
+
+    if not ICON_ASSETS.is_dir():
+        failures.append(
+            f"icon output directory is missing: {ICON_ASSETS.relative_to(ROOT)}"
+        )
+    else:
+        for author, icon_id in icon_rows:
+            if not (ICON_ASSETS / author / f"{icon_id}.svg").is_file():
+                failures.append(f"missing icon SVG: {author}/{icon_id}.svg")
+
+        if not (ICON_ASSETS / "license.txt").is_file():
+            failures.append("missing published icon license: assets/icons/license.txt")
+
+        for entry in ICON_ASSETS.iterdir():
+            if entry.is_symlink() or (
+                entry.is_file() and entry.name not in PUBLISHED_ICON_FILES
+            ):
+                failures.append(
+                    f"build-only asset published: assets/icons/{entry.name}"
+                )
+            elif entry.is_dir() and entry.name.startswith((".", "_")):
+                failures.append(
+                    f"build-only asset published: assets/icons/{entry.name}/"
+                )
 
     icons = list((PUBLIC / "1x1").glob("*/*.html"))
     tags = list((PUBLIC / "tags").glob("*.html"))

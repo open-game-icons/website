@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Move generated Zola pages from pretty URLs to the site's legacy .html URLs.
+"""Post-process the Zola build.
 
 Zola always writes a page to <path>/index.html, even when the path ends in
 .html. The existing site (and Game-icons.net compatibility) uses paths like
 /1x1/lorc/sword.html, so we move only the generated icon and tag pages after
 the build. Static files, About, the home page, and 404 are left alone.
+
+Zola also copies the entire icon subrepo from static/assets/icons. Only the
+SVG directories and license.txt belong on the site, so the database, SQL,
+scripts, and docs are pruned from the output here.
 """
 
 from __future__ import annotations
@@ -17,6 +21,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 ROUTES = ROOT / "data/generated/routes.json"
+ICONS = PUBLIC / "assets/icons"
+PUBLISHED_ICON_FILES = {"license.txt"}
 
 
 def move_page(source: Path, destination: Path) -> None:
@@ -25,6 +31,39 @@ def move_page(source: Path, destination: Path) -> None:
     if destination.exists():
         raise FileExistsError(f"refusing to overwrite: {destination}")
     shutil.move(source, destination)
+
+
+def prune_icon_helpers() -> tuple[int, int]:
+    """Remove build-only files copied from static/assets/icons.
+
+    Keep the author/badge SVG directories and license.txt. Everything else at
+    the top level is a database, SQL dump, script, or documentation file that
+    does not belong on the site.
+    """
+    if not ICONS.is_dir():
+        raise FileNotFoundError(f"expected icon output directory is missing: {ICONS}")
+
+    removed = 0
+    removed_bytes = 0
+
+    for entry in ICONS.iterdir():
+        if entry.is_symlink():
+            removed_bytes += entry.lstat().st_size
+            entry.unlink()
+            removed += 1
+        elif entry.is_dir():
+            if entry.name.startswith((".", "_")):
+                removed_bytes += sum(
+                    path.stat().st_size for path in entry.rglob("*") if path.is_file()
+                )
+                shutil.rmtree(entry)
+                removed += 1
+        elif entry.name not in PUBLISHED_ICON_FILES:
+            removed_bytes += entry.stat().st_size
+            entry.unlink()
+            removed += 1
+
+    return removed, removed_bytes
 
 
 def main() -> int:
@@ -46,10 +85,7 @@ def main() -> int:
     (PUBLIC / "robots.txt").unlink(missing_ok=True)
     (PUBLIC / "sitemap.xml").unlink(missing_ok=True)
 
-    # Static copies include dotfiles; these are repository metadata, not site
-    # content.
-    (PUBLIC / "assets/icons/.gitrepo").unlink(missing_ok=True)
-    (PUBLIC / "assets/icons/.gitignore").unlink(missing_ok=True)
+    removed, removed_bytes = prune_icon_helpers()
 
     # Remove the now-empty author directories.
     for author_dir in (PUBLIC / "1x1").iterdir():
@@ -60,6 +96,11 @@ def main() -> int:
         f"Flattened {len(routes['icons'])} icon pages and "
         f"{len(routes['tags'])} tag pages to .html URLs."
     )
+    if removed:
+        print(
+            f"Removed {removed} build-only icon asset(s) "
+            f"({removed_bytes / 1024 / 1024:.1f} MiB) from the output."
+        )
     return 0
 
 
