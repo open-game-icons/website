@@ -28,7 +28,11 @@
   },
   "excludes": [
     "**/*-lock.json",
-    "*.svg"
+    "*.svg",
+    // The icon subrepo and its generated static staging tree have their own
+    // formatting workflow.
+    "icons/**",
+    "static/assets/icons/**"
   ],
   // https://dprint.dev/plugins/
   "plugins": [

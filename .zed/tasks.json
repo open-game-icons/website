@@ -22,7 +22,7 @@
   },
   {
     "label": "rebuild db",
-    "command": "(cd static/assets/icons && ./rebuild_db.sh)",
+    "command": "(cd icons && ./rebuild_db.sh)",
   },
   {
     "label": "clean",

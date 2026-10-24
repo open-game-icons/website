@@ -3,6 +3,7 @@ public
 content/generated
 data/generated
 static/search-index.json
+static/assets/icons/
 
 # Generated icon database
 *.db

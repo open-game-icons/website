@@ -19,10 +19,10 @@ Preview the built output with local URLs:
 just serve
 ```
 
-`just serve` builds with `http://127.0.0.1:8000` as the base URL, runs the post-build cleanup, and serves `public/` without live reload.
+`just serve` builds with `http://127.0.0.1:8000` as the base URL and serves `public/` without live reload.
 That keeps the legacy `.html` alias redirects pointing at the local server.
 Use `just serve 8080` to choose another port.
-`zola serve` is available for live template iteration.
+`zola serve` is available for live template iteration; run `just generate` first if the generated files are missing.
 
 Canonical pages use Zola's pretty URLs:
 
@@ -32,14 +32,14 @@ Canonical pages use Zola's pretty URLs:
 The old `.html` paths remain valid as Zola aliases, so URLs copied from Game-icons.net still resolve.
 These aliases are client-side redirects (JavaScript with a meta-refresh fallback), not HTTP 301s.
 
-The build publishes only the icon SVGs and license files from the icon subrepo; the SQLite database, SQL dump, scripts, and docs are pruned from `public/`.
+The generator symlinks only the icon SVG directories and license files from `icons/` into `static/assets/icons`; the SQLite database, SQL dump, scripts, and docs are never published.
 
 Other commands:
 
 ```sh
 just fmt       # format code and Tera templates
-just db        # regenerate database (static/assets/icons/icons.db)
-just generate  # regenerate content, data, and the search index
+just db        # regenerate database (icons/icons.db)
+just generate  # regenerate content, data, search index, and static icon staging
 just check     # build and validate pages, aliases, and internal links
 just clean     # remove build output and generated source files
 ```
@@ -49,5 +49,5 @@ Formatting Tera templates with `just fmt` requires [dprint](https://dprint.dev/)
 ## License
 
 - Code: [AGPLv3](static/LICENSE.txt)
-- Metadata: [CC0](static/assets/icons/METADATA_LICENSE.txt)
-- Icons: see [static/assets/icons/license.txt](static/assets/icons/license.txt)
+- Metadata: [CC0](icons/METADATA_LICENSE.txt)
+- Icons: see [icons/license.txt](icons/license.txt)

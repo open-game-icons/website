@@ -12,7 +12,7 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
-DB_PATH = ROOT / "static/assets/icons/icons.db"
+DB_PATH = ROOT / "icons/icons.db"
 ICON_ASSETS = PUBLIC / "assets/icons"
 PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 

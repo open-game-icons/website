@@ -36,16 +36,13 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Build Database
-        run: (cd static/assets/icons && ./rebuild_db.sh)
+        run: (cd icons && ./rebuild_db.sh)
 
       - name: Generate Content
         run: python3 scripts/generate.py
 
       - name: Build with Zola
         run: zola build
-
-      - name: Post-process Build
-        run: python3 scripts/post_build.py
 
       - name: Check output
         run: python3 scripts/check.py

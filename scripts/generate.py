@@ -4,9 +4,13 @@
 This replaces the jekyll-sqlite plugin and _plugins/data_mapper.rb. Zola has
 no database plugin and no dynamic routes, so every icon and tag page needs a
 small content stub. The stubs, lookup tables, and client-side search index are
-all derived from static/assets/icons/icons.db. Each stub also declares the
-legacy .html path as a Zola alias, which produces the redirect files used by
-incoming Game-icons.net-compatible URLs.
+all derived from icons/icons.db. Each stub also declares the legacy .html path
+as a Zola alias, which produces the redirect files used by incoming
+Game-icons.net-compatible URLs.
+
+The publish-only static view of the icon subrepo is regenerated here too:
+static/assets/icons contains symlinks to the SVG directories and license files,
+so Zola never sees the database, SQL dump, scripts, or docs.
 
 Run this before `zola build` whenever icons.sql changes.
 """
@@ -14,6 +18,7 @@ Run this before `zola build` whenever icons.sql changes.
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import sqlite3
@@ -21,10 +26,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DB_PATH = ROOT / "static/assets/icons/icons.db"
+ICONS_DIR = ROOT / "icons"
+STATIC_ICONS_DIR = ROOT / "static/assets/icons"
+DB_PATH = ICONS_DIR / "icons.db"
 CONTENT_DIR = ROOT / "content/generated"
 DATA_DIR = ROOT / "data/generated"
 SEARCH_INDEX_PATH = ROOT / "static/search-index.json"
+PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 
 # These queries mirror _config.yml. Keep the lack of ORDER BY where the
 # original query had none: the generated output currently preserves SQLite's
@@ -144,6 +152,37 @@ def build_search_index(rows: list[sqlite3.Row]) -> dict[str, list[str]]:
         lookup[key] = sorted(set(words))
 
     return lookup
+
+
+def stage_static_icons() -> int:
+    """Create the publish-only static view of the icon subrepo.
+
+    Zola copies everything under static/, so stage symlinks only for the
+    author/badge SVG directories and license files. Zola follows symlinks and
+    writes regular files into public/, which also keeps `zola serve` accurate
+    without a post-build pruning step.
+    """
+    if STATIC_ICONS_DIR.is_symlink() or STATIC_ICONS_DIR.is_file():
+        STATIC_ICONS_DIR.unlink()
+    elif STATIC_ICONS_DIR.exists():
+        shutil.rmtree(STATIC_ICONS_DIR)
+    STATIC_ICONS_DIR.mkdir(parents=True)
+
+    staged = 0
+    for entry in sorted(ICONS_DIR.iterdir()):
+        if entry.is_dir():
+            if entry.name.startswith((".", "_")):
+                continue
+        elif entry.name not in PUBLISHED_ICON_FILES:
+            continue
+
+        target = os.path.relpath(entry, STATIC_ICONS_DIR)
+        (STATIC_ICONS_DIR / entry.name).symlink_to(
+            target, target_is_directory=entry.is_dir()
+        )
+        staged += 1
+
+    return staged
 
 
 def main() -> int:
@@ -275,9 +314,12 @@ related_tags = {toml_array(related_tags[row["id"]])}
     SEARCH_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
     write_json(SEARCH_INDEX_PATH, build_search_index(search_rows))
 
+    staged = stage_static_icons()
+
     print(
         f"Generated {len(icon_rows)} icon pages, {len(tag_page_rows)} tag pages, "
-        f"and {len(search_rows)} search index entries."
+        f"{len(search_rows)} search index entries, and {staged} staged icon "
+        f"asset entries."
     )
     return 0
 

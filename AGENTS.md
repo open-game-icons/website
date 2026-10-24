@@ -10,23 +10,25 @@ Dependencies:
 - `just` (recommended for convenience)
 - `dprint` and `uv` (optional; `uvx` runs djLint for template formatting)
 
-Build the site with `just build` (includes DB and content stub regeneration, and post-build cleanup; fast).
+Build the site with `just build` (includes DB and content stub regeneration; fast).
+There is no post-build pruning step: `zola serve` reads the same generated static
+staging tree as the production build, so run `just generate` first if
+`static/assets/icons/` is missing.
 
 ## Architecture
 
 - `templates/`: Tera templates (`base.html`, `index.html`, `page.html`, `icon.html`, `tag_page.html`, `404.html`, `partials/`)
-- `static/`: copied to `public/`; `scripts/post_build.py` prunes build-only files after the build
-  - `static/assets/icons/`: subrepo (`man 1 git-subrepo`) containing icon SVGs; only the SVG directories and license files are published
-  - `static/assets/icons/icons.db`: SQLite DB of icon metadata, built from `static/assets/icons/icons.sql`; source only, not published
-    - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
+- `static/`: copied to `public/`
+  - `static/assets/icons/`: generated staging directory (gitignored) containing symlinks to the publishable icon assets; Zola follows the symlinks and copies regular files into `public/`
   - `static/assets/js/search.js`: client-side search (filters icon grid by keyword match)
+- `icons/`: subrepo (`man 1 git-subrepo`) containing the icon SVGs and source files
+  - `icons/icons.db`: SQLite DB of icon metadata, built from `icons/icons.sql`; source only, not published
+    - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
 - `scripts/generate.py`
   - Generates content stubs in `content/generated/` and lookup data in `data/generated/`
   - Generates `static/search-index.json` for the client-side search
   - Declares legacy `.html` URLs as Zola aliases on each generated page
-- `scripts/post_build.py`: post-processes the build
-  - Removes the icon DB, `icons.sql`, shell scripts, docs, and SVGO config copied from `static/assets/icons`
-  - Does not move generated pages; canonical pages and aliases are produced by Zola
+  - Rebuilds `static/assets/icons` with symlinks to the SVG directories and license files
 - `scripts/check.py`: validates built page counts, aliases, search entries, and internal links
 
 Canonical URLs are Zola's pretty routes:
@@ -39,7 +41,8 @@ are Zola aliases: small client-side redirect files, not HTTP 301s. Internal
 links use the canonical pretty URLs. The redirect target is built from
 `base_url`; `just serve` builds with a local base URL so aliases work locally.
 
-Generated paths (`public/`, `content/generated/`, `data/generated/`, `static/search-index.json`) are gitignored.
+Generated paths (`public/`, `content/generated/`, `data/generated/`,
+`static/search-index.json`, `static/assets/icons/`) are gitignored.
 
 ## Cleanup and validation
 
