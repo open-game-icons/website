@@ -1,0 +1,10 @@
+{% set tag_info = load_data(path="data/generated/tag_info.json") %}
+<div class="tags center">
+  {%- for tag in tags -%}
+    {%- set t = tag_info[tag] -%}
+    {%- if not t.parent-%}<strong>{%- endif -%}
+    <a class="tag" href="/tags/{{ tag }}.html"
+      >{{ t.name | default(value=tag) }}</a>
+    {%- if not t.parent -%}</strong>{%- endif -%}
+  {%- endfor -%}
+</div>

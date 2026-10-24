@@ -1,27 +1,31 @@
 // Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
 [
-	{
-		"label": "jekyll serve",
-		"command": "bundle exec jekyll serve",
-		"save": "all",
-	},
-	{
-		"label": "jekyll serve (production)",
-		"command": "bundle exec jekyll serve",
-		"env": { "JEKYLL_ENV": "production" },
-		"save": "all",
-	},
-	{
-		"label": "jekyll profile",
-		"command": "bundle exec jekyll build --profile",
-		"save": "all",
-	},
-	{
-		"label": "rebuild db",
-		"command": "rm -f _db/icons.db && sqlite3 _db/icons.db < _db/icons.sql",
-	},
-	{
-		"label": "clean",
-		"command": "rm -rf _site",
-	},
+  {
+    "label": "build",
+    "command": "just build",
+    "save": "all",
+  },
+  {
+    "label": "serve (built output)",
+    "command": "just serve",
+    "save": "all",
+  },
+  {
+    "label": "zola serve (pretty URLs, dev only)",
+    "command": "just generate && zola serve",
+    "save": "all",
+  },
+  {
+    "label": "check",
+    "command": "just check",
+    "save": "all",
+  },
+  {
+    "label": "rebuild db",
+    "command": "(cd assets/icons && ./rebuild_db.sh)",
+  },
+  {
+    "label": "clean",
+    "command": "just clean",
+  },
 ]

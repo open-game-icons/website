@@ -1,9 +1,12 @@
-# Jekyll default ignores
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
+# Zola build output and generated source files
+public
+content/generated
+data/generated
+static/search-index.json
 
-# Site-specific ignores
+# Generated icon database
 *.db
+
+# Python bytecode
+__pycache__/
+*.pyc

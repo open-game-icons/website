@@ -1,0 +1,35 @@
+{% extends "page.html" %}
+{% block content %}
+<div class="icon-page">
+  <h1>{{ page.title }}</h1>
+
+  <p>
+    by {% if page.extra.author_link %}<a href="{{ page.extra.author_link }}"
+    >{{ page.extra.author_name }}</a>{% else %}{{ page.extra.author_name }}{% endif %}
+    under <a href="{{ page.extra.license_link }}">{{ page.extra.license_name }}</a>
+  </p>
+
+  {% set tags = page.extra.tags %}
+  {% include "partials/tag_links.html" %}
+
+  <img
+    class="icon"
+    src="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
+    alt="{{ page.title }}"
+  >
+
+  <p>
+    <a
+      class="button"
+      href="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
+      download="{{ page.extra.icon_id }}.svg"
+    >Download</a>
+  </p>
+
+  <p class="external-link">
+    <a
+      href="https://game-icons.net/1x1/{{ page.extra.author }}/{{ page.extra.icon_id }}.html"
+    >View on Game-icons.net</a>
+  </p>
+</div>
+{% endblock %}
