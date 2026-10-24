@@ -37,10 +37,11 @@ I'm a big fan of this icon collection, and while I may not necessarily have the 
 ## Where's the studio? {#wheres-the-studio}
 
 Game-icons.net includes a suite of icon editing features known as the "Studio", but I have not gotten around to implementing an equivalent editor for Open Game Icons yet.
+This is currently tracked as an open issue on GitHub: [open-game-icons/website#1](https://github.com/open-game-icons/website/issues/1).
+PRs are welcome!
+
 Personally, I always just grab the SVGs and edit/export them in [Inkscape](https://inkscape.org/) as needed, so I never really touch the studio myself.
 If you normally depend on the studio, I suggest you give the Inkscape workflow a try!
-
-That being said, since this site is [open source](https://github.com/open-game-icons/website), I would welcome anyone who wants to contribute icon editing functionality to it!
 
 ## What license does this site use?
 
