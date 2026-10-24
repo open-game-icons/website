@@ -7,13 +7,7 @@ For more about this project, see the [About](content/about.md) page.
 
 This site is built with [Zola](https://www.getzola.org/) 0.23.6 and uses [just](https://just.systems/) for convenience commands.
 
-Build the database (rerun this whenever `static/assets/icons/icons.sql` changes):
-
-```sh
-just db
-```
-
-Generate the icon/tag content and build the site:
+Rebuild the icon database, generate the icon/tag content, and build the site:
 
 ```sh
 just build
@@ -34,6 +28,7 @@ Other commands:
 
 ```sh
 just fmt       # format code and Tera templates
+just db        # regenerate database (static/assets/icons/icons.db)
 just generate  # regenerate content, data, and the search index
 just check     # build and validate page counts and internal links
 just clean     # remove build output and generated source files

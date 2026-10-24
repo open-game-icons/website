@@ -10,13 +10,7 @@ Dependencies:
 - `just` (recommended for convenience)
 - `dprint` and `uv` (optional; `uvx` runs djLint for template formatting)
 
-```sh
-just db # rerun if icons.sql changes
-just build
-```
-
-`just build` runs `scripts/generate.py`, then `zola build`, then `scripts/post_build.py`.
-`just serve` builds and serves `public/`; `zola serve` alone uses pretty URLs and should only be used for template iteration.
+Build the site with `just build` (includes DB and content stub regeneration, and post-build cleanup; fast).
 
 ## Architecture
 

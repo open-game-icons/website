@@ -10,7 +10,7 @@ db:
     (cd static/assets/icons && ./rebuild_db.sh)
 
 # Generate Zola content, data, and the search index from icons.db
-generate:
+generate: db
     python3 scripts/generate.py
 
 # Build the site and post-process the output
