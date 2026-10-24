@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 DB_PATH = ROOT / "static/assets/icons/icons.db"
 ICON_ASSETS = PUBLIC / "assets/icons"
-PUBLISHED_ICON_FILES = {"license.txt"}
+PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 
 
 class LinkParser(HTMLParser):
@@ -78,8 +78,9 @@ def main() -> int:
             if not (ICON_ASSETS / author / f"{icon_id}.svg").is_file():
                 failures.append(f"missing icon SVG: {author}/{icon_id}.svg")
 
-        if not (ICON_ASSETS / "license.txt").is_file():
-            failures.append("missing published icon license: assets/icons/license.txt")
+        for entry in PUBLISHED_ICON_FILES:
+            if not (ICON_ASSETS / entry).is_file():
+                failures.append(f"missing published icon file: assets/icons/{entry}")
 
         for entry in ICON_ASSETS.iterdir():
             if entry.is_symlink() or (

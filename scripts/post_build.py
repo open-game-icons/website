@@ -7,8 +7,8 @@ Zola always writes a page to <path>/index.html, even when the path ends in
 the build. Static files, About, the home page, and 404 are left alone.
 
 Zola also copies the entire icon subrepo from static/assets/icons. Only the
-SVG directories and license.txt belong on the site, so the database, SQL,
-scripts, and docs are pruned from the output here.
+SVG directories and licenses belong on the site, so the database, SQL, scripts,
+and docs are pruned from the output here.
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 ROUTES = ROOT / "data/generated/routes.json"
 ICONS = PUBLIC / "assets/icons"
-PUBLISHED_ICON_FILES = {"license.txt"}
+PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 
 
 def move_page(source: Path, destination: Path) -> None:
@@ -36,9 +36,9 @@ def move_page(source: Path, destination: Path) -> None:
 def prune_icon_helpers() -> tuple[int, int]:
     """Remove build-only files copied from static/assets/icons.
 
-    Keep the author/badge SVG directories and license.txt. Everything else at
-    the top level is a database, SQL dump, script, or documentation file that
-    does not belong on the site.
+    Keep the author/badge SVG directories and licenses. Everything else at the
+    top level is a database, SQL dump, script, or documentation file that does
+    not belong on the site.
     """
     if not ICONS.is_dir():
         raise FileNotFoundError(f"expected icon output directory is missing: {ICONS}")

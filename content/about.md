@@ -45,7 +45,7 @@ That being said, since this site is [open source](https://github.com/open-game-i
 ## What license does this site use?
 
 - The [code for the website](https://github.com/open-game-icons/website) is licensed under the [GNU Affero General Public License Version 3.0](/LICENSE.txt).
-- To the best of my knowledge, the icon metadata used by this site is not copyrightable, but to what extent it is, it is released into the public domain under the terms of the [CC0 1.0 Universal](/METADATA_LICENSE.txt) license.
+- To the best of my knowledge, the icon metadata used by this site is not copyrightable, but to what extent it is, it is released into the public domain under the terms of the [CC0 1.0 Universal](/assets/icons/METADATA_LICENSE.txt) license.
 - Each icon has its own license listed on its respective page.
 
 ## How do I contribute an icon?

@@ -41,5 +41,5 @@ just clean     # remove build output and generated source files
 ## License
 
 - Code: [AGPLv3](static/LICENSE.txt)
-- Metadata: [CC0](static/METADATA_LICENSE.txt)
+- Metadata: [CC0](static/assets/icons/METADATA_LICENSE.txt)
 - Icons: see [static/assets/icons/license.txt](static/assets/icons/license.txt)
