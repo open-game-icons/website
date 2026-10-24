@@ -3,8 +3,10 @@
 
 This replaces the jekyll-sqlite plugin and _plugins/data_mapper.rb. Zola has
 no database plugin and no dynamic routes, so every icon and tag page needs a
-small content stub. The stubs, lookup tables, route manifest, and client-side
-search index are all derived from static/assets/icons/icons.db.
+small content stub. The stubs, lookup tables, and client-side search index are
+all derived from static/assets/icons/icons.db. Each stub also declares the
+legacy .html path as a Zola alias, which produces the redirect files used by
+incoming Game-icons.net-compatible URLs.
 
 Run this before `zola build` whenever icons.sql changes.
 """
@@ -232,6 +234,7 @@ def main() -> int:
 title = {toml_string(row["title"])}
 template = "icon.html"
 path = {toml_string(f"1x1/{row['author']}/{row['icon_id']}")}
+aliases = {toml_array([f"/1x1/{row['author']}/{row['icon_id']}.html"])}
 
 [extra]
 author = {toml_string(row["author"])}
@@ -250,6 +253,7 @@ tags = {toml_array(tags)}
 title = {toml_string(row["name"])}
 template = "tag_page.html"
 path = {toml_string(f"tags/{row['id']}")}
+aliases = {toml_array([f"/tags/{row['id']}.html"])}
 
 [extra]
 slug = {toml_string(row["id"])}
@@ -267,16 +271,6 @@ related_tags = {toml_array(related_tags[row["id"]])}
     write_json(DATA_DIR / "tag_ids.json", tag_ids)
     write_json(DATA_DIR / "tag_icons.json", tag_icons)
     write_json(DATA_DIR / "icons.json", icons)
-    write_json(
-        DATA_DIR / "routes.json",
-        {
-            "icons": [
-                {"author": row["author"], "icon_id": row["icon_id"]}
-                for row in icon_rows
-            ],
-            "tags": [row["id"] for row in tag_page_rows],
-        },
-    )
 
     SEARCH_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
     write_json(SEARCH_INDEX_PATH, build_search_index(search_rows))

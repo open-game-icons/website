@@ -11,7 +11,7 @@
     "save": "all",
   },
   {
-    "label": "zola serve (pretty URLs, dev only)",
+    "label": "zola serve (live reload)",
     "command": "just generate && zola serve",
     "save": "all",
   },

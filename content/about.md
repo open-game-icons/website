@@ -110,7 +110,7 @@ I'll also note that, to the best of my knowledge, none of the icons on this site
 
 ## What's the icon used as the site logo?
 
-[Self Love](/1x1/skoll/console-controller.html) by [Lorc](http://lorcblog.blogspot.com/), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/deed.en). ♥
+[Self Love](/1x1/skoll/console-controller/) by [Lorc](http://lorcblog.blogspot.com/), licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/deed.en). ♥
 
 ## Who are you?
 

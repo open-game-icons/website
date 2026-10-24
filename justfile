@@ -18,9 +18,11 @@ build: generate
     zola build
     python3 scripts/post_build.py
 
-# Build, post-process, and serve the actual output (no live reload)
-serve: build
-    python3 -m http.server -d public
+# Build with a local base URL, post-process, and serve (no live reload)
+serve port="8000": generate
+    zola build --base-url "http://127.0.0.1:{{ port }}"
+    python3 scripts/post_build.py
+    python3 -m http.server {{ port }} -d public
 
 # Build and verify the generated page counts and internal links
 check: build

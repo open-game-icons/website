@@ -60,12 +60,13 @@ def main() -> int:
 
     connection = sqlite3.connect(DB_PATH)
     icon_rows = connection.execute("SELECT author, id FROM icons").fetchall()
-    icon_count = len(icon_rows)
-    tag_count = connection.execute(
-        "SELECT count(*) FROM (SELECT t.id FROM tags t JOIN icon_tags it ON t.id = it.tag "
-        "GROUP BY t.id HAVING count(*) > 1)"
-    ).fetchone()[0]
+    tag_rows = connection.execute(
+        "SELECT t.id FROM tags t JOIN icon_tags it ON t.id = it.tag "
+        "GROUP BY t.id HAVING count(*) > 1"
+    ).fetchall()
     connection.close()
+    icon_count = len(icon_rows)
+    tag_count = len(tag_rows)
 
     failures: list[str] = []
 
@@ -94,12 +95,34 @@ def main() -> int:
                     f"build-only asset published: assets/icons/{entry.name}/"
                 )
 
-    icons = list((PUBLIC / "1x1").glob("*/*.html"))
-    tags = list((PUBLIC / "tags").glob("*.html"))
+    icons = list((PUBLIC / "1x1").glob("*/*/index.html"))
+    tags = list((PUBLIC / "tags").glob("*/index.html"))
     if len(icons) != icon_count:
         failures.append(f"expected {icon_count} icon pages, found {len(icons)}")
     if len(tags) != tag_count:
         failures.append(f"expected {tag_count} tag pages, found {len(tags)}")
+
+    # Every generated page should also have a legacy .html alias pointing at
+    # its canonical pretty URL.
+    for author, icon_id in icon_rows:
+        canonical = PUBLIC / "1x1" / author / icon_id / "index.html"
+        alias = PUBLIC / "1x1" / author / f"{icon_id}.html"
+        if not canonical.is_file():
+            failures.append(f"missing icon page: 1x1/{author}/{icon_id}/")
+        if not alias.is_file():
+            failures.append(f"missing icon alias: 1x1/{author}/{icon_id}.html")
+        elif f"/1x1/{author}/{icon_id}/" not in alias.read_text(encoding="utf-8"):
+            failures.append(f"icon alias does not point to canonical URL: {alias}")
+
+    for (tag_id,) in tag_rows:
+        canonical = PUBLIC / "tags" / tag_id / "index.html"
+        alias = PUBLIC / "tags" / f"{tag_id}.html"
+        if not canonical.is_file():
+            failures.append(f"missing tag page: tags/{tag_id}/")
+        if not alias.is_file():
+            failures.append(f"missing tag alias: tags/{tag_id}.html")
+        elif f"/tags/{tag_id}/" not in alias.read_text(encoding="utf-8"):
+            failures.append(f"tag alias does not point to canonical URL: {alias}")
 
     search_index = json.loads(
         (PUBLIC / "search-index.json").read_text(encoding="utf-8")
@@ -127,7 +150,8 @@ def main() -> int:
         return 1
 
     print(
-        f"Checks OK: {len(icons)} icon pages, {len(tags)} tag pages, "
+        f"Checks OK: {len(icons)} icon pages (+ aliases), "
+        f"{len(tags)} tag pages (+ aliases), "
         f"{len(search_index)} search entries, {checked} internal links."
     )
     return 0

@@ -13,16 +13,26 @@ Rebuild the icon database, generate the icon/tag content, and build the site:
 just build
 ```
 
-Preview the actual built output:
+Preview the built output with local URLs:
 
 ```sh
 just serve
 ```
 
-The build publishes only the icon SVGs and `license.txt` from the icon subrepo; the SQLite database, SQL dump, scripts, and docs are pruned from `public/`.
+`just serve` builds with `http://127.0.0.1:8000` as the base URL, runs the post-build cleanup, and serves `public/` without live reload.
+That keeps the legacy `.html` alias redirects pointing at the local server.
+Use `just serve 8080` to choose another port.
+`zola serve` is available for live template iteration.
 
-`just serve` builds `public/` and serves it without live reload.
-`zola serve` can be used while iterating on templates, but it uses Zola's pretty URL layout; the site's public `.html` URLs only exist after `scripts/post_build.py` runs.
+Canonical pages use Zola's pretty URLs:
+
+- `/1x1/{author}/{icon_id}/`
+- `/tags/{tag_id}/`
+
+The old `.html` paths remain valid as Zola aliases, so URLs copied from Game-icons.net still resolve.
+These aliases are client-side redirects (JavaScript with a meta-refresh fallback), not HTTP 301s.
+
+The build publishes only the icon SVGs and license files from the icon subrepo; the SQLite database, SQL dump, scripts, and docs are pruned from `public/`.
 
 Other commands:
 
@@ -30,7 +40,7 @@ Other commands:
 just fmt       # format code and Tera templates
 just db        # regenerate database (static/assets/icons/icons.db)
 just generate  # regenerate content, data, and the search index
-just check     # build and validate page counts and internal links
+just check     # build and validate pages, aliases, and internal links
 just clean     # remove build output and generated source files
 ```
 
