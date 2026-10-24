@@ -7,6 +7,6 @@
 	remote = git@github.com:open-game-icons/icons.git
 	branch = master
 	commit = 23154a2d407459c459b2cdf507e8aeaaa369a257
-	parent = 9dfee00b642503e1c15ebe51bd5188e1f527be3e
+	parent = ab66dc6d4cfbe17fada12f35d751152289d486e2
 	method = rebase
 	cmdver = 0.4.9
