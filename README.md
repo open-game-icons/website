@@ -8,7 +8,7 @@ For more about this project, see the [About](content/about.md) page.
 This site is built with [Zola](https://www.getzola.org/) 0.23.6 with additional generator scripts that require Python 3.11+.
 [just](https://just.systems/) is used as a command runner for convenience.
 
-Rebuild the icon database, generate the icon/tag content, and build the site:
+Rebuild the icon database, generate the icon, author, and tag content, and build the site:
 
 ```sh
 just build
@@ -27,6 +27,7 @@ Use `just serve 8080` to choose another port.
 Canonical pages use Zola's pretty URLs:
 
 - `/1x1/{author}/{icon_id}/`
+- `/1x1/{author}/`
 - `/tags/{tag_id}/`
 
 The old `.html` paths remain valid as Zola aliases, so URLs copied from Game-icons.net still resolve.

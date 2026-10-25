@@ -83,12 +83,14 @@ def main() -> int:
 
     connection = sqlite3.connect(DB_PATH)
     icon_rows = connection.execute("SELECT author, id FROM icons").fetchall()
+    author_rows = connection.execute("SELECT id FROM authors").fetchall()
     tag_rows = connection.execute(
         "SELECT t.id FROM tags t JOIN icon_tags it ON t.id = it.tag "
         "GROUP BY t.id HAVING count(*) > 1"
     ).fetchall()
     connection.close()
     icon_count = len(icon_rows)
+    author_count = len(author_rows)
     tag_count = len(tag_rows)
 
     failures: list[str] = []
@@ -119,9 +121,14 @@ def main() -> int:
                 )
 
     icons = list((PUBLIC / "1x1").glob("*/*/index.html"))
+    author_pages = list((PUBLIC / "1x1").glob("*/index.html"))
     tags = list((PUBLIC / "tags").glob("*/index.html"))
     if len(icons) != icon_count:
         failures.append(f"expected {icon_count} icon pages, found {len(icons)}")
+    if len(author_pages) != author_count:
+        failures.append(
+            f"expected {author_count} author pages, found {len(author_pages)}"
+        )
     if len(tags) != tag_count:
         failures.append(f"expected {tag_count} tag pages, found {len(tags)}")
 
@@ -136,6 +143,11 @@ def main() -> int:
             failures.append(f"missing icon alias: 1x1/{author}/{icon_id}.html")
         elif f"/1x1/{author}/{icon_id}/" not in alias.read_text(encoding="utf-8"):
             failures.append(f"icon alias does not point to canonical URL: {alias}")
+
+    for (author,) in author_rows:
+        canonical = PUBLIC / "1x1" / author / "index.html"
+        if not canonical.is_file():
+            failures.append(f"missing author page: 1x1/{author}/")
 
     for (tag_id,) in tag_rows:
         canonical = PUBLIC / "tags" / tag_id / "index.html"
@@ -208,6 +220,7 @@ def main() -> int:
 
     print(
         f"Checks OK: {len(icons)} icon pages (+ aliases), "
+        f"{len(author_pages)} author pages, "
         f"{len(tags)} tag pages (+ aliases), "
         f"{len(search_index)} search entries, {checked} internal links."
     )

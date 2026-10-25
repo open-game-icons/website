@@ -5,11 +5,7 @@
 
     <p>
       by
-      {% if page.extra.author_link %}
-        <a href="{{ page.extra.author_link }}">{{ page.extra.author_name }}</a>
-      {% else %}
-        {{ page.extra.author_name }}
-      {% endif %}
+      <a href="/1x1/{{ page.extra.author }}/">{{ page.extra.author_name }}</a>
       under <a href="{{ page.extra.license_link }}">{{ page.extra.license_name }}</a>
     </p>
 

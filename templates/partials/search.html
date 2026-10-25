@@ -2,6 +2,6 @@
        id="icon-search"
        class="icon-search center"
        placeholder="Search..."
-       aria-label="Search icons and tags"
+       aria-label="{{ search_label | default(value='Search icons and tags') }}"
        hidden />
 <script defer src="/assets/js/search.js"></script>

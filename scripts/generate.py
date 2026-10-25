@@ -2,11 +2,11 @@
 """Generate Zola content and data from the icon SQLite database.
 
 This replaces the jekyll-sqlite plugin and _plugins/data_mapper.rb. Zola has
-no database plugin and no dynamic routes, so every icon and tag page needs a
-small content stub. The stubs, lookup tables, and client-side search index are
-all derived from icons/icons.db. Each stub also declares the legacy .html path
-as a Zola alias, which produces the redirect files used by incoming
-Game-icons.net-compatible URLs.
+no database plugin and no dynamic routes, so every icon, author, and tag page
+needs a small content stub. The stubs, lookup tables, and client-side search
+index are all derived from icons/icons.db. Each icon and tag stub also declares
+the legacy .html path as a Zola alias, which produces the redirect files used
+by incoming Game-icons.net-compatible URLs.
 
 The publish-only static view of the icon subrepo is regenerated here too:
 static/assets/icons contains symlinks to the SVG directories and license files,
@@ -53,6 +53,14 @@ ICON_QUERY = """
   LEFT JOIN icon_tags it ON i.author = it.author AND i.id = it.id
   GROUP BY i.author, i.id
   ORDER BY i.name, i.id
+"""
+
+AUTHOR_QUERY = """
+  SELECT
+    a.id,
+    a.name,
+    a.link
+  FROM authors a
 """
 
 TAG_PAGE_QUERY = """
@@ -208,6 +216,7 @@ def main() -> int:
     connection.row_factory = sqlite3.Row
 
     icon_rows = connection.execute(ICON_QUERY).fetchall()
+    author_rows = connection.execute(AUTHOR_QUERY).fetchall()
     tag_page_rows = connection.execute(TAG_PAGE_QUERY).fetchall()
     tag_info_rows = connection.execute(TAG_INFO_QUERY).fetchall()
     tag_icon_rows = connection.execute(TAG_ICONS_QUERY).fetchall()
@@ -217,6 +226,9 @@ def main() -> int:
     for row in icon_rows:
         if not SAFE_ID.match(row["author"]) or not SAFE_ID.match(row["icon_id"]):
             raise ValueError(f"unsafe icon id: {row['author']}/{row['icon_id']}")
+    for row in author_rows:
+        if not SAFE_ID.match(row["id"]):
+            raise ValueError(f"unsafe author id: {row['id']}")
     for row in tag_info_rows:
         if not SAFE_ID.match(row["id"]):
             raise ValueError(f"unsafe tag id: {row['id']}")
@@ -255,6 +267,16 @@ def main() -> int:
     tag_icons: dict[str, list[dict]] = {}
     for row in tag_icon_rows:
         tag_icons.setdefault(row["tag"], []).append(
+            {
+                "author": row["author"],
+                "icon_id": row["icon_id"],
+                "title": row["title"],
+            }
+        )
+
+    author_icons: dict[str, list[dict]] = {row["id"]: [] for row in author_rows}
+    for row in icon_rows:
+        author_icons[row["author"]].append(
             {
                 "author": row["author"],
                 "icon_id": row["icon_id"],
@@ -314,6 +336,20 @@ tags = {toml_array(tags)}
 """
         (CONTENT_DIR / filename).write_text(content, encoding="utf-8")
 
+    for row in author_rows:
+        content = f"""+++
+title = {toml_string(row["name"])}
+template = "author_page.html"
+path = {toml_string(f"1x1/{row['id']}")}
+
+[extra]
+slug = {toml_string(row["id"])}
+list_name = {toml_string(row["name"])}
+author_link = {toml_string(row["link"] or "")}
++++
+"""
+        (CONTENT_DIR / f"author--{row['id']}.md").write_text(content, encoding="utf-8")
+
     for row in tag_page_rows:
         content = f"""+++
 title = {toml_string(row["name"])}
@@ -336,6 +372,7 @@ related_tags = {toml_array(related_tags[row["id"]])}
     write_json(DATA_DIR / "tag_info.json", tag_info)
     write_json(DATA_DIR / "tag_ids.json", tag_ids)
     write_json(DATA_DIR / "tag_icons.json", tag_icons)
+    write_json(DATA_DIR / "author_icons.json", author_icons)
     write_json(DATA_DIR / "icons.json", icons)
 
     SEARCH_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -344,9 +381,9 @@ related_tags = {toml_array(related_tags[row["id"]])}
     staged = stage_static_icons()
 
     print(
-        f"Generated {len(icon_rows)} icon pages, {len(tag_page_rows)} tag pages, "
-        f"{len(search_rows)} search index entries, and {staged} staged icon "
-        f"asset entries."
+        f"Generated {len(icon_rows)} icon pages, {len(author_rows)} author pages, "
+        f"{len(tag_page_rows)} tag pages, {len(search_rows)} search index entries, "
+        f"and {staged} staged icon asset entries."
     )
     return 0
 
