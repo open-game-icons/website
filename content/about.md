@@ -85,7 +85,7 @@ Open Game Icons is a [static site](https://en.wikipedia.org/wiki/Static_web_page
 It's hosted on [GitHub Pages](https://docs.github.com/pages) and served through [Cloudflare](https://www.cloudflare.com/).
 
 On the frontend, the site uses JavaScript exclusively for the search feature.
-In fact, you can use the site with JavaScript disabled entirely, and simply search for icons with your browser's search functionality (Ctrl+F) (although you will miss out on some custom keyword-matching logic).
+In fact, you can use the site with JavaScript disabled entirely, and simply search for icons with your browser's search functionality (Ctrl+F) (although you will miss out on some custom keyword-matching logic and some items which are hidden from the homepage by default).
 
 Open Game Icons doesn't collect any data aside from the anonymous, aggregated analytics that Cloudflare provides.
 

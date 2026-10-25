@@ -6,7 +6,7 @@ Zola static site for browsing icons.
 
 Dependencies:
 
-- Zola 0.23.6 and Python 3 (required to build the site)
+- Zola 0.23.6 and Python 3.11+ (required to build the site)
 - `just` (recommended for convenience)
 - `dprint` and `uv` (optional; `uvx` runs djLint for template formatting)
 
@@ -27,6 +27,7 @@ first if `static/assets/icons/` is missing.
 - `scripts/generate.py`
   - Generates content stubs in `content/generated/` and lookup data in `data/generated/`
   - Generates `static/search-index.json` for the client-side search
+  - Marks icons with certain tags (`HOMEPAGE_HIDDEN_ICON_TAGS`) as hidden on the homepage grid
   - Declares legacy `.html` URLs as Zola aliases on each generated page
   - Rebuilds `static/assets/icons` with symlinks to the SVG directories and license files
 - `scripts/check.py`: validates built page counts, aliases, search entries, and internal links

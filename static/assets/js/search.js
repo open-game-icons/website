@@ -4,21 +4,11 @@
   input.removeAttribute("hidden");
 
   var lookup = null;
-  fetch("/search-index.json")
-    .then((r) => r.json())
-    .then((data) => {
-      lookup = data;
-    })
-    .catch(() => {});
 
-  var prevQuery = "";
-
-  input.addEventListener("input", () => {
-    var raw = input.value.trim().toLowerCase();
-    if (raw === prevQuery) return;
-    prevQuery = raw;
-
+  function applyFilter() {
     if (!lookup) return;
+
+    var raw = input.value.trim().toLowerCase();
 
     var words = raw ? raw.split(/\s+/) : [];
     var links = document.querySelectorAll(".icon-grid > a");
@@ -27,8 +17,9 @@
       const el = links[i];
       const k = lookup[el.id];
       if (!k) continue;
-      const show = !raw || words.every((w) => k.some((kw) => kw.indexOf(w) !== -1));
-      el.hidden = !show;
+      const matches = words.every((w) => k.some((kw) => kw.indexOf(w) !== -1));
+      const hiddenByDefault = el.hasAttribute("data-homepage-hidden");
+      el.hidden = raw ? !matches : hiddenByDefault;
     }
 
     var tags = document.querySelectorAll(".tags .tag");
@@ -37,5 +28,16 @@
       const text = (tag.textContent || "").toLowerCase();
       tag.hidden = raw && text.indexOf(raw) === -1;
     }
-  });
+  }
+
+  fetch("/search-index.json")
+    .then((r) => r.json())
+    .then((data) => {
+      lookup = data;
+      applyFilter();
+    })
+    .catch(() => {});
+
+  input.addEventListener("input", applyFilter);
+  input.addEventListener("search", applyFilter);
 })();

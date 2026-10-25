@@ -5,7 +5,8 @@ For more about this project, see the [About](content/about.md) page.
 
 ## Setup
 
-This site is built with [Zola](https://www.getzola.org/) 0.23.6 and uses [just](https://just.systems/) for convenience commands.
+This site is built with [Zola](https://www.getzola.org/) 0.23.6 with additional generator scripts that require Python 3.11+.
+[just](https://just.systems/) is used as a command runner for convenience.
 
 Rebuild the icon database, generate the icon/tag content, and build the site:
 

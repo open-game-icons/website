@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the built site: expected pages and resolvable internal links."""
+"""Validate the built site: expected pages, homepage visibility, and links."""
 
 from __future__ import annotations
 
@@ -131,6 +131,22 @@ def main() -> int:
         failures.append(
             f"expected {icon_count} search entries, found {len(search_index)}"
         )
+
+    homepage_icons = json.loads(
+        (ROOT / "data/generated/icons.json").read_text(encoding="utf-8")
+    )
+    hidden_icons = [icon for icon in homepage_icons if icon.get("hidden_on_homepage")]
+    homepage = (PUBLIC / "index.html").read_text(encoding="utf-8")
+    homepage_hidden = homepage.count("data-homepage-hidden")
+    if homepage_hidden != len(hidden_icons):
+        failures.append(
+            f"expected {len(hidden_icons)} homepage-hidden icons, "
+            f"found {homepage_hidden}"
+        )
+
+    for page in (PUBLIC / "tags").glob("*/index.html"):
+        if "data-homepage-hidden" in page.read_text(encoding="utf-8"):
+            failures.append(f"tag page hides icons: {page.relative_to(PUBLIC)}")
 
     checked = 0
     for page in sorted(PUBLIC.rglob("*.html")):

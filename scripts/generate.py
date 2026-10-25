@@ -104,6 +104,17 @@ SEARCH_QUERY = """
 # generated file names and output paths safe and predictable.
 SAFE_ID = re.compile(r"^[a-z0-9-]+$")
 
+# Icons with any of these tags are hidden from the homepage grid by default.
+# They still appear when a search matches, on tag pages, and via direct links.
+HOMEPAGE_HIDDEN_ICON_TAGS = [
+    "abstract",
+    "alchemical-symbol",
+    "dice",
+    "elder-futhark",
+    "playing-card",
+    "tarot",
+]
+
 
 def toml_string(value: str) -> str:
     """Return a TOML basic string, reusing JSON's compatible escaping."""
@@ -209,6 +220,12 @@ def main() -> int:
     for row in tag_info_rows:
         if not SAFE_ID.match(row["id"]):
             raise ValueError(f"unsafe tag id: {row['id']}")
+    known_tags = {row["id"] for row in tag_info_rows}
+    for tag in sorted(HOMEPAGE_HIDDEN_ICON_TAGS):
+        if not SAFE_ID.match(tag):
+            raise ValueError(f"unsafe hidden homepage tag id: {tag}")
+        if tag not in known_tags:
+            raise ValueError(f"HOMEPAGE_HIDDEN_ICON_TAGS references unknown tag: {tag}")
 
     # Ordered exactly like site.data.tag_info_array and its derived hashes.
     tag_info: dict[str, dict] = {}
@@ -245,11 +262,21 @@ def main() -> int:
             }
         )
 
+    icon_tags: dict[tuple[str, str], list[str]] = {
+        (row["author"], row["icon_id"]): (row["tags"].split(",") if row["tags"] else [])
+        for row in icon_rows
+    }
+
     icons = [
         {
             "author": row["author"],
             "icon_id": row["icon_id"],
             "title": row["title"],
+            "hidden_on_homepage": bool(
+                set(HOMEPAGE_HIDDEN_ICON_TAGS).intersection(
+                    icon_tags[(row["author"], row["icon_id"])]
+                )
+            ),
         }
         for row in icon_rows
     ]
@@ -267,7 +294,7 @@ def main() -> int:
     )
 
     for row in icon_rows:
-        tags = row["tags"].split(",") if row["tags"] else []
+        tags = icon_tags[(row["author"], row["icon_id"])]
         filename = f"icon--{row['author']}--{row['icon_id']}.md"
         content = f"""+++
 title = {toml_string(row["title"])}
