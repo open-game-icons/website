@@ -24,6 +24,7 @@ import shutil
 import sqlite3
 import sys
 from pathlib import Path
+from typing import TypedDict
 
 ROOT = Path(__file__).resolve().parent.parent
 ICONS_DIR = ROOT / "icons"
@@ -33,6 +34,14 @@ CONTENT_DIR = ROOT / "content/generated"
 DATA_DIR = ROOT / "data/generated"
 SEARCH_INDEX_PATH = ROOT / "static/search-index.json"
 PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
+
+
+class AuthorEntry(TypedDict):
+    id: str
+    name: str
+    link: str
+    icon_count: int
+
 
 # These queries mirror _config.yml. Keep the lack of ORDER BY where the
 # original query had none: the generated output currently preserves SQLite's
@@ -382,6 +391,39 @@ related_tags = {toml_array(related_tags[row["id"]])}
             "tag_count": len(tag_info_rows),
         },
     )
+
+    authors: list[AuthorEntry] = [
+        {
+            "id": row["id"],
+            "name": row["name"] or row["id"],
+            "link": row["link"] or "",
+            "icon_count": len(author_icons[row["id"]]),
+        }
+        for row in author_rows
+    ]
+    authors.sort(
+        key=lambda author: (
+            -author["icon_count"],
+            author["name"].casefold(),
+            author["id"],
+        )
+    )
+    write_json(DATA_DIR / "authors.json", authors)
+
+    tag_children: dict[str, list[dict]] = {row["id"]: [] for row in tag_info_rows}
+    for row in tag_info_rows:
+        if row["parent"]:
+            tag_children[row["parent"]].append({"id": row["id"], "name": row["name"]})
+    tag_tree = [
+        {
+            "id": row["id"],
+            "name": row["name"],
+            "children": tag_children[row["id"]],
+        }
+        for row in tag_info_rows
+        if not row["parent"]
+    ]
+    write_json(DATA_DIR / "tag_tree.json", tag_tree)
 
     SEARCH_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
     write_json(SEARCH_INDEX_PATH, build_search_index(search_rows))

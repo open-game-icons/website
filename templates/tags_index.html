@@ -1,0 +1,21 @@
+{% extends "page.html" %}
+{% block content %}
+  <h1 class="center">Tags</h1>
+  {% set tags = load_data(path="data/generated/tag_tree.json") %}
+  <table class="tags-table">
+    <tbody>
+      {% for tag in tags %}
+        <tr>
+          <td>
+            <strong><a class="tag" href="/tags/{{ tag.id }}/">{{ tag.name }}</a></strong>
+          </td>
+          <td>
+            {% for child in tag.children %}
+              <a class="tag" href="/tags/{{ child.id }}/">{{ child.name }}</a>
+            {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

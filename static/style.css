@@ -292,6 +292,50 @@ code {
   display: none !important;
 }
 
+.authors {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto 1rem;
+  border-collapse: collapse;
+}
+
+.authors th,
+.authors td {
+  padding: 0.25rem 0.5rem;
+}
+
+.authors th {
+  text-align: left;
+}
+
+.authors .count {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tags-table {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto 1rem;
+  border-collapse: collapse;
+}
+
+.tags-table td {
+  padding: 0.25rem 0.5rem;
+  vertical-align: top;
+}
+
+.tags-table td:first-child {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.authors tbody tr:nth-child(even),
+.tags-table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
 .tag:hover {
   background-color: #38f;
   color: #fff;
@@ -457,6 +501,16 @@ footer {
     background-color: #5af;
     color: #000;
     border-color: #5af;
+  }
+
+  .authors th,
+  .authors td {
+    border-color: #333;
+  }
+
+  .authors tbody tr:nth-child(even),
+  .tags-table tbody tr:nth-child(even) {
+    background-color: #111;
   }
 
   .icon-search {

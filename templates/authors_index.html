@@ -1,0 +1,29 @@
+{% extends "page.html" %}
+{% block content %}
+  <h1 class="center">Authors</h1>
+  {% set authors = load_data(path="data/generated/authors.json") %}
+  <table class="authors">
+    <thead>
+      <tr>
+        <th class="count">Icons</th>
+        <th>Author</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for author in authors %}
+        <tr>
+          <td class="count">
+            <a href="/1x1/{{ author.id }}/">{{ author.icon_count | num_format(locale="en") }}</a>
+          </td>
+          <td>
+            {% if author.link %}
+              <a href="{{ author.link }}">{{ author.name }}</a>
+            {% else %}
+              {{ author.name }}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
