@@ -11,5 +11,36 @@
   </head>
   <body>
     {% block body %}{% endblock %}
+
+    {% set build_time = now(utc=true) %}
+    <footer>
+      <p>
+        © <a href="https://frie.dev">Aaron Friesen</a> and <a href="https://github.com/open-game-icons/website/graphs/contributors">Open Game Icons contributors</a>
+      </p>
+      <p>
+        This website is <a href="https://github.com/open-game-icons/website">open source</a> under the <a href="/LICENSE.txt">GNU AGPLv3</a>.
+      </p>
+      <p>
+        Last built:
+        <time id="build-time"
+              datetime="{{ build_time | date(format='%Y-%m-%dT%H:%M:%SZ') }}">
+          {{ build_time | date(format="%Y-%m-%d %H:%M UTC") }}
+        </time>
+      </p>
+    </footer>
+    <script>
+      (() => {
+        const el = document.getElementById("build-time");
+        if (!el) return;
+
+        const date = new Date(el.getAttribute("datetime"));
+        if (Number.isNaN(date.getTime())) return;
+
+        el.textContent = date.toLocaleString(undefined, {
+          dateStyle: "medium",
+          timeStyle: "short",
+        });
+      })();
+    </script>
   </body>
 </html>
