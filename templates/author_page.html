@@ -1,7 +1,9 @@
 {% extends "page.html" %}
 {% block content %}
+  {% set author_icons = load_data(path="data/generated/author_icons.json") %}
+  {% set icons = author_icons[page.extra.slug] %}
   <h1 class="center">
-    Icons by
+    {{ icons | length | num_format(locale="en") }} Icons by
     {% if page.extra.author_link %}
       <a href="{{ page.extra.author_link }}">{{ page.extra.list_name }}</a>
     {% else %}
@@ -10,7 +12,5 @@
   </h1>
   {% set search_label = "Search icons" %}
   {% include "partials/search.html" %}
-  {% set author_icons = load_data(path="data/generated/author_icons.json") %}
-  {% set icons = author_icons[page.extra.slug] %}
   {% include "partials/icon_grid.html" %}
 {% endblock %}
