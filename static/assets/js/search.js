@@ -26,7 +26,8 @@
     for (let j = 0; j < tags.length; j++) {
       const tag = tags[j];
       const text = (tag.textContent || "").toLowerCase();
-      tag.hidden = raw && text.indexOf(raw) === -1;
+      const hiddenByDefault = tag.hasAttribute("data-homepage-hidden");
+      tag.hidden = raw ? text.indexOf(raw) === -1 : hiddenByDefault;
     }
   }
 

@@ -20,6 +20,7 @@
     <div>
       {% include "partials/search.html" %}
       {% set tags = load_data(path="data/generated/tag_ids.json") %}
+      {% set hide_nested_tags = true %}
       {% include "partials/tag_links.html" %}
       {% set icons = load_data(path="data/generated/icons.json") %}
       {% include "partials/icon_grid.html" %}

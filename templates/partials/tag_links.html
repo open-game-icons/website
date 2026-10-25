@@ -5,7 +5,9 @@
     {%- if not t.parent -%}
       <strong><a class="tag" href="/tags/{{ tag }}/">{{ t.name | default(value=tag) }}</a></strong>
     {%- else -%}
-      <a class="tag" href="/tags/{{ tag }}/">{{ t.name | default(value=tag) }}</a>
+      <a class="tag"
+         href="/tags/{{ tag }}/"
+         {% if hide_nested_tags | default(value=false) %}hidden data-homepage-hidden{% endif %}>{{ t.name | default(value=tag) }}</a>
     {%- endif -%}
   {%- endfor -%}
 </div>

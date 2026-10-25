@@ -28,6 +28,29 @@ class LinkParser(HTMLParser):
                 self.links.append(value)
 
 
+class HomepageVisibilityParser(HTMLParser):
+    """Collect icon and tag links marked hidden on the homepage."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.hidden_icons: list[str] = []
+        self.hidden_tags: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag != "a":
+            return
+
+        attributes = dict(attrs)
+        if "data-homepage-hidden" not in attributes:
+            return
+
+        href = attributes.get("href", "")
+        if href.startswith("/tags/"):
+            self.hidden_tags.append(href.removeprefix("/tags/").strip("/"))
+        elif href.startswith("/1x1/"):
+            self.hidden_icons.append(href)
+
+
 def resolve(page: Path, link: str) -> Path | None:
     """Return the output file a link should resolve to, or None to skip it."""
     if link.startswith(
@@ -135,18 +158,36 @@ def main() -> int:
     homepage_icons = json.loads(
         (ROOT / "data/generated/icons.json").read_text(encoding="utf-8")
     )
-    hidden_icons = [icon for icon in homepage_icons if icon.get("hidden_on_homepage")]
+    hidden_icons = {
+        f"/1x1/{icon['author']}/{icon['icon_id']}/"
+        for icon in homepage_icons
+        if icon.get("hidden_on_homepage")
+    }
+    tag_info = json.loads(
+        (ROOT / "data/generated/tag_info.json").read_text(encoding="utf-8")
+    )
+    hidden_tags = {tag_id for tag_id, info in tag_info.items() if info.get("parent")}
+
     homepage = (PUBLIC / "index.html").read_text(encoding="utf-8")
-    homepage_hidden = homepage.count("data-homepage-hidden")
-    if homepage_hidden != len(hidden_icons):
+    homepage_parser = HomepageVisibilityParser()
+    homepage_parser.feed(homepage)
+
+    if set(homepage_parser.hidden_icons) != hidden_icons:
         failures.append(
             f"expected {len(hidden_icons)} homepage-hidden icons, "
-            f"found {homepage_hidden}"
+            f"found {len(set(homepage_parser.hidden_icons))}"
+        )
+    if set(homepage_parser.hidden_tags) != hidden_tags:
+        failures.append(
+            f"expected {len(hidden_tags)} homepage-hidden tags, "
+            f"found {len(set(homepage_parser.hidden_tags))}"
         )
 
     for page in (PUBLIC / "tags").glob("*/index.html"):
         if "data-homepage-hidden" in page.read_text(encoding="utf-8"):
-            failures.append(f"tag page hides icons: {page.relative_to(PUBLIC)}")
+            failures.append(
+                f"tag page contains homepage-hidden items: {page.relative_to(PUBLIC)}"
+            )
 
     checked = 0
     for page in sorted(PUBLIC.rglob("*.html")):

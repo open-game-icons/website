@@ -20,7 +20,7 @@ first if `static/assets/icons/` is missing.
 - `templates/`: Tera templates (`base.html`, `index.html`, `page.html`, `icon.html`, `tag_page.html`, `404.html`, `partials/`)
 - `static/`: copied to `public/`
   - `static/assets/icons/`: generated staging directory (gitignored) containing symlinks to the publishable icon assets; Zola follows the symlinks and copies regular files into `public/`
-  - `static/assets/js/search.js`: client-side search (filters icon grid by keyword match)
+  - `static/assets/js/search.js`: client-side search (filters icon grid and tag links by keyword match; reveals homepage-hidden items when they match)
 - `icons/`: subrepo (`man 1 git-subrepo`) containing the icon SVGs and source files
   - `icons/icons.db`: SQLite DB of icon metadata, built from `icons/icons.sql`; source only, not published
     - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
@@ -30,7 +30,7 @@ first if `static/assets/icons/` is missing.
   - Marks icons with certain tags (`HOMEPAGE_HIDDEN_ICON_TAGS`) as hidden on the homepage grid
   - Declares legacy `.html` URLs as Zola aliases on each generated page
   - Rebuilds `static/assets/icons` with symlinks to the SVG directories and license files
-- `scripts/check.py`: validates built page counts, aliases, search entries, and internal links
+- `scripts/check.py`: validates built page counts, aliases, search entries, homepage visibility, and internal links
 
 Canonical URLs are Zola's pretty routes:
 
