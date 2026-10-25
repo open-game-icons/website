@@ -50,4 +50,4 @@ Generated paths (`public/`, `content/generated/`, `data/generated/`,
 ## Cleanup and validation
 
 - `just fmt` to format
-- `just check` to build the site + run static checks
+- `just check` to build the site + run static checks (also checks formatting; no need to `just fmt` if it passes)
