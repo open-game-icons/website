@@ -25,6 +25,7 @@ serve port="8000": generate
 check: build
     dprint check
     ty check
+    tombi check
     zola check --skip-external-links
     python3 scripts/check.py
 
