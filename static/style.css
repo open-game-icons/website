@@ -331,7 +331,7 @@ footer {
 
 .icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
@@ -342,20 +342,21 @@ footer {
   align-items: center;
   justify-content: flex-start;
   margin: 0;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: #e8e8e8;
-  overflow: hidden;
-  height: 90%;
 }
 
-.icon-cell:hover {
-  background-color: #ccc;
+.icon-cell:hover img {
+  outline: 2px solid #38f;
+}
+
+.icon-cell:hover figcaption {
+  color: #38f;
 }
 
 .icon-cell img {
-  width: 8rem;
-  height: 8rem;
+  width: 100%;
+  max-width: 8rem;
+  aspect-ratio: 1 / 1;
+  height: auto;
   margin-bottom: 0.25rem;
   border-radius: 0.25rem;
 }
@@ -364,6 +365,12 @@ footer {
   text-align: center;
   line-height: 1.2;
   color: #222;
+}
+
+@media (max-width: 31rem) {
+  .icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  }
 }
 
 .icon-search {
@@ -434,14 +441,6 @@ footer {
   .favicon-large,
   .icon {
     border-color: #444;
-  }
-
-  .icon-cell {
-    background-color: #181818;
-  }
-
-  .icon-cell:hover {
-    background-color: #444;
   }
 
   .icon-cell figcaption {
