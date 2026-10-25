@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
+  {% set stats = load_data(path="data/generated/stats.json") %}
   <header>
     <img class="favicon-large" src="/favicon.svg" />
     <div>
@@ -7,7 +8,10 @@
       <p>
         An <a href="https://github.com/open-game-icons/">open source</a>
         continuation of
-        <a href="https://www.game-icons.net">Game-icons.net</a>.
+        <a href="https://www.game-icons.net">Game-icons.net</a>, featuring
+        <strong>{{ stats.icon_count | num_format(locale="en") }}</strong> icons by
+        <strong>{{ stats.author_count | num_format(locale="en") }}</strong> authors across
+        <strong>{{ stats.tag_count | num_format(locale="en") }}</strong> tags.
       </p>
       <p>
         For more about this site, see the

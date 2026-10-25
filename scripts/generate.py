@@ -374,6 +374,14 @@ related_tags = {toml_array(related_tags[row["id"]])}
     write_json(DATA_DIR / "tag_icons.json", tag_icons)
     write_json(DATA_DIR / "author_icons.json", author_icons)
     write_json(DATA_DIR / "icons.json", icons)
+    write_json(
+        DATA_DIR / "stats.json",
+        {
+            "icon_count": len(icon_rows),
+            "author_count": len(author_rows),
+            "tag_count": len(tag_info_rows),
+        },
+    )
 
     SEARCH_INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
     write_json(SEARCH_INDEX_PATH, build_search_index(search_rows))
