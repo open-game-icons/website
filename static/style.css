@@ -306,6 +306,14 @@ a.no-color:hover {
   width: auto;
 }
 
+.license-icon {
+  width: 2em;
+  height: 2em;
+  /* The global img rule adds a block margin that also shifts the baseline. */
+  margin-bottom: 0;
+  vertical-align: -0.15em;
+}
+
 .icon-page {
   text-align: center;
 }

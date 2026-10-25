@@ -53,6 +53,7 @@ ICON_QUERY = """
     i.name   AS title,
     a.name   AS author_name,
     a.link   AS author_link,
+    l.id     AS license_id,
     l.name   AS license_name,
     l.link   AS license_link,
     group_concat(DISTINCT it.tag) AS tags
@@ -122,6 +123,34 @@ SEARCH_QUERY = """
 # Author ids, icon ids, and tag ids are all slugs. Asserting that keeps the
 # generated file names and output paths safe and predictable.
 SAFE_ID = re.compile(r"^[a-z0-9-]+$")
+
+# Creative Commons' trademark policy requires marks downloaded directly from
+# creativecommons.org, so point at its press-kit mirror instead of bundling
+# copies. Element marks are ordered the way the press kit presents them.
+CC_ICON_URL = "https://mirrors.creativecommons.org/presskit/icons/{name}.svg"
+CC_LICENSE_ID = re.compile(
+    r"^cc-(?P<elements>(?:by|nc|nd|sa)(?:-(?:by|nc|nd|sa))*)-[0-9.]+(?:-[a-z]{2})?$"
+)
+CC_LICENSE_ELEMENT_ORDER = ("by", "nc", "nd", "sa")
+
+
+def creative_commons_icon_urls(license_id: str) -> list[str]:
+    """Map a Creative Commons license id to its official press-kit icons.
+
+    CC0 uses the CC and Zero marks. Other CC licenses use the CC mark followed
+    by their element marks (BY, NC, ND, SA). Non-CC license ids get no icons.
+    """
+    if license_id == "cc0":
+        names = ["cc", "zero"]
+    else:
+        match = CC_LICENSE_ID.match(license_id)
+        if not match:
+            return []
+        elements = set(match.group("elements").split("-"))
+        names = ["cc", *(e for e in CC_LICENSE_ELEMENT_ORDER if e in elements)]
+
+    return [CC_ICON_URL.format(name=name) for name in names]
+
 
 # Icons with any of these tags are hidden from the homepage grid by default.
 # They still appear when a search matches, on tag pages, and via direct links.
@@ -344,6 +373,7 @@ author_name = {toml_string(row["author_name"])}
 author_link = {toml_string(row["author_link"] or "")}
 license_name = {toml_string(row["license_name"])}
 license_link = {toml_string(row["license_link"] or "")}
+license_icons = {toml_array(creative_commons_icon_urls(row["license_id"]))}
 tags = {toml_array(tags)}
 +++
 """

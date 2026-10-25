@@ -10,6 +10,8 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
+from generate import creative_commons_icon_urls
+
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 DB_PATH = ROOT / "icons/icons.db"
@@ -83,6 +85,11 @@ def main() -> int:
 
     connection = sqlite3.connect(DB_PATH)
     icon_rows = connection.execute("SELECT author, id FROM icons").fetchall()
+    license_rows = connection.execute(
+        "SELECT l.id, i.author, i.id FROM licenses l "
+        "JOIN icons i ON i.license = l.id "
+        "ORDER BY l.id, i.author, i.id"
+    ).fetchall()
     author_rows = connection.execute("SELECT id FROM authors").fetchall()
     tag_rows = connection.execute(
         "SELECT t.id FROM tags t JOIN icon_tags it ON t.id = it.tag "
@@ -200,6 +207,21 @@ def main() -> int:
             failures.append(
                 f"tag page contains homepage-hidden items: {page.relative_to(PUBLIC)}"
             )
+
+    # The license marks are the same for every icon under a license, so one
+    # page per license is enough to validate the generated front matter.
+    license_samples: dict[str, tuple[str, str]] = {}
+    for license_id, author, icon_id in license_rows:
+        license_samples.setdefault(license_id, (author, icon_id))
+
+    for license_id, (author, icon_id) in license_samples.items():
+        page = PUBLIC / "1x1" / author / icon_id / "index.html"
+        html = page.read_text(encoding="utf-8")
+        for icon_url in creative_commons_icon_urls(license_id):
+            if f'src="{icon_url}"' not in html:
+                failures.append(
+                    f"missing license icon on 1x1/{author}/{icon_id}/: {icon_url}"
+                )
 
     checked = 0
     for page in sorted(PUBLIC.rglob("*.html")):
