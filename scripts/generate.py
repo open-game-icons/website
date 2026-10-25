@@ -87,6 +87,8 @@ TAG_INFO_QUERY = """
     t.id,
     t.name,
     t.parent,
+    t.icon_author,
+    t.icon_id,
     count(it.tag) AS count
   FROM tags t
   LEFT JOIN icon_tags it ON t.id = it.tag
@@ -256,6 +258,8 @@ def main() -> int:
             "name": row["name"],
             "count": row["count"],
             "parent": row["parent"],
+            "icon_author": row["icon_author"],
+            "icon_id": row["icon_id"],
         }
         tag_ids.append(row["id"])
 

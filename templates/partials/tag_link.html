@@ -1,0 +1,15 @@
+{% set t = tag_info[tag_id] %}
+<a class="tag"
+   href="/tags/{{ tag_id }}/"
+   {% if hide_nested_tags | default(value=false) and t.parent %}hidden data-homepage-hidden{% endif %}>
+  {% if t.icon_author and t.icon_id %}
+    <img class="tag-icon"
+         src="/assets/icons/{{ t.icon_author }}/{{ t.icon_id }}.svg"
+         alt=""
+         loading="lazy" />
+  {% endif %}
+  <span class="tag-body">
+    <span class="tag-name">{{ t.name | default(value=tag_id) }}</span>
+    <span class="tag-count">{{ t.count | num_format(locale="en") }}</span>
+  </span>
+</a>

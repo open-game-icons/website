@@ -1,17 +1,21 @@
 {% extends "page.html" %}
 {% block content %}
   <h1 class="center">Tags</h1>
+  {% set tag_info = load_data(path="data/generated/tag_info.json") %}
   {% set tags = load_data(path="data/generated/tag_tree.json") %}
   <table class="tags-table">
     <tbody>
       {% for tag in tags %}
         <tr>
           <td>
-            <strong><a class="tag" href="/tags/{{ tag.id }}/">{{ tag.name }}</a></strong>
+            <strong>{% set tag_id = tag.id %}
+              {% include "partials/tag_link.html" %}
+            </strong>
           </td>
           <td>
             {% for child in tag.children %}
-              <a class="tag" href="/tags/{{ child.id }}/">{{ child.name }}</a>
+              {% set tag_id = child.id %}
+              {% include "partials/tag_link.html" %}
             {% endfor %}
           </td>
         </tr>

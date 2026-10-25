@@ -1,13 +1,10 @@
 {% set tag_info = load_data(path="data/generated/tag_info.json") %}
 <div class="tags center">
-  {%- for tag in tags -%}
-    {%- set t = tag_info[tag] -%}
-    {%- if not t.parent -%}
-      <strong><a class="tag" href="/tags/{{ tag }}/">{{ t.name | default(value=tag) }}</a></strong>
+  {%- for tag_id in tags -%}
+    {%- if not tag_info[tag_id].parent -%}
+      <strong> {% include "partials/tag_link.html" %} </strong>
     {%- else -%}
-      <a class="tag"
-         href="/tags/{{ tag }}/"
-         {% if hide_nested_tags | default(value=false) %}hidden data-homepage-hidden{% endif %}>{{ t.name | default(value=tag) }}</a>
+      {% include "partials/tag_link.html" %}
     {%- endif -%}
   {%- endfor -%}
 </div>

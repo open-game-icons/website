@@ -25,7 +25,8 @@
     var tags = document.querySelectorAll(".tags .tag");
     for (let j = 0; j < tags.length; j++) {
       const tag = tags[j];
-      const text = (tag.textContent || "").toLowerCase();
+      const name = tag.querySelector(".tag-name");
+      const text = (name ? name.textContent : tag.textContent || "").toLowerCase();
       const hiddenByDefault = tag.hasAttribute("data-homepage-hidden");
       tag.hidden = raw ? text.indexOf(raw) === -1 : hiddenByDefault;
     }
