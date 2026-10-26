@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:open-game-icons/icons.git
 	branch = master
-	commit = fcc5f6527550d5ecfb03cd88b47cbcaec568a33f
-	parent = 82c0311f9cca4c97f9a769e40782d356da0ddb1b
+	commit = b6d8fffb780e9165ad090b0af072f5cc4440662d
+	parent = ba4995978d6775cde0a514577f2a407f9f9ac6d4
 	method = rebase
 	cmdver = 0.4.9
