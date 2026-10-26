@@ -17,7 +17,7 @@ db:
 generate: kill-serve db
     python3 scripts/generate.py
 
-# Compile the TypeScript sources into static/assets/js
+# Compile the TypeScript sources into static/js
 js:
     bun run build:js
 
@@ -47,4 +47,4 @@ check: build
 
 # Remove generated output and generated source files
 clean: kill-serve
-    rm -rf public content/generated data/generated static/search-index.json static/assets/icons static/assets/js
+    rm -rf public content/generated data/generated static/search-index.json static/icons static/js

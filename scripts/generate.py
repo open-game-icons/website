@@ -9,7 +9,7 @@ the legacy .html path as a Zola alias, which produces the redirect files used
 by incoming Game-icons.net-compatible URLs.
 
 The publish-only static view of the icon subrepo is regenerated here too:
-static/assets/icons contains symlinks to the SVG directories and license files,
+static/icons contains symlinks to the SVG directories and license files,
 so Zola never sees the database, SQL dump, scripts, or docs.
 
 Run this before `zola build` whenever icons.sql changes.
@@ -28,7 +28,7 @@ from typing import TypedDict
 
 ROOT = Path(__file__).resolve().parent.parent
 ICONS_DIR = ROOT / "icons"
-STATIC_ICONS_DIR = ROOT / "static/assets/icons"
+STATIC_ICONS_DIR = ROOT / "static/icons"
 DB_PATH = ICONS_DIR / "icons.db"
 CONTENT_DIR = ROOT / "content/generated"
 DATA_DIR = ROOT / "data/generated"

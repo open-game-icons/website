@@ -16,7 +16,7 @@ from generate import creative_commons_icon_urls
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 DB_PATH = ROOT / "icons/icons.db"
-ICON_ASSETS = PUBLIC / "assets/icons"
+ICON_ASSETS = PUBLIC / "icons"
 PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 
 # Bundled from src/ts by Bun and copied by Zola.
@@ -172,27 +172,23 @@ def main() -> int:
 
         for entry in PUBLISHED_ICON_FILES:
             if not (ICON_ASSETS / entry).is_file():
-                failures.append(f"missing published icon file: assets/icons/{entry}")
+                failures.append(f"missing published icon file: icons/{entry}")
 
         for entry in ICON_ASSETS.iterdir():
             if entry.is_symlink() or (
                 entry.is_file() and entry.name not in PUBLISHED_ICON_FILES
             ):
-                failures.append(
-                    f"build-only asset published: assets/icons/{entry.name}"
-                )
+                failures.append(f"build-only asset published: icons/{entry.name}")
             elif entry.is_dir() and entry.name.startswith((".", "_")):
-                failures.append(
-                    f"build-only asset published: assets/icons/{entry.name}/"
-                )
+                failures.append(f"build-only asset published: icons/{entry.name}/")
 
-    js_assets = PUBLIC / "assets/js"
+    js_assets = PUBLIC / "js"
     for filename in COMPILED_JS:
         script = js_assets / filename
         if not script.is_file():
-            failures.append(f"missing compiled script: assets/js/{filename}")
+            failures.append(f"missing compiled script: js/{filename}")
         elif script.stat().st_size == 0:
-            failures.append(f"empty compiled script: assets/js/{filename}")
+            failures.append(f"empty compiled script: js/{filename}")
 
     for pattern in ("*.ts", "*.tsx"):
         for source in PUBLIC.rglob(pattern):

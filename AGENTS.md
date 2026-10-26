@@ -14,18 +14,18 @@ Dependencies:
 Build the site with `just build` (includes DB and content stub regeneration plus the TypeScript bundle; fast).
 There is no post-build pruning step: `just serve` runs `zola serve` against the
 same generated static staging tree as the production build. Run `just generate`
-and `just js` first if `static/assets/icons/` or `static/assets/js/` is missing.
+and `just js` first if `static/icons/` or `static/js/` is missing.
 
 ## Architecture
 
 - `templates/`: Tera templates and partials
-- `src/ts/`: authored TypeScript; Bun bundles it to ES modules loaded with `<script type="module">` in `static/assets/js/`
+- `src/ts/`: authored TypeScript; Bun bundles it to ES modules loaded with `<script type="module">` in `static/js/`
   - `src/ts/search.ts`: filters icon grid and tag links by keyword match and reveals homepage-hidden items when they match
   - `src/ts/icon-download.ts`: renders PNGs for download, embeds metadata, and supports in-browser icon editing ("studio")
   - `src/ts/build-time.ts`: localizes the footer build timestamp
 - `static/`: copied to `public/`
-  - `static/assets/icons/`: generated staging directory (gitignored) containing symlinks to the publishable icon assets; Zola follows the symlinks and copies regular files into `public/`
-  - `static/assets/js/`: generated ES module bundles and shared chunks from `src/ts/` (gitignored)
+  - `static/icons/`: generated staging directory (gitignored) containing symlinks to the publishable icon assets; Zola follows the symlinks and copies regular files into `public/`
+  - `static/js/`: generated ES module bundles and shared chunks from `src/ts/` (gitignored)
 - `icons/`: subrepo (`man 1 git-subrepo`) containing the icon SVGs and source files
   - `icons/icons.db`: SQLite DB of icon metadata, built from `icons/icons.sql`; source only, not published
     - Tables: `icons`, `authors`, `licenses`, `tags`, `icon_tags`, `icon_keywords`
@@ -34,7 +34,7 @@ and `just js` first if `static/assets/icons/` or `static/assets/js/` is missing.
   - Generates `static/search-index.json` for the client-side search
   - Marks icons with certain tags (`HOMEPAGE_HIDDEN_ICON_TAGS`) as hidden on the homepage grid
   - Declares legacy `.html` URLs as Zola aliases on icon and tag pages
-  - Rebuilds `static/assets/icons` with symlinks to the SVG directories and license files
+  - Rebuilds `static/icons` with symlinks to the SVG directories and license files
 - `scripts/check.py`: validates built page counts, aliases, search entries, homepage visibility, and internal links
 
 Canonical URLs are Zola's pretty routes:
@@ -50,7 +50,7 @@ links use the canonical pretty URLs. The redirect target is built from
 Author pages are new routes with no legacy aliases.
 
 Generated paths (`public/`, `content/generated/`, `data/generated/`,
-`static/search-index.json`, `static/assets/icons/`, `static/assets/js/`) are gitignored.
+`static/search-index.json`, `static/icons/`, `static/js/`) are gitignored.
 
 ## Cleanup and validation
 

@@ -34,16 +34,16 @@ Canonical pages use Zola's pretty URLs:
 The old `.html` paths remain valid as Zola aliases, so URLs copied from Game-icons.net still resolve.
 These aliases are client-side redirects (JavaScript with a meta-refresh fallback), not HTTP 301s.
 
-The generator symlinks only the icon SVG directories and license files from `icons/` into `static/assets/icons`; the SQLite database, SQL dump, scripts, and docs are never published.
+The generator symlinks only the icon SVG directories and license files from `icons/` into `static/icons`; the SQLite database, SQL dump, scripts, and docs are never published.
 
-The browser scripts live in `src/ts/` and are bundled by Bun into ES modules in the generated, gitignored `static/assets/js/` directory. Templates load them with `<script type="module">`.
+The browser scripts live in `src/ts/` and are bundled by Bun into ES modules in the generated, gitignored `static/js/` directory. Templates load them with `<script type="module">`.
 Bun's build is transpile-only, so `just check` also runs `bun check`.
 
 Other commands:
 
 ```sh
 just fmt        # format code and Tera templates
-just js         # compile TypeScript to static/assets/js
+just js         # compile TypeScript to static/js
 just js-check   # type-check the TypeScript sources
 just db         # regenerate database (icons/icons.db)
 just generate   # regenerate content, data, search index, and static icon staging

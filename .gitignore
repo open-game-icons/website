@@ -3,8 +3,8 @@ public
 content/generated
 data/generated
 static/search-index.json
-static/assets/icons/
-static/assets/js/
+static/icons/
+static/js/
 
 # JS tooling dependencies
 node_modules/

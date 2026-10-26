@@ -4,7 +4,7 @@
    {% if hide_nested_tags | default(value=false) and t.parent %}hidden data-homepage-hidden{% endif %}>
   {% if t.icon_author and t.icon_id %}
     <img class="tag-icon"
-         src="/assets/icons/{{ t.icon_author }}/{{ t.icon_id }}.svg"
+         src="/icons/{{ t.icon_author }}/{{ t.icon_id }}.svg"
          alt=""
          loading="lazy" />
   {% endif %}

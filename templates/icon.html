@@ -100,7 +100,7 @@
       <div class="icon-preview">
         <img class="icon"
              id="icon-preview"
-             src="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
+             src="/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
              alt="{{ page.title }}" />
       </div>
 
@@ -120,7 +120,7 @@
              data-attribution="{{ page.title }} by {{ page.extra.author_name }} ({{ page.extra.license_name }}) - {{ page.permalink }}">
           <a class="button"
              id="svg-download"
-             href="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
+             href="/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
              download="{{ file_base }}.svg">SVG</a>
           <div class="png-download" id="png-download-controls" hidden>
             <button class="button" id="png-download" type="button">PNG</button>
@@ -148,5 +148,5 @@
   </div>
 {% endblock %}
 {% block scripts %}
-  <script type="module" src="/assets/js/icon-download.js"></script>
+  <script type="module" src="/js/icon-download.js"></script>
 {% endblock %}
