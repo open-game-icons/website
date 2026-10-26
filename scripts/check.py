@@ -19,6 +19,9 @@ DB_PATH = ROOT / "icons/icons.db"
 ICON_ASSETS = PUBLIC / "assets/icons"
 PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 
+# Bundled from src/ts by Bun and copied by Zola.
+COMPILED_JS = ("search.js", "icon-download.js")
+
 # Download filenames are built as "{icon}-{author}-{license}", so each component
 # must be filename-safe. Underscores are deliberately disallowed so one can be
 # used as a field delimiter later.
@@ -139,6 +142,20 @@ def main() -> int:
                 failures.append(
                     f"build-only asset published: assets/icons/{entry.name}/"
                 )
+
+    js_assets = PUBLIC / "assets/js"
+    for filename in COMPILED_JS:
+        script = js_assets / filename
+        if not script.is_file():
+            failures.append(f"missing compiled script: assets/js/{filename}")
+        elif script.stat().st_size == 0:
+            failures.append(f"empty compiled script: assets/js/{filename}")
+
+    for pattern in ("*.ts", "*.tsx"):
+        for source in PUBLIC.rglob(pattern):
+            failures.append(
+                f"TypeScript source published: {source.relative_to(PUBLIC)}"
+            )
 
     icons = list((PUBLIC / "1x1").glob("*/*/index.html"))
     author_pages = list((PUBLIC / "1x1").glob("*/index.html"))

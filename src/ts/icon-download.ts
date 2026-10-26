@@ -1,40 +1,83 @@
 (() => {
-  const container = document.getElementById("downloads");
-  const svgLink = document.getElementById("svg-download");
-  const pngButton = document.getElementById("png-download");
-  const pngControls = document.getElementById("png-download-controls");
-  const pngSizeControls = document.getElementById("png-size-controls");
-  const sizeInput = document.getElementById("png-size");
-  const metadataOption = document.getElementById("metadata-option");
-  const metadataCheckbox = document.getElementById("include-metadata");
-  const status = document.getElementById("download-status");
-  const preview = document.getElementById("icon-preview");
-  const recolorControls = document.getElementById("recolor-controls");
-  const foregroundColor = document.getElementById("foreground-color");
-  const foregroundAlpha = document.getElementById("foreground-alpha");
-  const foregroundAlphaNumber = document.getElementById(
+  function byId<T extends HTMLElement>(
+    id: string,
+    constructor: { new(): T },
+  ): T | null {
+    const element = document.getElementById(id);
+    return element instanceof constructor ? element : null;
+  }
+
+  const container = byId("downloads", HTMLElement);
+  const svgLink = byId("svg-download", HTMLAnchorElement);
+  const pngButton = byId("png-download", HTMLButtonElement);
+  const pngControls = byId("png-download-controls", HTMLElement);
+  const pngSizeControls = byId("png-size-controls", HTMLElement);
+  const sizeInput = byId("png-size", HTMLInputElement);
+  const metadataOption = byId("metadata-option", HTMLElement);
+  const metadataCheckbox = byId("include-metadata", HTMLInputElement);
+  const status = byId("download-status", HTMLElement);
+  const preview = byId("icon-preview", HTMLImageElement);
+  const recolorControls = byId("recolor-controls", HTMLElement);
+  const foregroundColor = byId("foreground-color", HTMLInputElement);
+  const foregroundAlpha = byId("foreground-alpha", HTMLInputElement);
+  const foregroundAlphaNumber = byId(
     "foreground-alpha-number",
+    HTMLInputElement,
   );
-  const backgroundColor = document.getElementById("background-color");
-  const backgroundAlpha = document.getElementById("background-alpha");
-  const backgroundAlphaNumber = document.getElementById(
+  const backgroundColor = byId("background-color", HTMLInputElement);
+  const backgroundAlpha = byId("background-alpha", HTMLInputElement);
+  const backgroundAlphaNumber = byId(
     "background-alpha-number",
+    HTMLInputElement,
   );
-  const resetButton = document.getElementById("reset-settings");
+  const resetButton = byId("reset-settings", HTMLButtonElement);
   if (!container || !svgLink || !pngButton || !pngControls || !sizeInput) {
     return;
   }
 
-  const recolorAvailable = Boolean(
-    preview
-      && recolorControls
-      && foregroundColor
-      && foregroundAlpha
-      && foregroundAlphaNumber
-      && backgroundColor
-      && backgroundAlpha
-      && backgroundAlphaNumber,
-  );
+  // These are used inside event handlers, where TypeScript does not retain the
+  // narrowing from the guard above. Keep non-nullable aliases for closures.
+  const svgDownloadLink: HTMLAnchorElement = svgLink;
+  const pngDownloadButton: HTMLButtonElement = pngButton;
+  const pngSizeInput: HTMLInputElement = sizeInput;
+
+  type RecolorElements = {
+    preview: HTMLImageElement;
+    recolorControls: HTMLElement;
+    foregroundColor: HTMLInputElement;
+    foregroundAlpha: HTMLInputElement;
+    foregroundAlphaNumber: HTMLInputElement;
+    backgroundColor: HTMLInputElement;
+    backgroundAlpha: HTMLInputElement;
+    backgroundAlphaNumber: HTMLInputElement;
+  };
+
+  function findRecolorElements(): RecolorElements | null {
+    if (
+      !preview
+      || !recolorControls
+      || !foregroundColor
+      || !foregroundAlpha
+      || !foregroundAlphaNumber
+      || !backgroundColor
+      || !backgroundAlpha
+      || !backgroundAlphaNumber
+    ) {
+      return null;
+    }
+    return {
+      preview,
+      recolorControls,
+      foregroundColor,
+      foregroundAlpha,
+      foregroundAlphaNumber,
+      backgroundColor,
+      backgroundAlpha,
+      backgroundAlphaNumber,
+    };
+  }
+
+  const recolor = findRecolorElements();
 
   // Cap the size so large renders stay under the canvas memory limits mobile
   // browsers enforce; 2048 is 4x the native 512px artwork.
@@ -45,9 +88,22 @@
   const SOFTWARE = "Open Game Icons";
   const DEFAULT_FOREGROUND = "#ffffff";
   const DEFAULT_BACKGROUND = "#000000";
-  const originalPreviewSrc = preview ? preview.getAttribute("src") : "";
+  const originalPreviewSrc = preview
+    ? (preview.getAttribute("src") ?? "")
+    : "";
 
-  const icon = {
+  type IconMetadata = {
+    title: string;
+    id: string;
+    fileBase: string;
+    author: string;
+    licenseName: string;
+    licenseUrl: string;
+    sourceUrl: string;
+    attribution: string;
+  };
+
+  const icon: IconMetadata = {
     title: container.dataset.iconTitle || "",
     id: container.dataset.iconId || "icon",
     fileBase: container.dataset.fileBase || "",
@@ -61,17 +117,27 @@
   pngControls.removeAttribute("hidden");
   if (pngSizeControls) pngSizeControls.removeAttribute("hidden");
   if (metadataOption) metadataOption.removeAttribute("hidden");
-  if (recolorAvailable) recolorControls.removeAttribute("hidden");
+  if (recolor) recolor.recolorControls.removeAttribute("hidden");
   if (resetButton) resetButton.removeAttribute("hidden");
 
-  function includeMetadata() {
+  function includeMetadata(): boolean {
     return !metadataCheckbox || metadataCheckbox.checked;
   }
 
   // --- Recoloring ---
 
-  function readColors() {
-    if (!recolorAvailable) {
+  type Color = {
+    hex: string;
+    alpha: number;
+  };
+
+  type Colors = {
+    foreground: Color;
+    background: Color;
+  };
+
+  function readColors(): Colors {
+    if (!recolor) {
       return {
         foreground: { hex: DEFAULT_FOREGROUND, alpha: 1 },
         background: { hex: DEFAULT_BACKGROUND, alpha: 1 },
@@ -79,29 +145,29 @@
     }
     return {
       foreground: {
-        hex: foregroundColor.value.toLowerCase(),
-        alpha: alphaFraction(foregroundAlphaNumber.value),
+        hex: recolor.foregroundColor.value.toLowerCase(),
+        alpha: alphaFraction(recolor.foregroundAlphaNumber.value),
       },
       background: {
-        hex: backgroundColor.value.toLowerCase(),
-        alpha: alphaFraction(backgroundAlphaNumber.value),
+        hex: recolor.backgroundColor.value.toLowerCase(),
+        alpha: alphaFraction(recolor.backgroundAlphaNumber.value),
       },
     };
   }
 
   // Three decimals keep every 0-255 value distinct while staying readable in the
   // generated fill-opacity attributes.
-  function alphaFraction(value) {
+  function alphaFraction(value: string): number {
     return Math.round((Number(value) / ALPHA_MAX) * 1000) / 1000;
   }
 
-  function hasCustomColors() {
-    if (!recolorAvailable) return false;
+  function hasCustomColors(): boolean {
+    if (!recolor) return false;
     return (
-      foregroundColor.value.toLowerCase() !== DEFAULT_FOREGROUND
-      || backgroundColor.value.toLowerCase() !== DEFAULT_BACKGROUND
-      || Number(foregroundAlphaNumber.value) !== ALPHA_MAX
-      || Number(backgroundAlphaNumber.value) !== ALPHA_MAX
+      recolor.foregroundColor.value.toLowerCase() !== DEFAULT_FOREGROUND
+      || recolor.backgroundColor.value.toLowerCase() !== DEFAULT_BACKGROUND
+      || Number(recolor.foregroundAlphaNumber.value) !== ALPHA_MAX
+      || Number(recolor.backgroundAlphaNumber.value) !== ALPHA_MAX
     );
   }
 
@@ -118,7 +184,11 @@
     "rect",
   ]);
 
-  function applyPaint(element, attribute, color) {
+  function applyPaint(
+    element: Element,
+    attribute: "fill" | "stroke",
+    color: Color,
+  ): void {
     element.setAttribute(attribute, color.hex);
     const opacity = `${attribute}-opacity`;
     if (color.alpha < 1) {
@@ -128,7 +198,7 @@
     }
   }
 
-  function recolorSvg(svgText, colors) {
+  function recolorSvg(svgText: string, colors: Colors): string {
     const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
     const root = doc.documentElement;
     if (!root || root.localName !== "svg") return svgText;
@@ -159,7 +229,10 @@
 
   // Returns false when the number input is empty or not yet a usable value, so
   // the caller can skip a preview update until it becomes valid.
-  function applyAlphaNumber(range, number) {
+  function applyAlphaNumber(
+    range: HTMLInputElement,
+    number: HTMLInputElement,
+  ): boolean {
     const raw = number.value.trim();
     if (raw === "") return false;
     const parsed = Number(raw);
@@ -170,15 +243,19 @@
     return true;
   }
 
-  function normalizeAlphaNumber(range, number) {
+  function normalizeAlphaNumber(
+    range: HTMLInputElement,
+    number: HTMLInputElement,
+  ): void {
     if (!applyAlphaNumber(range, number)) number.value = range.value;
   }
 
-  async function updatePreview() {
-    if (!recolorAvailable) return;
+  async function updatePreview(): Promise<void> {
+    if (!recolor) return;
+    const previewElement = recolor.preview;
     if (!hasCustomColors()) {
-      if (preview.getAttribute("src") !== originalPreviewSrc) {
-        preview.src = originalPreviewSrc;
+      if (previewElement.getAttribute("src") !== originalPreviewSrc) {
+        previewElement.src = originalPreviewSrc;
       }
       return;
     }
@@ -186,42 +263,42 @@
       const svgText = await getSvgText();
       // A reset may have happened while the SVG was loading.
       if (!hasCustomColors()) {
-        preview.src = originalPreviewSrc;
+        previewElement.src = originalPreviewSrc;
         return;
       }
       const svg = recolorSvg(svgText, readColors());
       // A data URL avoids tracking and revoking blob URLs on every input event.
-      preview.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      previewElement.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
     } catch (error) {
       console.error(error);
     }
   }
 
-  let svgRequest = null;
+  let svgRequest: Promise<string> | null = null;
 
-  function getSvgText() {
-    if (!svgRequest) {
-      svgRequest = fetch(svgLink.href).then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.text();
-      });
-      // Let a later click retry after a transient network failure.
-      svgRequest.catch(() => {
-        svgRequest = null;
-      });
-    }
-    return svgRequest;
+  function getSvgText(): Promise<string> {
+    if (svgRequest) return svgRequest;
+    const request = fetch(svgDownloadLink.href).then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.text();
+    });
+    // Let a later click retry after a transient network failure.
+    request.catch(() => {
+      svgRequest = null;
+    });
+    svgRequest = request;
+    return request;
   }
 
-  function escapeXml(value) {
-    const entities = {
+  function escapeXml(value: string): string {
+    const entities: Record<string, string> = {
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
       "\"": "&quot;",
       "'": "&apos;",
     };
-    return String(value).replace(/[&<>"']/g, (c) => entities[c]);
+    return String(value).replace(/[&<>"']/g, (c) => entities[c] ?? c);
   }
 
   // --- PNG metadata ---
@@ -238,15 +315,16 @@
     return table;
   })();
 
-  function crc32(bytes) {
+  function crc32(bytes: Uint8Array): number {
     let crc = 0xffffffff;
-    for (let i = 0; i < bytes.length; i++) {
-      crc = CRC_TABLE[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
+    for (const byte of bytes) {
+      // The mask guarantees the index is within the 256-entry table.
+      crc = CRC_TABLE[(crc ^ byte) & 0xff]! ^ (crc >>> 8);
     }
     return (crc ^ 0xffffffff) >>> 0;
   }
 
-  function concatBytes(parts) {
+  function concatBytes(parts: Uint8Array<ArrayBuffer>[]): Uint8Array<ArrayBuffer> {
     const total = parts.reduce((length, part) => length + part.length, 0);
     const out = new Uint8Array(total);
     let offset = 0;
@@ -257,7 +335,10 @@
     return out;
   }
 
-  function pngChunk(type, data) {
+  function pngChunk(
+    type: string,
+    data: Uint8Array<ArrayBuffer>,
+  ): Uint8Array<ArrayBuffer> {
     const out = new Uint8Array(12 + data.length);
     const view = new DataView(out.buffer);
     view.setUint32(0, data.length);
@@ -269,7 +350,10 @@
 
   // iTXt: keyword\0 compressionFlag(0) compressionMethod(0) lang\0 translated\0
   // text (UTF-8). Uncompressed, which is what the XMP spec requires anyway.
-  function itxtChunk(keyword, text) {
+  function itxtChunk(
+    keyword: string,
+    text: string,
+  ): Uint8Array<ArrayBuffer> {
     const encoder = new TextEncoder();
     return pngChunk(
       "iTXt",
@@ -282,7 +366,10 @@
   }
 
   // tEXt is Latin-1 only, so anything else falls back to iTXt.
-  function textChunk(keyword, value) {
+  function textChunk(
+    keyword: string,
+    value: string,
+  ): Uint8Array<ArrayBuffer> {
     if (!/^[\x20-\x7e]*$/.test(value)) return itxtChunk(keyword, value);
     const bytes = new Uint8Array(keyword.length + 1 + value.length);
     for (let i = 0; i < keyword.length; i++) {
@@ -294,7 +381,7 @@
     return pngChunk("tEXt", bytes);
   }
 
-  function xmpPacket(meta) {
+  function xmpPacket(meta: IconMetadata): string {
     return `<?xpacket begin="\uFEFF" id="W5M0MpCehiHzreSzNTczkc9d"?>
 <x:xmpmeta xmlns:x="adobe:ns:meta/">
  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -323,7 +410,10 @@
 
   // Text and XMP chunks are ancillary, so they go between IHDR and IDAT, which
   // is read by the widest range of tools.
-  function withPngMetadata(pngBytes, meta) {
+  function withPngMetadata(
+    pngBytes: Uint8Array<ArrayBuffer>,
+    meta: IconMetadata,
+  ): Blob {
     const view = new DataView(
       pngBytes.buffer,
       pngBytes.byteOffset,
@@ -346,7 +436,7 @@
 
   // --- SVG metadata ---
 
-  function withSvgMetadata(svgText, meta) {
+  function withSvgMetadata(svgText: string, meta: IconMetadata): string {
     const block = `<title>${escapeXml(meta.title)}</title>`
       + `<desc>${escapeXml(meta.attribution)}</desc>`
       + "<metadata>"
@@ -371,7 +461,7 @@
   // The source SVGs only have a viewBox, so their intrinsic size is undefined.
   // Writing an explicit width/height makes rasterization consistent across
   // browsers, which otherwise fall back to a 150px default object size.
-  function sizeSvg(text, width, height) {
+  function sizeSvg(text: string, width: number, height: number): string {
     return text.replace(/<svg\b[^>]*>/, (tag) => {
       const attrs = tag.replace(
         /\s(?:width|height)\s*=\s*(?:"[^"]*"|'[^']*')/g,
@@ -384,7 +474,7 @@
     });
   }
 
-  function loadImage(url) {
+  function loadImage(url: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.onload = () => resolve(image);
@@ -393,7 +483,11 @@
     });
   }
 
-  async function rasterize(svgText, width, height) {
+  async function rasterize(
+    svgText: string,
+    width: number,
+    height: number,
+  ): Promise<Blob> {
     const svgUrl = URL.createObjectURL(
       new Blob([svgText], { type: "image/svg+xml" }),
     );
@@ -402,8 +496,10 @@
       const canvas = document.createElement("canvas");
       canvas.width = width;
       canvas.height = height;
-      canvas.getContext("2d").drawImage(image, 0, 0, width, height);
-      return await new Promise((resolve, reject) => {
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("2D canvas is unavailable");
+      context.drawImage(image, 0, 0, width, height);
+      return await new Promise<Blob>((resolve, reject) => {
         canvas.toBlob((png) => {
           if (png) resolve(png);
           else reject(new Error("PNG encoding failed"));
@@ -414,7 +510,7 @@
     }
   }
 
-  function saveUrl(href, filename) {
+  function saveUrl(href: string, filename?: string | null): void {
     const link = document.createElement("a");
     link.href = href;
     if (filename) link.download = filename;
@@ -423,14 +519,14 @@
     link.remove();
   }
 
-  function saveBlob(blob, filename) {
+  function saveBlob(blob: Blob, filename: string): void {
     const url = URL.createObjectURL(blob);
     saveUrl(url, filename);
     // Keep the blob alive briefly so the browser can start the download.
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  function setStatus(message) {
+  function setStatus(message: string): void {
     if (!status) return;
     status.textContent = message;
     status.hidden = message === "";
@@ -438,20 +534,20 @@
 
   // Empty, non-numeric, and out-of-range values are normalized, and the input
   // is updated so it shows the size that will actually be rendered.
-  function readSize() {
-    const raw = sizeInput.value.trim();
+  function readSize(): number {
+    const raw = pngSizeInput.value.trim();
     const parsed = raw === "" ? Number.NaN : Number(raw);
     const rounded = Number.isFinite(parsed) ? Math.round(parsed) : DEFAULT_SIZE;
     const size = Math.min(MAX_SIZE, Math.max(MIN_SIZE, rounded));
-    sizeInput.value = String(size);
+    pngSizeInput.value = String(size);
     return size;
   }
 
   // --- Handlers ---
 
-  pngButton.addEventListener("click", async () => {
+  pngDownloadButton.addEventListener("click", async () => {
     const size = readSize();
-    pngButton.disabled = true;
+    pngDownloadButton.disabled = true;
     setStatus("");
     try {
       const svgText = await getSvgText();
@@ -461,7 +557,11 @@
       const viewBox = recolored.match(
         /viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([-\d.]+)[\s,]+([-\d.]+)\s*"/,
       );
-      const aspect = viewBox ? Number(viewBox[2]) / Number(viewBox[1]) : 1;
+      const viewBoxWidth = viewBox?.[1];
+      const viewBoxHeight = viewBox?.[2];
+      const aspect = viewBoxWidth && viewBoxHeight
+        ? Number(viewBoxHeight) / Number(viewBoxWidth)
+        : 1;
       const height = Math.max(1, Math.round(size * aspect));
       let png = await rasterize(
         sizeSvg(recolored, size, height),
@@ -476,13 +576,13 @@
       console.error(error);
       setStatus("Sorry, the PNG could not be generated.");
     } finally {
-      pngButton.disabled = false;
+      pngDownloadButton.disabled = false;
     }
   });
 
   // Without JS, or when neither metadata nor colors are customized, the
   // anchor's own download is used, so the saved file is the untouched SVG.
-  svgLink.addEventListener("click", async (event) => {
+  svgDownloadLink.addEventListener("click", async (event) => {
     if (
       (!includeMetadata() && !hasCustomColors())
       || event.button !== 0
@@ -501,37 +601,39 @@
       if (includeMetadata()) svg = withSvgMetadata(svg, icon);
       saveBlob(
         new Blob([svg], { type: "image/svg+xml" }),
-        svgLink.getAttribute("download") || `${icon.id}.svg`,
+        svgDownloadLink.getAttribute("download") || `${icon.id}.svg`,
       );
     } catch (error) {
       console.error(error);
       setStatus(
         "Sorry, the SVG could not be generated. Downloading the original file.",
       );
-      saveUrl(svgLink.href, svgLink.getAttribute("download"));
+      saveUrl(
+        svgDownloadLink.href,
+        svgDownloadLink.getAttribute("download"),
+      );
     }
   });
 
-  sizeInput.addEventListener("change", readSize);
-  sizeInput.addEventListener("keydown", (event) => {
+  pngSizeInput.addEventListener("change", readSize);
+  pngSizeInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      pngButton.click();
+      pngDownloadButton.click();
     }
   });
 
-  if (recolorAvailable) {
-    for (const input of [foregroundColor, backgroundColor]) {
+  if (recolor) {
+    for (const input of [recolor.foregroundColor, recolor.backgroundColor]) {
       input.addEventListener("input", updatePreview);
       input.addEventListener("change", updatePreview);
     }
 
-    for (
-      const [range, number] of [
-        [foregroundAlpha, foregroundAlphaNumber],
-        [backgroundAlpha, backgroundAlphaNumber],
-      ]
-    ) {
+    const alphaPairs: Array<[HTMLInputElement, HTMLInputElement]> = [
+      [recolor.foregroundAlpha, recolor.foregroundAlphaNumber],
+      [recolor.backgroundAlpha, recolor.backgroundAlphaNumber],
+    ];
+    for (const [range, number] of alphaPairs) {
       range.addEventListener("input", () => {
         number.value = range.value;
         updatePreview();
@@ -548,15 +650,15 @@
 
   if (resetButton) {
     resetButton.addEventListener("click", () => {
-      if (recolorAvailable) {
-        foregroundColor.value = DEFAULT_FOREGROUND;
-        backgroundColor.value = DEFAULT_BACKGROUND;
-        foregroundAlpha.value = String(ALPHA_MAX);
-        backgroundAlpha.value = String(ALPHA_MAX);
-        foregroundAlphaNumber.value = String(ALPHA_MAX);
-        backgroundAlphaNumber.value = String(ALPHA_MAX);
+      if (recolor) {
+        recolor.foregroundColor.value = DEFAULT_FOREGROUND;
+        recolor.backgroundColor.value = DEFAULT_BACKGROUND;
+        recolor.foregroundAlpha.value = String(ALPHA_MAX);
+        recolor.backgroundAlpha.value = String(ALPHA_MAX);
+        recolor.foregroundAlphaNumber.value = String(ALPHA_MAX);
+        recolor.backgroundAlphaNumber.value = String(ALPHA_MAX);
       }
-      sizeInput.value = String(DEFAULT_SIZE);
+      pngSizeInput.value = String(DEFAULT_SIZE);
       setStatus("");
       updatePreview();
     });

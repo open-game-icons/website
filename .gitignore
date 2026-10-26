@@ -4,6 +4,10 @@ content/generated
 data/generated
 static/search-index.json
 static/assets/icons/
+static/assets/js/
+
+# JS tooling dependencies
+node_modules/
 
 # Generated icon database
 *.db

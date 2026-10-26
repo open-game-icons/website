@@ -32,7 +32,9 @@
     // The icon subrepo and its generated static staging tree have their own
     // formatting workflow.
     "icons/**",
-    "static/assets/icons/**"
+    "static/assets/icons/**",
+    // Bundled from src/ts by Bun; generated output, not authored source.
+    "static/assets/js/**"
   ],
   // https://dprint.dev/plugins/
   "plugins": [

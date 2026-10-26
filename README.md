@@ -6,9 +6,10 @@ For more about this project, see the [About](content/about.md) page.
 ## Setup
 
 This site is built with [Zola](https://www.getzola.org/) 0.23.6 with additional generator scripts that require Python 3.11+.
+The browser scripts are TypeScript, bundled with [Bun](https://bun.com/); the pinned version is in `.bun-version`.
 [just](https://just.systems/) is used as a command runner for convenience.
 
-Rebuild the icon database, generate the icon, author, and tag content, and build the site:
+Rebuild the icon database, generate the icon, author, and tag content, compile the TypeScript bundle, and build the site:
 
 ```sh
 just build
@@ -20,7 +21,7 @@ Serve locally with live reload:
 just serve
 ```
 
-`just serve` runs `zola serve` on port 8000 after regenerating the content and static assets.
+`just serve` runs `zola serve` on port 8000 after regenerating the content and static assets, and rebuilds the TypeScript bundle on change.
 Zola uses its local server URL as the base URL, so legacy `.html` alias redirects stay local.
 Use `just serve 8080` to choose another port.
 
@@ -35,13 +36,18 @@ These aliases are client-side redirects (JavaScript with a meta-refresh fallback
 
 The generator symlinks only the icon SVG directories and license files from `icons/` into `static/assets/icons`; the SQLite database, SQL dump, scripts, and docs are never published.
 
+The browser scripts live in `src/ts/` and are bundled by Bun into the generated, gitignored `static/assets/js/` directory.
+Bun's build is transpile-only, so `just check` also runs `bun check`.
+
 Other commands:
 
 ```sh
 just fmt        # format code and Tera templates
+just js         # compile TypeScript to static/assets/js
+just js-check   # type-check the TypeScript sources
 just db         # regenerate database (icons/icons.db)
 just generate   # regenerate content, data, search index, and static icon staging
-just check      # build and validate pages, aliases, and internal links
+just check      # build, type-check TypeScript, and validate pages, aliases, and links
 just clean      # remove build output and generated source files
 just kill-serve # stop any running `zola serve` process
 ```

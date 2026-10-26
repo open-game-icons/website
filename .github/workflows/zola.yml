@@ -26,6 +26,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
       - name: Install Zola
         run: |
           set -euo pipefail
@@ -40,6 +45,12 @@ jobs:
 
       - name: Generate Content
         run: python3 scripts/generate.py
+
+      - name: Type check TypeScript
+        run: bun run check:js
+
+      - name: Build frontend assets
+        run: bun run build:js
 
       - name: Build with Zola
         run: zola build
