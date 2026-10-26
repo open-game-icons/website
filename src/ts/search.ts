@@ -1,4 +1,4 @@
-(() => {
+function main(): void {
   const inputElement = document.getElementById("icon-search");
   if (!(inputElement instanceof HTMLInputElement)) return;
   const input: HTMLInputElement = inputElement;
@@ -47,4 +47,8 @@
 
   input.addEventListener("input", applyFilter);
   input.addEventListener("search", applyFilter);
-})();
+}
+
+main();
+
+export {};

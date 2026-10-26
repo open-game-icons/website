@@ -1,4 +1,4 @@
-(() => {
+function main(): void {
   function byId<T extends HTMLElement>(
     id: string,
     constructor: { new(): T },
@@ -663,4 +663,8 @@
       updatePreview();
     });
   }
-})();
+}
+
+main();
+
+export {};

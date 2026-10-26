@@ -21,7 +21,7 @@ Serve locally with live reload:
 just serve
 ```
 
-`just serve` runs `zola serve` on port 8000 after regenerating the content and static assets, and rebuilds the TypeScript bundle on change.
+`just serve` runs `zola serve` on port 8000 after regenerating the content and static assets; the TypeScript bundle is built once at startup, so re-run `just js` after editing `src/ts/`.
 Zola uses its local server URL as the base URL, so legacy `.html` alias redirects stay local.
 Use `just serve 8080` to choose another port.
 
@@ -36,7 +36,7 @@ These aliases are client-side redirects (JavaScript with a meta-refresh fallback
 
 The generator symlinks only the icon SVG directories and license files from `icons/` into `static/assets/icons`; the SQLite database, SQL dump, scripts, and docs are never published.
 
-The browser scripts live in `src/ts/` and are bundled by Bun into the generated, gitignored `static/assets/js/` directory.
+The browser scripts live in `src/ts/` and are bundled by Bun into ES modules in the generated, gitignored `static/assets/js/` directory. Templates load them with `<script type="module">`.
 Bun's build is transpile-only, so `just check` also runs `bun check`.
 
 Other commands:
