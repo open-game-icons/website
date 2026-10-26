@@ -371,6 +371,7 @@ author = {toml_string(row["author"])}
 icon_id = {toml_string(row["icon_id"])}
 author_name = {toml_string(row["author_name"])}
 author_link = {toml_string(row["author_link"] or "")}
+license_id = {toml_string(row["license_id"])}
 license_name = {toml_string(row["license_name"])}
 license_link = {toml_string(row["license_link"] or "")}
 license_icons = {toml_array(creative_commons_icon_urls(row["license_id"]))}

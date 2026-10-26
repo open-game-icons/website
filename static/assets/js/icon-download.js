@@ -21,6 +21,7 @@
   const icon = {
     title: container.dataset.iconTitle || "",
     id: container.dataset.iconId || "icon",
+    fileBase: container.dataset.fileBase || "",
     author: container.dataset.author || "",
     licenseName: container.dataset.licenseName || "",
     licenseUrl: container.dataset.licenseUrl || "",
@@ -302,7 +303,7 @@
       if (includeMetadata()) {
         png = withPngMetadata(new Uint8Array(await png.arrayBuffer()), icon);
       }
-      saveBlob(png, `${icon.id}-${size}.png`);
+      saveBlob(png, `${icon.fileBase || icon.id}-${size}.png`);
     } catch (error) {
       console.error(error);
       setStatus("Sorry, the PNG could not be generated.");
