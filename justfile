@@ -11,7 +11,7 @@ kill-serve:
 
 # Rebuild icons.db from icons.sql
 db:
-    (cd icons && ./rebuild_db.sh)
+    icons/rebuild_db.fish
 
 # Generate Zola content, data, search index, and static icon staging from icons.db
 generate: kill-serve db
@@ -41,7 +41,7 @@ check: build
     dprint check
     ty check
     tombi check
-    (cd icons && ./check-svgs.sh)
+    icons/check-svgs.fish
     zola check --skip-external-links
     python3 scripts/check.py
 
