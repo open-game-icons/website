@@ -28,6 +28,9 @@
   --color-tag-count-bg: #000;
   --color-tag-count-text: #fff;
   --color-input-bg: light-dark(#fff, #181818);
+  /* Transparency checkerboard behind the icon preview. */
+  --color-checker: light-dark(#dcdcdc, #2c2c2c);
+  --color-checker-bg: light-dark(#fff, #171717);
   /* Darker than the link accent so the ring meets 3:1 on the header/footer surface. */
   --color-focus-ring: light-dark(#06c, var(--color-accent-hover));
 
@@ -348,6 +351,12 @@ a.no-color:hover {
   height: auto;
   margin-bottom: var(--space-md);
   border-radius: var(--radius-md);
+  background-color: var(--color-checker-bg);
+  background-image: repeating-conic-gradient(
+    var(--color-checker) 0% 25%,
+    var(--color-checker-bg) 0% 50%
+  );
+  background-size: 1rem 1rem;
 }
 
 /* Recolor controls */
