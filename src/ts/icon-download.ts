@@ -584,7 +584,7 @@ function main(): void {
       if (includeMetadata()) {
         png = withPngMetadata(new Uint8Array(await png.arrayBuffer()), icon);
       }
-      saveBlob(png, `${icon.fileBase || icon.id}_${size}.png`);
+      saveBlob(png, `${icon.fileBase || icon.id}.png`);
     } catch (error) {
       console.error(error);
       setStatus("Sorry, the PNG could not be generated.");
