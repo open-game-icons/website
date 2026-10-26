@@ -134,6 +134,9 @@
           <label for="include-metadata">Include metadata?</label>
         </div>
 
+        <h2 id="attribution-heading">Attribution</h2>
+        <pre class="attribution">"{{ page.title }}" by {{ page.extra.author_name }}, source: {{ page.permalink }}, {% if page.extra.license_id == "cc0" %}dedicated to the public domain under{% else %}licensed under{% endif %} {{ page.extra.license_name }} ({{ page.extra.license_link }}).</pre>
+
         <h2 id="tags-heading">Tags</h2>
         {% set tags = page.extra.tags %}
         {% include "partials/tag_links.html" %}

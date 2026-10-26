@@ -552,6 +552,15 @@ a.no-color:hover {
   font-size: 0.9rem;
 }
 
+/* Attribution */
+
+.attribution {
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  text-wrap: nowrap;
+  user-select: all;
+}
+
 /* Tags */
 
 .tag {
