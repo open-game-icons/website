@@ -19,7 +19,7 @@ build: generate
 
 # Serve with Zola's live reload
 serve port="8000": generate
-    zola serve --port {{ port }}
+    zola serve --port {{ port }} --open
 
 # Build and verify pages, aliases, and internal links
 check: build
