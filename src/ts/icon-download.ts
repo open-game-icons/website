@@ -11,8 +11,8 @@ function main(): void {
   const svgLink = byId("svg-download", HTMLAnchorElement);
   const pngButton = byId("png-download", HTMLButtonElement);
   const pngControls = byId("png-download-controls", HTMLElement);
-  const pngSizeControls = byId("png-size-controls", HTMLElement);
-  const sizeInput = byId("png-size", HTMLInputElement);
+  const downloadSizeControls = byId("download-size-controls", HTMLElement);
+  const sizeInput = byId("download-size", HTMLInputElement);
   const metadataOption = byId("metadata-option", HTMLElement);
   const metadataCheckbox = byId("include-metadata", HTMLInputElement);
   const status = byId("download-status", HTMLElement);
@@ -39,7 +39,7 @@ function main(): void {
   // narrowing from the guard above. Keep non-nullable aliases for closures.
   const svgDownloadLink: HTMLAnchorElement = svgLink;
   const pngDownloadButton: HTMLButtonElement = pngButton;
-  const pngSizeInput: HTMLInputElement = sizeInput;
+  const downloadSizeInput: HTMLInputElement = sizeInput;
 
   type RecolorElements = {
     preview: HTMLImageElement;
@@ -79,7 +79,7 @@ function main(): void {
 
   const recolor = findRecolorElements();
 
-  // Cap the size so large renders stay under the canvas memory limits mobile
+  // Cap the size so large PNG renders stay under the canvas memory limits mobile
   // browsers enforce; 2048 is 4x the native 512px artwork.
   const DEFAULT_SIZE = 512;
   const MIN_SIZE = 16;
@@ -115,7 +115,7 @@ function main(): void {
   };
 
   pngControls.removeAttribute("hidden");
-  if (pngSizeControls) pngSizeControls.removeAttribute("hidden");
+  if (downloadSizeControls) downloadSizeControls.removeAttribute("hidden");
   if (metadataOption) metadataOption.removeAttribute("hidden");
   if (recolor) recolor.recolorControls.removeAttribute("hidden");
   if (resetButton) resetButton.removeAttribute("hidden");
@@ -456,11 +456,32 @@ function main(): void {
     return svgText.replace(/<svg\b[^>]*>/, (tag) => tag + block);
   }
 
-  // --- Rasterization and saving ---
+  // --- Sizing, rasterization, and saving ---
+
+  // The size input sets the width; the height follows the viewBox aspect ratio
+  // so non-square icons are not distorted.
+  function dimensionsForSvg(
+    text: string,
+    size: number,
+  ): { width: number; height: number } {
+    const viewBox = text.match(
+      /viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([-\d.]+)[\s,]+([-\d.]+)\s*"/,
+    );
+    const viewBoxWidth = viewBox?.[1];
+    const viewBoxHeight = viewBox?.[2];
+    const aspect = viewBoxWidth && viewBoxHeight
+      ? Number(viewBoxHeight) / Number(viewBoxWidth)
+      : 1;
+    return {
+      width: size,
+      height: Math.max(1, Math.round(size * aspect)),
+    };
+  }
 
   // The source SVGs only have a viewBox, so their intrinsic size is undefined.
-  // Writing an explicit width/height makes rasterization consistent across
-  // browsers, which otherwise fall back to a 150px default object size.
+  // Writing an explicit width/height makes the downloaded SVG self-describing
+  // and rasterization consistent across browsers, which otherwise fall back to
+  // a 150px default object size.
   function sizeSvg(text: string, width: number, height: number): string {
     return text.replace(/<svg\b[^>]*>/, (tag) => {
       const attrs = tag.replace(
@@ -535,11 +556,11 @@ function main(): void {
   // Empty, non-numeric, and out-of-range values are normalized, and the input
   // is updated so it shows the size that will actually be rendered.
   function readSize(): number {
-    const raw = pngSizeInput.value.trim();
+    const raw = downloadSizeInput.value.trim();
     const parsed = raw === "" ? Number.NaN : Number(raw);
     const rounded = Number.isFinite(parsed) ? Math.round(parsed) : DEFAULT_SIZE;
     const size = Math.min(MAX_SIZE, Math.max(MIN_SIZE, rounded));
-    pngSizeInput.value = String(size);
+    downloadSizeInput.value = String(size);
     return size;
   }
 
@@ -554,18 +575,10 @@ function main(): void {
       const recolored = hasCustomColors()
         ? recolorSvg(svgText, readColors())
         : svgText;
-      const viewBox = recolored.match(
-        /viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([-\d.]+)[\s,]+([-\d.]+)\s*"/,
-      );
-      const viewBoxWidth = viewBox?.[1];
-      const viewBoxHeight = viewBox?.[2];
-      const aspect = viewBoxWidth && viewBoxHeight
-        ? Number(viewBoxHeight) / Number(viewBoxWidth)
-        : 1;
-      const height = Math.max(1, Math.round(size * aspect));
+      const { width, height } = dimensionsForSvg(recolored, size);
       let png = await rasterize(
-        sizeSvg(recolored, size, height),
-        size,
+        sizeSvg(recolored, width, height),
+        width,
         height,
       );
       if (includeMetadata()) {
@@ -580,12 +593,11 @@ function main(): void {
     }
   });
 
-  // Without JS, or when neither metadata nor colors are customized, the
+  // Without JS, or when metadata, colors, and size are all unchanged, the
   // anchor's own download is used, so the saved file is the untouched SVG.
   svgDownloadLink.addEventListener("click", async (event) => {
     if (
-      (!includeMetadata() && !hasCustomColors())
-      || event.button !== 0
+      event.button !== 0
       || event.metaKey
       || event.ctrlKey
       || event.shiftKey
@@ -593,12 +605,21 @@ function main(): void {
     ) {
       return;
     }
+    const size = readSize();
+    // A changed size is a download customization, like colors or metadata.
+    if (!includeMetadata() && !hasCustomColors() && size === DEFAULT_SIZE) {
+      return;
+    }
     event.preventDefault();
     setStatus("");
     try {
-      let svg = await getSvgText();
-      if (hasCustomColors()) svg = recolorSvg(svg, readColors());
+      const svgText = await getSvgText();
+      let svg = hasCustomColors()
+        ? recolorSvg(svgText, readColors())
+        : svgText;
       if (includeMetadata()) svg = withSvgMetadata(svg, icon);
+      const { width, height } = dimensionsForSvg(svgText, size);
+      svg = sizeSvg(svg, width, height);
       saveBlob(
         new Blob([svg], { type: "image/svg+xml" }),
         svgDownloadLink.getAttribute("download") || `${icon.id}.svg`,
@@ -615,8 +636,8 @@ function main(): void {
     }
   });
 
-  pngSizeInput.addEventListener("change", readSize);
-  pngSizeInput.addEventListener("keydown", (event) => {
+  downloadSizeInput.addEventListener("change", readSize);
+  downloadSizeInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       pngDownloadButton.click();
@@ -658,7 +679,7 @@ function main(): void {
         recolor.foregroundAlphaNumber.value = String(ALPHA_MAX);
         recolor.backgroundAlphaNumber.value = String(ALPHA_MAX);
       }
-      pngSizeInput.value = String(DEFAULT_SIZE);
+      downloadSizeInput.value = String(DEFAULT_SIZE);
       setStatus("");
       updatePreview();
     });

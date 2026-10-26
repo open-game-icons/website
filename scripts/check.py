@@ -29,7 +29,7 @@ REQUIRED_ICON_PAGE_IDS = {
     "svg-download",
     "png-download",
     "png-download-controls",
-    "png-size",
+    "download-size",
 }
 REQUIRED_ICON_PAGE_DATA_ATTRIBUTES = {
     "data-icon-title",
