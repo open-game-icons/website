@@ -29,6 +29,8 @@
   "excludes": [
     "**/*-lock.json",
     "*.svg",
+    // Scratch files are not part of the repository.
+    ".tmp/**",
     // The icon subrepo and its generated static staging tree have their own
     // formatting workflow.
     "icons/**",
