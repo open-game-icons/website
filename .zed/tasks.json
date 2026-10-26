@@ -6,7 +6,7 @@
     "save": "all",
   },
   {
-    "label": "serve (live reload)",
+    "label": "serve",
     "command": "just serve",
     "save": "all",
   },
@@ -17,7 +17,7 @@
   },
   {
     "label": "rebuild db",
-    "command": "(cd icons && ./rebuild_db.sh)",
+    "command": "just db",
   },
   {
     "label": "clean",
