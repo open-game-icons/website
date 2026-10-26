@@ -1,0 +1,6 @@
+{
+  "file_types": {
+    // From `html-jinja` extension
+    "HTML-Jinja": ["*.html"]
+  }
+}
