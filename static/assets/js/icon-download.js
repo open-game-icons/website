@@ -557,7 +557,6 @@
         backgroundAlphaNumber.value = String(ALPHA_MAX);
       }
       sizeInput.value = String(DEFAULT_SIZE);
-      if (metadataCheckbox) metadataCheckbox.checked = true;
       setStatus("");
       updatePreview();
     });
