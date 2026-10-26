@@ -34,11 +34,22 @@
                type="range"
                id="foreground-alpha"
                min="0"
-               max="100"
+               max="255"
                step="1"
-               value="100"
-               aria-label="Foreground opacity" />
-        <output id="foreground-alpha-value" for="foreground-alpha">100%</output>
+               value="255"
+               aria-label="Foreground alpha slider" />
+        <span class="recolor-alpha-value">
+          <input class="recolor-alpha-number"
+                 type="number"
+                 id="foreground-alpha-number"
+                 min="0"
+                 max="255"
+                 step="1"
+                 value="255"
+                 inputmode="numeric"
+                 aria-label="Foreground alpha (0 to 255)" />
+          <span class="recolor-unit" aria-hidden="true">/255</span>
+        </span>
       </div>
       <div class="recolor-field">
         <label for="background-color">Background</label>
@@ -47,12 +58,24 @@
                type="range"
                id="background-alpha"
                min="0"
-               max="100"
+               max="255"
                step="1"
-               value="100"
-               aria-label="Background opacity" />
-        <output id="background-alpha-value" for="background-alpha">100%</output>
+               value="255"
+               aria-label="Background alpha slider" />
+        <span class="recolor-alpha-value">
+          <input class="recolor-alpha-number"
+                 type="number"
+                 id="background-alpha-number"
+                 min="0"
+                 max="255"
+                 step="1"
+                 value="255"
+                 inputmode="numeric"
+                 aria-label="Background alpha (0 to 255)" />
+          <span class="recolor-unit" aria-hidden="true">/255</span>
+        </span>
       </div>
+      <button class="recolor-reset" id="reset-colors" type="button">Reset</button>
     </div>
 
     {% set file_base = page.extra.icon_id ~ "_" ~ page.extra.author ~ "_" ~ page.extra.license_id %}

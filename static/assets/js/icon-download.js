@@ -11,14 +11,15 @@
   const recolorControls = document.getElementById("recolor-controls");
   const foregroundColor = document.getElementById("foreground-color");
   const foregroundAlpha = document.getElementById("foreground-alpha");
-  const foregroundAlphaValue = document.getElementById(
-    "foreground-alpha-value",
+  const foregroundAlphaNumber = document.getElementById(
+    "foreground-alpha-number",
   );
   const backgroundColor = document.getElementById("background-color");
   const backgroundAlpha = document.getElementById("background-alpha");
-  const backgroundAlphaValue = document.getElementById(
-    "background-alpha-value",
+  const backgroundAlphaNumber = document.getElementById(
+    "background-alpha-number",
   );
+  const resetButton = document.getElementById("reset-colors");
   if (!container || !svgLink || !pngButton || !pngControls || !sizeInput) {
     return;
   }
@@ -28,8 +29,10 @@
       && recolorControls
       && foregroundColor
       && foregroundAlpha
+      && foregroundAlphaNumber
       && backgroundColor
-      && backgroundAlpha,
+      && backgroundAlpha
+      && backgroundAlphaNumber,
   );
 
   // Cap the size so large renders stay under the canvas memory limits mobile
@@ -37,6 +40,7 @@
   const DEFAULT_SIZE = 512;
   const MIN_SIZE = 16;
   const MAX_SIZE = 2048;
+  const ALPHA_MAX = 255;
   const SOFTWARE = "Open Game Icons";
   const DEFAULT_FOREGROUND = "#ffffff";
   const DEFAULT_BACKGROUND = "#000000";
@@ -73,13 +77,19 @@
     return {
       foreground: {
         hex: foregroundColor.value.toLowerCase(),
-        alpha: Number(foregroundAlpha.value) / 100,
+        alpha: alphaFraction(foregroundAlphaNumber.value),
       },
       background: {
         hex: backgroundColor.value.toLowerCase(),
-        alpha: Number(backgroundAlpha.value) / 100,
+        alpha: alphaFraction(backgroundAlphaNumber.value),
       },
     };
+  }
+
+  // Three decimals keep every 0-255 value distinct while staying readable in the
+  // generated fill-opacity attributes.
+  function alphaFraction(value) {
+    return Math.round((Number(value) / ALPHA_MAX) * 1000) / 1000;
   }
 
   function hasCustomColors() {
@@ -87,8 +97,8 @@
     return (
       foregroundColor.value.toLowerCase() !== DEFAULT_FOREGROUND
       || backgroundColor.value.toLowerCase() !== DEFAULT_BACKGROUND
-      || Number(foregroundAlpha.value) !== 100
-      || Number(backgroundAlpha.value) !== 100
+      || Number(foregroundAlphaNumber.value) !== ALPHA_MAX
+      || Number(backgroundAlphaNumber.value) !== ALPHA_MAX
     );
   }
 
@@ -144,18 +154,25 @@
     return new XMLSerializer().serializeToString(root);
   }
 
-  function updateAlphaLabels() {
-    if (foregroundAlphaValue) {
-      foregroundAlphaValue.textContent = `${foregroundAlpha.value}%`;
-    }
-    if (backgroundAlphaValue) {
-      backgroundAlphaValue.textContent = `${backgroundAlpha.value}%`;
-    }
+  // Returns false when the number input is empty or not yet a usable value, so
+  // the caller can skip a preview update until it becomes valid.
+  function applyAlphaNumber(range, number) {
+    const raw = number.value.trim();
+    if (raw === "") return false;
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed)) return false;
+    const value = Math.min(ALPHA_MAX, Math.max(0, Math.round(parsed)));
+    range.value = String(value);
+    if (raw !== String(value)) number.value = String(value);
+    return true;
+  }
+
+  function normalizeAlphaNumber(range, number) {
+    if (!applyAlphaNumber(range, number)) number.value = range.value;
   }
 
   async function updatePreview() {
     if (!recolorAvailable) return;
-    updateAlphaLabels();
     if (!hasCustomColors()) {
       if (preview.getAttribute("src") !== originalPreviewSrc) {
         preview.src = originalPreviewSrc;
@@ -501,16 +518,40 @@
   });
 
   if (recolorAvailable) {
-    for (
-      const input of [
-        foregroundColor,
-        foregroundAlpha,
-        backgroundColor,
-        backgroundAlpha,
-      ]
-    ) {
+    for (const input of [foregroundColor, backgroundColor]) {
       input.addEventListener("input", updatePreview);
       input.addEventListener("change", updatePreview);
+    }
+
+    for (
+      const [range, number] of [
+        [foregroundAlpha, foregroundAlphaNumber],
+        [backgroundAlpha, backgroundAlphaNumber],
+      ]
+    ) {
+      range.addEventListener("input", () => {
+        number.value = range.value;
+        updatePreview();
+      });
+      number.addEventListener("input", () => {
+        if (applyAlphaNumber(range, number)) updatePreview();
+      });
+      number.addEventListener("change", () => {
+        normalizeAlphaNumber(range, number);
+        updatePreview();
+      });
+    }
+
+    if (resetButton) {
+      resetButton.addEventListener("click", () => {
+        foregroundColor.value = DEFAULT_FOREGROUND;
+        backgroundColor.value = DEFAULT_BACKGROUND;
+        foregroundAlpha.value = "255";
+        backgroundAlpha.value = "255";
+        foregroundAlphaNumber.value = "255";
+        backgroundAlphaNumber.value = "255";
+        updatePreview();
+      });
     }
   }
 })();
