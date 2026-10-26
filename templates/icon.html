@@ -1,101 +1,82 @@
 {% extends "page.html" %}
 {% block content %}
   <div class="icon-page">
-    <h1>{{ page.title }}</h1>
+    <div class="icon-header">
+      <h1>{{ page.title }}</h1>
 
-    <p>
-      by
-      <a href="/1x1/{{ page.extra.author }}/">{{ page.extra.author_name }}</a>
-      under
-      <a href="{{ page.extra.license_link }}" rel="license">{{ page.extra.license_name }}</a>
-    </p>
+      <p>
+        by
+        <a href="/1x1/{{ page.extra.author }}/">{{ page.extra.author_name }}</a>
+        under
+        <a href="{{ page.extra.license_link }}" rel="license">{{ page.extra.license_name }}</a>
+      </p>
 
-    <p>
-      <a href="{{ page.extra.license_link }}" rel="license">
-        {%- for icon_url in page.extra.license_icons -%}
-          <img class="license-icon" src="{{ icon_url }}" alt="" />
-        {%- endfor %}
-      </a>
-    </p>
-
-    {% set tags = page.extra.tags %}
-    {% include "partials/tag_links.html" %}
-
-    <img class="icon"
-         id="icon-preview"
-         src="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
-         alt="{{ page.title }}" />
-
-    <div class="recolor" id="recolor-controls" hidden>
-      <div class="recolor-field">
-        <label for="foreground-color">Foreground</label>
-        <input type="color" id="foreground-color" value="#ffffff" />
-        <input class="recolor-alpha"
-               type="range"
-               id="foreground-alpha"
-               min="0"
-               max="255"
-               step="1"
-               value="255"
-               aria-label="Foreground alpha slider" />
-        <span class="recolor-alpha-value">
-          <input class="recolor-alpha-number"
-                 type="number"
-                 id="foreground-alpha-number"
-                 min="0"
-                 max="255"
-                 step="1"
-                 value="255"
-                 inputmode="numeric"
-                 aria-label="Foreground alpha (0 to 255)" />
-          <span class="recolor-unit" aria-hidden="true">/255</span>
-        </span>
-      </div>
-      <div class="recolor-field">
-        <label for="background-color">Background</label>
-        <input type="color" id="background-color" value="#000000" />
-        <input class="recolor-alpha"
-               type="range"
-               id="background-alpha"
-               min="0"
-               max="255"
-               step="1"
-               value="255"
-               aria-label="Background alpha slider" />
-        <span class="recolor-alpha-value">
-          <input class="recolor-alpha-number"
-                 type="number"
-                 id="background-alpha-number"
-                 min="0"
-                 max="255"
-                 step="1"
-                 value="255"
-                 inputmode="numeric"
-                 aria-label="Background alpha (0 to 255)" />
-          <span class="recolor-unit" aria-hidden="true">/255</span>
-        </span>
-      </div>
-      <button class="recolor-reset" id="reset-colors" type="button">Reset</button>
+      <p>
+        <a href="{{ page.extra.license_link }}" rel="license">
+          {%- for icon_url in page.extra.license_icons -%}
+            <img class="license-icon" src="{{ icon_url }}" alt="" />
+          {%- endfor %}
+        </a>
+      </p>
     </div>
 
-    {% set file_base = page.extra.icon_id ~ "_" ~ page.extra.author ~ "_" ~ page.extra.license_id %}
-    <div class="downloads"
-         id="downloads"
-         data-icon-title="{{ page.title }}"
-         data-icon-id="{{ page.extra.icon_id }}"
-         data-file-base="{{ file_base }}"
-         data-author="{{ page.extra.author_name }}"
-         data-license-name="{{ page.extra.license_name }}"
-         data-license-url="{{ page.extra.license_link }}"
-         data-source-url="{{ page.permalink }}"
-         data-attribution="{{ page.title }} by {{ page.extra.author_name }} ({{ page.extra.license_name }}) - {{ page.permalink }}">
-      <a class="button"
-         id="svg-download"
-         href="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
-         download="{{ file_base }}.svg">Download SVG</a>
-      <div class="png-download" id="png-download-controls" hidden>
-        <button class="button" id="png-download" type="button">Download PNG</button>
-        <div>
+    <div class="icon-layout">
+      <aside class="icon-panel icon-studio" aria-labelledby="studio-heading">
+        <h2 id="studio-heading">Studio</h2>
+
+        <div class="recolor" id="recolor-controls" hidden>
+          <div class="recolor-field">
+            <label for="foreground-color">Foreground</label>
+            <input type="color" id="foreground-color" value="#ffffff" />
+            <input class="recolor-alpha"
+                   type="range"
+                   id="foreground-alpha"
+                   min="0"
+                   max="255"
+                   step="1"
+                   value="255"
+                   aria-label="Foreground alpha slider" />
+            <span class="recolor-alpha-value">
+              <input class="recolor-alpha-number"
+                     type="number"
+                     id="foreground-alpha-number"
+                     min="0"
+                     max="255"
+                     step="1"
+                     value="255"
+                     inputmode="numeric"
+                     aria-label="Foreground alpha (0 to 255)" />
+              <span class="recolor-unit" aria-hidden="true">/255</span>
+            </span>
+          </div>
+          <div class="recolor-field">
+            <label for="background-color">Background</label>
+            <input type="color" id="background-color" value="#000000" />
+            <input class="recolor-alpha"
+                   type="range"
+                   id="background-alpha"
+                   min="0"
+                   max="255"
+                   step="1"
+                   value="255"
+                   aria-label="Background alpha slider" />
+            <span class="recolor-alpha-value">
+              <input class="recolor-alpha-number"
+                     type="number"
+                     id="background-alpha-number"
+                     min="0"
+                     max="255"
+                     step="1"
+                     value="255"
+                     inputmode="numeric"
+                     aria-label="Background alpha (0 to 255)" />
+              <span class="recolor-unit" aria-hidden="true">/255</span>
+            </span>
+          </div>
+          <button class="recolor-reset" id="reset-colors" type="button">Reset</button>
+        </div>
+
+        <div class="png-size-option" id="png-size-controls" hidden>
           <label for="png-size">PNG size:</label>
           <input class="png-size"
                  id="png-size"
@@ -105,14 +86,50 @@
                  max="2048"
                  step="1"
                  inputmode="numeric" />
-          <label for="png-size">px</label>
+          <span class="png-size-unit" aria-hidden="true">px</span>
         </div>
+
+        <div class="metadata-option" id="metadata-option" hidden>
+          <input type="checkbox" id="include-metadata" checked />
+          <label for="include-metadata">Include metadata?</label>
+        </div>
+      </aside>
+
+      <div class="icon-preview">
+        <img class="icon"
+             id="icon-preview"
+             src="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
+             alt="{{ page.title }}" />
       </div>
-      <div class="metadata-option" id="metadata-option" hidden>
-        <input type="checkbox" id="include-metadata" checked />
-        <label for="include-metadata">Include metadata?</label>
-      </div>
-      <p class="download-status" id="download-status" role="status" hidden></p>
+
+      <aside class="icon-panel icon-actions" aria-labelledby="download-heading">
+        <h2 id="download-heading">Download</h2>
+
+        {% set file_base = page.extra.icon_id ~ "_" ~ page.extra.author ~ "_" ~ page.extra.license_id %}
+        <div class="downloads"
+             id="downloads"
+             data-icon-title="{{ page.title }}"
+             data-icon-id="{{ page.extra.icon_id }}"
+             data-file-base="{{ file_base }}"
+             data-author="{{ page.extra.author_name }}"
+             data-license-name="{{ page.extra.license_name }}"
+             data-license-url="{{ page.extra.license_link }}"
+             data-source-url="{{ page.permalink }}"
+             data-attribution="{{ page.title }} by {{ page.extra.author_name }} ({{ page.extra.license_name }}) - {{ page.permalink }}">
+          <a class="button"
+             id="svg-download"
+             href="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
+             download="{{ file_base }}.svg">SVG</a>
+          <div class="png-download" id="png-download-controls" hidden>
+            <button class="button" id="png-download" type="button">PNG</button>
+          </div>
+          <p class="download-status" id="download-status" role="status" hidden></p>
+        </div>
+
+        <h2 id="tags-heading">Tags</h2>
+        {% set tags = page.extra.tags %}
+        {% include "partials/tag_links.html" %}
+      </aside>
     </div>
 
     <p class="external-link">

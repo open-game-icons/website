@@ -3,6 +3,7 @@
   const svgLink = document.getElementById("svg-download");
   const pngButton = document.getElementById("png-download");
   const pngControls = document.getElementById("png-download-controls");
+  const pngSizeControls = document.getElementById("png-size-controls");
   const sizeInput = document.getElementById("png-size");
   const metadataOption = document.getElementById("metadata-option");
   const metadataCheckbox = document.getElementById("include-metadata");
@@ -58,6 +59,7 @@
   };
 
   pngControls.removeAttribute("hidden");
+  if (pngSizeControls) pngSizeControls.removeAttribute("hidden");
   if (metadataOption) metadataOption.removeAttribute("hidden");
   if (recolorAvailable) recolorControls.removeAttribute("hidden");
 

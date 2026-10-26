@@ -336,20 +336,69 @@ a.no-color:hover {
   vertical-align: -0.15em;
 }
 
+/* Icon page */
+
 .icon-page {
   text-align: center;
 }
 
-.icon-page h1 {
+.icon-header {
+  margin-bottom: var(--space-lg);
+}
+
+.icon-header h1 {
   margin-bottom: var(--space-sm);
 }
 
-.icon-page img.icon {
-  max-width: 24rem;
-  max-height: 24rem;
+.icon-header p:last-child {
+  margin-bottom: 0;
+}
+
+.icon-layout {
+  display: grid;
+  grid-template-areas: "studio preview actions";
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+
+.icon-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  text-align: left;
+}
+
+/* The panel gap handles spacing; the global block margins would double it. */
+.icon-panel > * {
+  margin-bottom: 0;
+}
+
+.icon-panel h2 {
+  font-size: 1.1rem;
+}
+
+.icon-studio {
+  grid-area: studio;
+}
+
+.icon-preview {
+  grid-area: preview;
+  display: flex;
+  justify-content: center;
+}
+
+.icon-actions {
+  grid-area: actions;
+}
+
+.icon-preview img.icon {
+  max-width: 100%;
+  max-height: 28rem;
   width: auto;
   height: auto;
-  margin-bottom: var(--space-md);
+  margin-bottom: 0;
   border-radius: var(--radius-md);
   background-color: var(--color-checker-bg);
   background-image: repeating-conic-gradient(
@@ -359,26 +408,39 @@ a.no-color:hover {
   background-size: 1rem 1rem;
 }
 
-/* Recolor controls */
+@media (width <= 56rem) {
+  .icon-layout {
+    grid-template-areas:
+      "preview"
+      "studio"
+      "actions";
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .icon-panel {
+    max-width: 32rem;
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
+/* Icon studio */
 
 .recolor {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-md);
-}
-
-.recolor-field {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
   gap: var(--space-sm);
 }
 
+.recolor-field {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-xs) var(--space-sm);
+}
+
 .recolor-field label {
-  color: var(--color-text-muted);
+  grid-column: 1 / -1;
 }
 
 .recolor input[type="color"] {
@@ -391,7 +453,8 @@ a.no-color:hover {
 }
 
 .recolor input[type="range"] {
-  width: 8rem;
+  width: 100%;
+  min-width: 0;
   accent-color: var(--color-accent);
 }
 
@@ -419,6 +482,7 @@ a.no-color:hover {
 }
 
 .recolor-reset {
+  align-self: flex-start;
   padding: 0;
   border: none;
   background: none;
@@ -433,31 +497,9 @@ a.no-color:hover {
   text-decoration: none;
 }
 
-@media (width <= 31rem) {
-  .recolor-field {
-    gap: var(--space-xs);
-  }
-
-  .recolor input[type="range"] {
-    width: 5rem;
-  }
-}
-
-/* Download controls */
-
-.downloads {
+.png-size-option {
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
-}
-
-.png-download {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   gap: var(--space-xs);
 }
@@ -471,19 +513,36 @@ a.no-color:hover {
   color: var(--color-text);
   font-family: inherit;
   font-size: var(--font-size-base);
+  font-variant-numeric: tabular-nums;
+}
+
+.png-size-unit {
+  color: var(--color-text-muted);
 }
 
 .metadata-option {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: var(--space-xs);
 }
 
+/* Downloads */
+
+.downloads {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+}
+
+.downloads .button {
+  display: block;
+  text-align: center;
+}
+
 .download-status {
-  /* The flex gap already spaces it; the global p margin would double up. */
-  margin-bottom: 0;
   color: var(--color-danger);
+  font-size: 0.9rem;
 }
 
 /* Tags */
@@ -549,6 +608,10 @@ a.no-color:hover {
 .tags {
   margin-bottom: var(--space-md);
   color: var(--color-text-muted);
+}
+
+.icon-actions .tags {
+  text-align: left;
 }
 
 /* Tables */
