@@ -38,12 +38,16 @@ The generator symlinks only the icon SVG directories and license files from `ico
 Other commands:
 
 ```sh
-just fmt       # format code and Tera templates
-just db        # regenerate database (icons/icons.db)
-just generate  # regenerate content, data, search index, and static icon staging
-just check     # build and validate pages, aliases, and internal links
-just clean     # remove build output and generated source files
+just fmt        # format code and Tera templates
+just db         # regenerate database (icons/icons.db)
+just generate   # regenerate content, data, search index, and static icon staging
+just check      # build and validate pages, aliases, and internal links
+just clean      # remove build output and generated source files
+just kill-serve # stop any running `zola serve` process
 ```
+
+`generate`, `build`, `check`, `serve`, and `clean` stop any running `zola serve` process first,
+so a stale server can't interfere with regeneration or hold on to deleted files.
 
 Formatting Tera templates with `just fmt` requires [dprint](https://dprint.dev/) and [uv](https://docs.astral.sh/uv/), which runs djLint via `uvx` (downloaded on first use).
 

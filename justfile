@@ -5,12 +5,16 @@ _default:
 fmt:
     dprint fmt
 
+# Stop any running `zola serve` processes
+kill-serve:
+    -pkill -f '[z]ola serve'
+
 # Rebuild icons.db from icons.sql
 db:
     (cd icons && ./rebuild_db.sh)
 
 # Generate Zola content, data, search index, and static icon staging from icons.db
-generate: db
+generate: kill-serve db
     python3 scripts/generate.py
 
 # Build the site
@@ -31,5 +35,5 @@ check: build
     python3 scripts/check.py
 
 # Remove generated output and generated source files
-clean:
+clean: kill-serve
     rm -rf public content/generated data/generated static/search-index.json static/assets/icons
