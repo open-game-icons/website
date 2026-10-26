@@ -380,7 +380,16 @@ a.no-color:hover {
   font-size: var(--font-size-base);
 }
 
-.png-status {
+.metadata-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.download-status {
+  /* The flex gap already spaces it; the global p margin would double up. */
+  margin-bottom: 0;
   color: var(--color-danger);
 }
 

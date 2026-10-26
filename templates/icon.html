@@ -25,16 +25,21 @@
          src="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
          alt="{{ page.title }}" />
 
-    <div class="downloads">
+    <div class="downloads"
+         id="downloads"
+         data-icon-title="{{ page.title }}"
+         data-icon-id="{{ page.extra.icon_id }}"
+         data-author="{{ page.extra.author_name }}"
+         data-license-name="{{ page.extra.license_name }}"
+         data-license-url="{{ page.extra.license_link }}"
+         data-source-url="{{ page.permalink }}"
+         data-attribution="{{ page.title }} by {{ page.extra.author_name }} ({{ page.extra.license_name }}) - {{ page.permalink }}">
       <a class="button"
+         id="svg-download"
          href="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
          download="{{ page.extra.icon_id }}.svg">Download SVG</a>
       <div class="png-download" id="png-download-controls" hidden>
-        <button class="button"
-                id="png-download"
-                type="button"
-                data-svg-url="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
-                data-icon-id="{{ page.extra.icon_id }}">Download PNG</button>
+        <button class="button" id="png-download" type="button">Download PNG</button>
         <div>
           <label for="png-size">PNG size:</label>
           <input class="png-size"
@@ -48,8 +53,12 @@
           <label for="png-size">px</label>
         </div>
       </div>
+      <div class="metadata-option" id="metadata-option" hidden>
+        <input type="checkbox" id="include-metadata" checked />
+        <label for="include-metadata">Include metadata?</label>
+      </div>
+      <p class="download-status" id="download-status" role="status" hidden></p>
     </div>
-    <p class="png-status" id="png-status" role="status" hidden></p>
 
     <p class="external-link">
       <a href="https://game-icons.net/1x1/{{ page.extra.author }}/{{ page.extra.icon_id }}.html">View on Game-icons.net</a>
