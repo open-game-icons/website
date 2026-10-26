@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 import sys
 from html.parser import HTMLParser
@@ -17,6 +18,11 @@ PUBLIC = ROOT / "public"
 DB_PATH = ROOT / "icons/icons.db"
 ICON_ASSETS = PUBLIC / "assets/icons"
 PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
+
+# Download filenames are built as "{icon}-{author}-{license}", so each component
+# must be filename-safe. Underscores are deliberately disallowed so one can be
+# used as a field delimiter later.
+FILENAME_COMPONENT = re.compile(r"^[a-z0-9][a-z0-9.-]*$")
 
 
 class LinkParser(HTMLParser):
@@ -91,6 +97,9 @@ def main() -> int:
         "ORDER BY l.id, i.author, i.id"
     ).fetchall()
     author_rows = connection.execute("SELECT id FROM authors").fetchall()
+    license_ids = [
+        row[0] for row in connection.execute("SELECT id FROM licenses ORDER BY id")
+    ]
     tag_rows = connection.execute(
         "SELECT t.id FROM tags t JOIN icon_tags it ON t.id = it.tag "
         "GROUP BY t.id HAVING count(*) > 1"
@@ -101,6 +110,10 @@ def main() -> int:
     tag_count = len(tag_rows)
 
     failures: list[str] = []
+
+    for license_id in license_ids:
+        if not FILENAME_COMPONENT.match(license_id):
+            failures.append(f"license id is not filename-safe: {license_id!r}")
 
     if not ICON_ASSETS.is_dir():
         failures.append(
