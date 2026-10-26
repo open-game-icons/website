@@ -7,9 +7,30 @@
   const metadataOption = document.getElementById("metadata-option");
   const metadataCheckbox = document.getElementById("include-metadata");
   const status = document.getElementById("download-status");
+  const preview = document.getElementById("icon-preview");
+  const recolorControls = document.getElementById("recolor-controls");
+  const foregroundColor = document.getElementById("foreground-color");
+  const foregroundAlpha = document.getElementById("foreground-alpha");
+  const foregroundAlphaValue = document.getElementById(
+    "foreground-alpha-value",
+  );
+  const backgroundColor = document.getElementById("background-color");
+  const backgroundAlpha = document.getElementById("background-alpha");
+  const backgroundAlphaValue = document.getElementById(
+    "background-alpha-value",
+  );
   if (!container || !svgLink || !pngButton || !pngControls || !sizeInput) {
     return;
   }
+
+  const recolorAvailable = Boolean(
+    preview
+      && recolorControls
+      && foregroundColor
+      && foregroundAlpha
+      && backgroundColor
+      && backgroundAlpha,
+  );
 
   // Cap the size so large renders stay under the canvas memory limits mobile
   // browsers enforce; 2048 is 4x the native 512px artwork.
@@ -17,6 +38,9 @@
   const MIN_SIZE = 16;
   const MAX_SIZE = 2048;
   const SOFTWARE = "Open Game Icons";
+  const DEFAULT_FOREGROUND = "#ffffff";
+  const DEFAULT_BACKGROUND = "#000000";
+  const originalPreviewSrc = preview ? preview.getAttribute("src") : "";
 
   const icon = {
     title: container.dataset.iconTitle || "",
@@ -31,9 +55,126 @@
 
   pngControls.removeAttribute("hidden");
   if (metadataOption) metadataOption.removeAttribute("hidden");
+  if (recolorAvailable) recolorControls.removeAttribute("hidden");
 
   function includeMetadata() {
     return !metadataCheckbox || metadataCheckbox.checked;
+  }
+
+  // --- Recoloring ---
+
+  function readColors() {
+    if (!recolorAvailable) {
+      return {
+        foreground: { hex: DEFAULT_FOREGROUND, alpha: 1 },
+        background: { hex: DEFAULT_BACKGROUND, alpha: 1 },
+      };
+    }
+    return {
+      foreground: {
+        hex: foregroundColor.value.toLowerCase(),
+        alpha: Number(foregroundAlpha.value) / 100,
+      },
+      background: {
+        hex: backgroundColor.value.toLowerCase(),
+        alpha: Number(backgroundAlpha.value) / 100,
+      },
+    };
+  }
+
+  function hasCustomColors() {
+    if (!recolorAvailable) return false;
+    return (
+      foregroundColor.value.toLowerCase() !== DEFAULT_FOREGROUND
+      || backgroundColor.value.toLowerCase() !== DEFAULT_BACKGROUND
+      || Number(foregroundAlpha.value) !== 100
+      || Number(backgroundAlpha.value) !== 100
+    );
+  }
+
+  // Every published icon follows the same structure: a full-bleed background
+  // shape first, then a white foreground path. (Badges add a stroked ring,
+  // which is treated as foreground outline over an unfilled interior.)
+  const PAINTED_ELEMENTS = new Set([
+    "circle",
+    "ellipse",
+    "line",
+    "path",
+    "polygon",
+    "polyline",
+    "rect",
+  ]);
+
+  function applyPaint(element, attribute, color) {
+    element.setAttribute(attribute, color.hex);
+    const opacity = `${attribute}-opacity`;
+    if (color.alpha < 1) {
+      element.setAttribute(opacity, String(color.alpha));
+    } else {
+      element.removeAttribute(opacity);
+    }
+  }
+
+  function recolorSvg(svgText, colors) {
+    const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
+    const root = doc.documentElement;
+    if (!root || root.localName !== "svg") return svgText;
+
+    const shapes = Array.from(root.children).filter((element) => PAINTED_ELEMENTS.has(element.localName));
+    if (shapes.length === 0) return svgText;
+
+    shapes.forEach((shape, index) => {
+      if (index === 0) {
+        applyPaint(shape, "fill", colors.background);
+        return;
+      }
+      if (shape.hasAttribute("stroke")) {
+        applyPaint(shape, "stroke", colors.foreground);
+        if (shape.hasAttribute("fill")) {
+          applyPaint(shape, "fill", colors.foreground);
+        } else {
+          // An implicit fill would match the background and double up opacity.
+          shape.setAttribute("fill", "none");
+        }
+        return;
+      }
+      applyPaint(shape, "fill", colors.foreground);
+    });
+
+    return new XMLSerializer().serializeToString(root);
+  }
+
+  function updateAlphaLabels() {
+    if (foregroundAlphaValue) {
+      foregroundAlphaValue.textContent = `${foregroundAlpha.value}%`;
+    }
+    if (backgroundAlphaValue) {
+      backgroundAlphaValue.textContent = `${backgroundAlpha.value}%`;
+    }
+  }
+
+  async function updatePreview() {
+    if (!recolorAvailable) return;
+    updateAlphaLabels();
+    if (!hasCustomColors()) {
+      if (preview.getAttribute("src") !== originalPreviewSrc) {
+        preview.src = originalPreviewSrc;
+      }
+      return;
+    }
+    try {
+      const svgText = await getSvgText();
+      // A reset may have happened while the SVG was loading.
+      if (!hasCustomColors()) {
+        preview.src = originalPreviewSrc;
+        return;
+      }
+      const svg = recolorSvg(svgText, readColors());
+      // A data URL avoids tracking and revoking blob URLs on every input event.
+      preview.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   let svgRequest = null;
@@ -294,12 +435,19 @@
     setStatus("");
     try {
       const svgText = await getSvgText();
-      const viewBox = svgText.match(
+      const recolored = hasCustomColors()
+        ? recolorSvg(svgText, readColors())
+        : svgText;
+      const viewBox = recolored.match(
         /viewBox="\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([-\d.]+)[\s,]+([-\d.]+)\s*"/,
       );
       const aspect = viewBox ? Number(viewBox[2]) / Number(viewBox[1]) : 1;
       const height = Math.max(1, Math.round(size * aspect));
-      let png = await rasterize(sizeSvg(svgText, size, height), size, height);
+      let png = await rasterize(
+        sizeSvg(recolored, size, height),
+        size,
+        height,
+      );
       if (includeMetadata()) {
         png = withPngMetadata(new Uint8Array(await png.arrayBuffer()), icon);
       }
@@ -312,11 +460,11 @@
     }
   });
 
-  // With metadata disabled (or without JS), the anchor's own download is used,
-  // so the saved file is the untouched SVG.
+  // Without JS, or when neither metadata nor colors are customized, the
+  // anchor's own download is used, so the saved file is the untouched SVG.
   svgLink.addEventListener("click", async (event) => {
     if (
-      !includeMetadata()
+      (!includeMetadata() && !hasCustomColors())
       || event.button !== 0
       || event.metaKey
       || event.ctrlKey
@@ -328,8 +476,9 @@
     event.preventDefault();
     setStatus("");
     try {
-      const svgText = await getSvgText();
-      const svg = withSvgMetadata(svgText, icon);
+      let svg = await getSvgText();
+      if (hasCustomColors()) svg = recolorSvg(svg, readColors());
+      if (includeMetadata()) svg = withSvgMetadata(svg, icon);
       saveBlob(
         new Blob([svg], { type: "image/svg+xml" }),
         svgLink.getAttribute("download") || `${icon.id}.svg`,
@@ -337,7 +486,7 @@
     } catch (error) {
       console.error(error);
       setStatus(
-        "Sorry, the SVG could not be annotated. Downloading the original file.",
+        "Sorry, the SVG could not be generated. Downloading the original file.",
       );
       saveUrl(svgLink.href, svgLink.getAttribute("download"));
     }
@@ -350,4 +499,18 @@
       pngButton.click();
     }
   });
+
+  if (recolorAvailable) {
+    for (
+      const input of [
+        foregroundColor,
+        foregroundAlpha,
+        backgroundColor,
+        backgroundAlpha,
+      ]
+    ) {
+      input.addEventListener("input", updatePreview);
+      input.addEventListener("change", updatePreview);
+    }
+  }
 })();

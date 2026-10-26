@@ -22,8 +22,38 @@
     {% include "partials/tag_links.html" %}
 
     <img class="icon"
+         id="icon-preview"
          src="/assets/icons/{{ page.extra.author }}/{{ page.extra.icon_id }}.svg"
          alt="{{ page.title }}" />
+
+    <div class="recolor" id="recolor-controls" hidden>
+      <div class="recolor-field">
+        <label for="foreground-color">Foreground</label>
+        <input type="color" id="foreground-color" value="#ffffff" />
+        <input class="recolor-alpha"
+               type="range"
+               id="foreground-alpha"
+               min="0"
+               max="100"
+               step="1"
+               value="100"
+               aria-label="Foreground opacity" />
+        <output id="foreground-alpha-value" for="foreground-alpha">100%</output>
+      </div>
+      <div class="recolor-field">
+        <label for="background-color">Background</label>
+        <input type="color" id="background-color" value="#000000" />
+        <input class="recolor-alpha"
+               type="range"
+               id="background-alpha"
+               min="0"
+               max="100"
+               step="1"
+               value="100"
+               aria-label="Background opacity" />
+        <output id="background-alpha-value" for="background-alpha">100%</output>
+      </div>
+    </div>
 
     {% set file_base = page.extra.icon_id ~ "_" ~ page.extra.author ~ "_" ~ page.extra.license_id %}
     <div class="downloads"

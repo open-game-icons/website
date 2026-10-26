@@ -350,6 +350,47 @@ a.no-color:hover {
   border-radius: var(--radius-md);
 }
 
+/* Recolor controls */
+
+.recolor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.recolor-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.recolor-field label {
+  color: var(--color-text-muted);
+}
+
+.recolor input[type="color"] {
+  width: 2.5rem;
+  height: 1.75rem;
+  padding: 0;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-input-bg);
+}
+
+.recolor input[type="range"] {
+  width: 8rem;
+  accent-color: var(--color-accent);
+}
+
+.recolor output {
+  width: 3em;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
 /* Download controls */
 
 .downloads {
@@ -566,7 +607,8 @@ a.no-color:hover {
 
 a:focus-visible,
 .icon-search:focus-visible,
-.png-size:focus-visible {
+.png-size:focus-visible,
+.recolor input:focus-visible {
   outline: var(--focus-ring-width) solid var(--color-focus-ring);
   outline-offset: var(--focus-ring-offset);
 }
