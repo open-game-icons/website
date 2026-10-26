@@ -2,7 +2,7 @@
   "name": "open-game-icons",
   "private": true,
   "scripts": {
-    "build:js": "bun build src/ts/search.ts src/ts/icon-download.ts src/ts/build-time.ts --outdir static/assets/js --format=esm --splitting --target=browser --sourcemap=none --check",
+    "build:js": "bun build src/ts/*.ts --outdir static/assets/js --format=esm --splitting --target=browser --sourcemap=none --check",
     "check:js": "bun check"
   }
 }
