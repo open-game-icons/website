@@ -20,7 +20,7 @@
   const backgroundAlphaNumber = document.getElementById(
     "background-alpha-number",
   );
-  const resetButton = document.getElementById("reset-colors");
+  const resetButton = document.getElementById("reset-settings");
   if (!container || !svgLink || !pngButton || !pngControls || !sizeInput) {
     return;
   }
@@ -62,6 +62,7 @@
   if (pngSizeControls) pngSizeControls.removeAttribute("hidden");
   if (metadataOption) metadataOption.removeAttribute("hidden");
   if (recolorAvailable) recolorControls.removeAttribute("hidden");
+  if (resetButton) resetButton.removeAttribute("hidden");
 
   function includeMetadata() {
     return !metadataCheckbox || metadataCheckbox.checked;
@@ -543,17 +544,22 @@
         updatePreview();
       });
     }
+  }
 
-    if (resetButton) {
-      resetButton.addEventListener("click", () => {
+  if (resetButton) {
+    resetButton.addEventListener("click", () => {
+      if (recolorAvailable) {
         foregroundColor.value = DEFAULT_FOREGROUND;
         backgroundColor.value = DEFAULT_BACKGROUND;
-        foregroundAlpha.value = "255";
-        backgroundAlpha.value = "255";
-        foregroundAlphaNumber.value = "255";
-        backgroundAlphaNumber.value = "255";
-        updatePreview();
-      });
-    }
+        foregroundAlpha.value = String(ALPHA_MAX);
+        backgroundAlpha.value = String(ALPHA_MAX);
+        foregroundAlphaNumber.value = String(ALPHA_MAX);
+        backgroundAlphaNumber.value = String(ALPHA_MAX);
+      }
+      sizeInput.value = String(DEFAULT_SIZE);
+      if (metadataCheckbox) metadataCheckbox.checked = true;
+      setStatus("");
+      updatePreview();
+    });
   }
 })();

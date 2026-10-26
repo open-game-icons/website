@@ -294,6 +294,20 @@ button.button:disabled {
   opacity: 0.6;
 }
 
+a.button-outline,
+button.button-outline {
+  border: var(--border-width) solid var(--color-accent);
+  color: var(--color-accent);
+  background-color: transparent;
+}
+
+a.button-outline:hover,
+button.button-outline:hover {
+  border-color: var(--color-accent-hover);
+  color: var(--color-accent-hover);
+  background-color: transparent;
+}
+
 a.no-color {
   color: var(--color-text);
   text-decoration: none;
@@ -486,20 +500,8 @@ a.no-color:hover {
   font-size: 0.9rem;
 }
 
-.recolor-reset {
+.studio-reset {
   align-self: flex-start;
-  padding: 0;
-  border: none;
-  background: none;
-  color: var(--color-accent);
-  font: inherit;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.recolor-reset:hover {
-  color: var(--color-accent-hover);
-  text-decoration: none;
 }
 
 .png-size-option {
@@ -729,7 +731,7 @@ a:focus-visible,
 .icon-search:focus-visible,
 .png-size:focus-visible,
 .recolor input:focus-visible,
-.recolor button:focus-visible {
+.studio-reset:focus-visible {
   outline: var(--focus-ring-width) solid var(--color-focus-ring);
   outline-offset: var(--focus-ring-offset);
 }
