@@ -17,7 +17,7 @@
       {
         // Zola requires .html extensions, so format templates as Tera with djLint.
         // Pin 1.47.0: 1.36.4 (AUR) misformats inline block tags.
-        "command": "uvx --from djlint==1.47.0 djlint - --reformat --quiet --profile=tera --indent {{indent_width}} --max-line-length {{line_width}} --preserve-blank-lines --close-void-tags",
+        "command": "uvx --offline --from djlint==1.47.0 djlint - --reformat --quiet --profile=tera --indent {{indent_width}} --max-line-length {{line_width}} --preserve-blank-lines --close-void-tags",
         "associations": ["**/templates/**/*.html"],
       },
     ],
