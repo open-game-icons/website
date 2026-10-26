@@ -26,6 +26,7 @@ check: build
     dprint check
     ty check
     tombi check
+    (cd icons && ./check-svgs.sh)
     zola check --skip-external-links
     python3 scripts/check.py
 
