@@ -20,7 +20,7 @@ ICON_ASSETS = PUBLIC / "assets/icons"
 PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 
 # Bundled from src/ts by Bun and copied by Zola.
-COMPILED_JS = ("search.js", "icon-download.js")
+COMPILED_JS = ("search.js", "icon-download.js", "build-time.js")
 
 # DOM hooks used by src/ts/icon-download.ts. TypeScript cannot verify Tera
 # template output, so these checks guard the template contract.

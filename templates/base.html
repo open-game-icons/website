@@ -28,20 +28,7 @@
         </time>
       </p>
     </footer>
+    <script type="module" src="/assets/js/build-time.js"></script>
     {% block scripts %}{% endblock %}
-    <script>
-      (() => {
-        const el = document.getElementById("build-time");
-        if (!el) return;
-
-        const date = new Date(el.getAttribute("datetime"));
-        if (Number.isNaN(date.getTime())) return;
-
-        el.textContent = date.toLocaleString(undefined, {
-          dateStyle: "medium",
-          timeStyle: "short",
-        });
-      })();
-    </script>
   </body>
 </html>
