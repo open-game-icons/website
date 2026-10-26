@@ -22,6 +22,26 @@ PUBLISHED_ICON_FILES = {"license.txt", "METADATA_LICENSE.txt"}
 # Bundled from src/ts by Bun and copied by Zola.
 COMPILED_JS = ("search.js", "icon-download.js")
 
+# DOM hooks used by src/ts/icon-download.ts. TypeScript cannot verify Tera
+# template output, so these checks guard the template contract.
+REQUIRED_ICON_PAGE_IDS = {
+    "downloads",
+    "svg-download",
+    "png-download",
+    "png-download-controls",
+    "png-size",
+}
+REQUIRED_ICON_PAGE_DATA_ATTRIBUTES = {
+    "data-icon-title",
+    "data-icon-id",
+    "data-file-base",
+    "data-author",
+    "data-license-name",
+    "data-license-url",
+    "data-source-url",
+    "data-attribution",
+}
+
 # Download filenames are built as "{icon}-{author}-{license}", so each component
 # must be filename-safe. Underscores are deliberately disallowed so one can be
 # used as a field delimiter later.
@@ -40,10 +60,11 @@ class LinkParser(HTMLParser):
 
 
 class HomepageVisibilityParser(HTMLParser):
-    """Collect icon and tag links marked hidden on the homepage."""
+    """Collect homepage icon ids and links marked hidden on the homepage."""
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
+        self.icon_ids: list[str] = []
         self.hidden_icons: list[str] = []
         self.hidden_tags: list[str] = []
 
@@ -52,6 +73,10 @@ class HomepageVisibilityParser(HTMLParser):
             return
 
         attributes = dict(attrs)
+        icon_id = attributes.get("id", "")
+        if icon_id.startswith("icon--"):
+            self.icon_ids.append(icon_id)
+
         if "data-homepage-hidden" not in attributes:
             return
 
@@ -60,6 +85,24 @@ class HomepageVisibilityParser(HTMLParser):
             self.hidden_tags.append(href.removeprefix("/tags/").strip("/"))
         elif href.startswith("/1x1/"):
             self.hidden_icons.append(href)
+
+
+class IconPageContractParser(HTMLParser):
+    """Collect ids and data attributes used by the icon studio."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.ids: set[str] = set()
+        self.data_attributes: set[str] = set()
+
+    def handle_starttag(self, tag, attrs):
+        attributes = dict(attrs)
+        element_id = attributes.get("id")
+        if element_id:
+            self.ids.add(element_id)
+        for name, _ in attrs:
+            if name.startswith("data-"):
+                self.data_attributes.add(name)
 
 
 def resolve(page: Path, link: str) -> Path | None:
@@ -221,6 +264,16 @@ def main() -> int:
     homepage_parser = HomepageVisibilityParser()
     homepage_parser.feed(homepage)
 
+    homepage_icon_ids = set(homepage_parser.icon_ids)
+    search_keys = set(search_index)
+    if homepage_icon_ids != search_keys:
+        missing = sorted(search_keys - homepage_icon_ids)[:5]
+        extra = sorted(homepage_icon_ids - search_keys)[:5]
+        failures.append(
+            "search index keys do not match homepage icon ids "
+            f"(missing={missing}, extra={extra})"
+        )
+
     if set(homepage_parser.hidden_icons) != hidden_icons:
         failures.append(
             f"expected {len(hidden_icons)} homepage-hidden icons, "
@@ -251,6 +304,26 @@ def main() -> int:
             if f'src="{icon_url}"' not in html:
                 failures.append(
                     f"missing license icon on 1x1/{author}/{icon_id}/: {icon_url}"
+                )
+
+    if icon_rows:
+        author, icon_id = icon_rows[0]
+        icon_page = PUBLIC / "1x1" / author / icon_id / "index.html"
+        if icon_page.is_file():
+            contract_parser = IconPageContractParser()
+            contract_parser.feed(icon_page.read_text(encoding="utf-8"))
+            missing_ids = REQUIRED_ICON_PAGE_IDS - contract_parser.ids
+            missing_data = (
+                REQUIRED_ICON_PAGE_DATA_ATTRIBUTES - contract_parser.data_attributes
+            )
+            if missing_ids:
+                failures.append(
+                    f"icon page is missing studio ids: {sorted(missing_ids)}"
+                )
+            if missing_data:
+                failures.append(
+                    "icon page is missing studio data attributes: "
+                    f"{sorted(missing_data)}"
                 )
 
     checked = 0
