@@ -426,6 +426,11 @@ a.no-color:hover {
 
 /* Icon studio */
 
+.studio-hint {
+  margin-bottom: 0;
+  color: var(--color-text-muted);
+}
+
 .recolor {
   display: flex;
   flex-direction: column;
