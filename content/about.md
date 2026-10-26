@@ -84,8 +84,8 @@ If you are a copyright holder and you think any content distributed on this site
 Open Game Icons is a [static site](https://en.wikipedia.org/wiki/Static_web_page) built with [Zola](https://www.getzola.org/) - there's no custom backend code running on a server somewhere.
 It's hosted on [GitHub Pages](https://docs.github.com/pages) and served through [Cloudflare](https://www.cloudflare.com/).
 
-On the frontend, the site uses JavaScript exclusively for the search feature.
-In fact, you can use the site with JavaScript disabled entirely, and simply search for icons with your browser's search functionality (Ctrl+F) (although you will miss out on some custom keyword-matching logic and some items which are hidden from the homepage by default).
+On the frontend, the site uses JavaScript for search, icon editing features, and PNG downloads.
+If you don't care about these features, you can use the site with JavaScript disabled entirely.
 
 Open Game Icons doesn't collect any data aside from the anonymous, aggregated analytics that Cloudflare provides.
 
