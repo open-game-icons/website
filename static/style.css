@@ -342,14 +342,6 @@ a.no-color:hover {
   width: auto;
 }
 
-.license-icon {
-  width: 2em;
-  height: 2em;
-  /* The global img rule adds a block margin that also shifts the baseline. */
-  margin-bottom: 0;
-  vertical-align: -0.15em;
-}
-
 /* Icon page */
 
 .icon-page {
@@ -364,7 +356,22 @@ a.no-color:hover {
   margin-bottom: var(--space-sm);
 }
 
-.icon-header p:last-child {
+.attribution-subtitle {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+.attribution-subtitle p {
+  margin-bottom: 0;
+}
+
+.license-icon {
+  width: auto;
+  height: 1.25rem;
+  /* The global img rule adds a block margin that also shifts the baseline. */
   margin-bottom: 0;
 }
 

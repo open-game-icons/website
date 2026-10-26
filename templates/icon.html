@@ -4,20 +4,19 @@
     <div class="icon-header">
       <h1>{{ page.title }}</h1>
 
-      <p>
-        by
-        <a href="/1x1/{{ page.extra.author }}/">{{ page.extra.author_name }}</a>
-        under
-        <a href="{{ page.extra.license_link }}" rel="license">{{ page.extra.license_name }}</a>
-      </p>
-
-      <p>
+      <div class="attribution-subtitle">
+        <p>
+          by
+          <a href="/1x1/{{ page.extra.author }}/">{{ page.extra.author_name }}</a>
+          under
+          <a href="{{ page.extra.license_link }}" rel="license">{{ page.extra.license_name }}</a>
+        </p>
         <a href="{{ page.extra.license_link }}" rel="license">
           {%- for icon_url in page.extra.license_icons -%}
             <img class="license-icon" src="{{ icon_url }}" alt="" />
           {%- endfor %}
         </a>
-      </p>
+      </div>
     </div>
 
     <div class="icon-layout">
